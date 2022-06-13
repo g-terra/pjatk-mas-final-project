@@ -23,6 +23,7 @@
 		<spock.version>2.2-M1-groovy-4.0</spock.version>
 		<gmavenplus-plugin.version>1.7.1</gmavenplus-plugin.version>
 		<springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
+		<springdoc-openapi-ui.version>1.6.9</springdoc-openapi-ui.version>
 	</properties>
 
 	<dependencies>
@@ -38,10 +39,17 @@
 		</dependency>
 
 		<!--database-->
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.28</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<scope>test</scope>
 		</dependency>
 
 		<!--tools-->
@@ -55,7 +63,7 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.6.9</version>
+			<version>${springdoc-openapi-ui.version}</version>
 		</dependency>
 
 		<!--tests-->

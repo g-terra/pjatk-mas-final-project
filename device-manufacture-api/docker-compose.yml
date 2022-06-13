@@ -1,0 +1,17 @@
+services:
+  db:
+    image: mysql:8.0.22
+    platform: linux/x86_64
+    container_name: db
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: device_manufacture_db
+      MYSQL_USER: default
+      MYSQL_PASSWORD: default
+      MYSQL_ROOT_PASSWORD: root
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
