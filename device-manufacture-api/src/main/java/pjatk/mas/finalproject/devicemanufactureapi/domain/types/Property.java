@@ -1,8 +1,10 @@
 package pjatk.mas.finalproject.devicemanufactureapi.domain.types;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
@@ -10,11 +12,9 @@ import javax.persistence.Embeddable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class IdDocument {
+public class Property {
 
-    @Column(name = "document_type")
+    private String name;
     private String type;
 
-    @Column(name = "document_number")
-    private String number;
 }

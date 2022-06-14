@@ -1,19 +1,20 @@
 package pjatk.mas.finalproject.devicemanufactureapi.domain.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.Order.Order;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.client.Client;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.employee.Employee;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.role.Role;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,23 +23,35 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
-    private String name;
-    private String surname;
-    private String email;
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<UserRole> roles;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride( name = "phone", column = @Column(name = "client_phone")),
-    })
+    @Column(name = "name" , nullable = false)
+    private String name;
+
+    @Column(name = "surname" , nullable = false)
+    private String surname;
+
+    @Column(name = "email" , nullable = false)
+    private String email;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "role_id") }
+    )
+    private Set<Role> roles;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Client client;
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride( name = "phone", column = @Column(name = "employee_phone")),
-    })
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Employee employee;
+
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+    private List<Order> orders;
 
     public Optional<Employee> getEmployee(){
         return Optional.ofNullable(this.employee);
@@ -46,14 +59,6 @@ public class User {
 
     public Optional<Client> getClient(){
         return Optional.ofNullable(this.client);
-    }
-
-    public boolean isClient(){
-        return this.roles.contains(UserRole.CLIENT);
-    }
-
-    public boolean isEmployee(){
-        return this.roles.contains(UserRole.EMPLOYEE);
     }
 
     @Override

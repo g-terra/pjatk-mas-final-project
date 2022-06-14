@@ -1,51 +1,42 @@
 package pjatk.mas.finalproject.devicemanufactureapi.domain.client;
 
 import lombok.*;
-import org.hibernate.annotations.Parent;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.Order.Order;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.IdDocument;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.user.User;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
-@Setter
+@Entity
 @Getter
-@Builder
-@NoArgsConstructor
+@Setter
 @AllArgsConstructor
-public class Client{
+@NoArgsConstructor
+@Table(name = "clients")
+public class Client {
 
-    private IdDocument idDocument;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "client_id")
+    private Long id;
+
+    @Column(name = "phone")
     private String phone;
+
+    @Column(name = "regon")
     private String regon;
 
-    @OneToMany(mappedBy = "client.recommender")
-    private List<User> recommended;
+    private IdDocument idDocument;
+
+    @OneToMany(mappedBy = "recommender", fetch = FetchType.LAZY)
+    private List<Client> recommended;
 
     @ManyToOne
-    private User recommender;
+    @JoinColumn(name = "recommended_by_client_id")
+    private Client recommender;
 
-    @Parent
-    private User user;
-
-    public Optional<IdDocument> getIdDocument() {
-        return Optional.ofNullable(idDocument);
-    }
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+    private List<Order> orders;
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Client client = (Client) o;
-        return user.equals(client.user);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(user);
-    }
 }

@@ -1,36 +1,50 @@
 package pjatk.mas.finalproject.devicemanufactureapi.domain.employee;
 
 import lombok.*;
-import org.hibernate.annotations.Parent;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.client.Client;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.user.User;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.OrderItem.OrderItem;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Paycheck;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.factory.Factory;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.team.Team;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.List;
 
-@Setter
+@Entity
 @Getter
+@Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "employees")
 public class Employee {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "employee_id")
+    private Long id;
+
+    @Column(name = "phone")
     private String phone;
+
+    @Column(name = "employment_date")
     private LocalDateTime employmentDate;
 
-    @Parent
-    private User user;
+    @OneToMany(mappedBy = "advisor")
+    private List<OrderItem> advised;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Employee employee = (Employee) o;
-        return user.equals(employee.user);
-    }
+    @ManyToOne
+    @JoinColumn(name = "factory_id")
+    private Factory worksAt;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(user);
-    }
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team memberOf;
+
+    @ElementCollection
+    @CollectionTable(name = "paychecks")
+    private List<Paycheck> paychecks;
+
+
+
 }

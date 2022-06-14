@@ -6,7 +6,12 @@ spring:
     username: default
     password: default
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: create-drop
     database-platform: org.hibernate.dialect.MySQL5Dialect
+  sql:
+    init:
+      mode: never
+      platform: dev
