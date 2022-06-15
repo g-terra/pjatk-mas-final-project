@@ -18,25 +18,10 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id")
+    @Column(name = "role_id" , nullable = false)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name" , nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Role role = (Role) o;
-        return id.equals(role.id) && name.equals(role.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
-    }
 }

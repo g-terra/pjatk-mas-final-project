@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.component.Component;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceType;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceTypeVersion;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.factory.Factory;
 
 import javax.persistence.*;
@@ -25,6 +26,10 @@ public class Product {
     @Column(name = "product_id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "product_status")
+    private ProductStatus productStatus;
+
     @Column(name = "build_date")
     private LocalDateTime buildDate;
 
@@ -33,26 +38,18 @@ public class Product {
 
     @OneToMany
     @JoinTable(name = "product_component_map",
-            joinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "product_id")},
-            inverseJoinColumns = {@JoinColumn(name = "component_id", referencedColumnName = "component_id")})
+            joinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "product_id")})
     @MapKey(name = "id")
     private Map<Long, Component> componentMap;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "product_status")
-    private ProductStatus productStatus;
 
     @ManyToOne
     @JoinColumn(name = "factory_id")
     private Factory factory;
 
-
-    @Column(name = "device_type_version")
-    private String deviceVersion;
-
     @ManyToOne
-    @JoinColumn(name="device_type_id")
-    private DeviceType deviceType;
+    @JoinColumn(name="device_type_version_id")
+    private DeviceTypeVersion deviceTypeVersion;
 
 
 }

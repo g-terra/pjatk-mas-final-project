@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "component_build_history")
-public class ComponentBuildHistory {
+public class ComponentBuildHistoryEntry {
 
     @EmbeddedId
     private ComponentBuildHistoryId id;
@@ -28,8 +28,7 @@ public class ComponentBuildHistory {
     @MapsId("subComponentId")
     private Component subComponent;
 
-
     @CreationTimestamp
-    @Column(name = "added_date")
-    private LocalDateTime createDateTime;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 }

@@ -5,6 +5,7 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.OrderItem.OrderItem;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Paycheck;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.factory.Factory;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.team.Team;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -30,6 +31,14 @@ public class Employee {
     @Column(name = "employment_date")
     private LocalDateTime employmentDate;
 
+    @ElementCollection
+    @CollectionTable(name = "employee_paychecks")
+    private List<Paycheck> paychecks;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private User user;
+
     @OneToMany(mappedBy = "advisor")
     private List<OrderItem> advised;
 
@@ -41,9 +50,8 @@ public class Employee {
     @JoinColumn(name = "team_id")
     private Team memberOf;
 
-    @ElementCollection
-    @CollectionTable(name = "paychecks")
-    private List<Paycheck> paychecks;
+
+
 
 
 

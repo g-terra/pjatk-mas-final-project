@@ -25,6 +25,6 @@ public class Team {
     private List<Employee> members;
 
     @ManyToOne
-    @JoinColumn(name = "device_type_id")
+    @JoinColumn(name="device_type_id", referencedColumnName="device_type_id")
     private DeviceType targetDeviceType;
 }

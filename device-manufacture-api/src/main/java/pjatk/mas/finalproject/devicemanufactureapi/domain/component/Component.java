@@ -7,6 +7,7 @@ import lombok.Setter;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Material;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -28,6 +29,9 @@ public class Component {
     @Column(name = "security_certificate")
     private String securityCertificate;
 
+    @Column(name = "base_price")
+    private BigDecimal basePrice;
+
     @ElementCollection
     @CollectionTable(name = "component_materials")
     private List<Material> materials;
@@ -35,10 +39,10 @@ public class Component {
     @OneToMany(
             mappedBy = "mainComponent"
     )
-    private List<ComponentBuildHistory> mainComponentOf;
+    private List<ComponentBuildHistoryEntry> mainHistory;
 
     @OneToMany(
             mappedBy = "subComponent"
     )
-    private List<ComponentBuildHistory> subComponentOf;
+    private List<ComponentBuildHistoryEntry> subHistory;
 }

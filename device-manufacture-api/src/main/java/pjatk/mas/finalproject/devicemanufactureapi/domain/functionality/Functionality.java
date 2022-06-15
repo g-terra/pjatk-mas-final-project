@@ -8,7 +8,9 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceTypeV
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Property;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -25,11 +27,13 @@ public class Functionality {
 
     private String name;
 
-    @ManyToMany(mappedBy = "functionalities")
-    private List<DeviceTypeVersion> deviceTypeVersions;
 
     @ElementCollection
     @CollectionTable(name = "functionality_properties")
     private List<Property> properties;
+
+
+    @ManyToMany(mappedBy = "functionalities")
+    private Set<DeviceTypeVersion> deviceTypeVersions = new java.util.LinkedHashSet<>();
 
 }

@@ -26,40 +26,30 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "name" , nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "surname" , nullable = false)
+    @Column(name = "surname", nullable = false)
     private String surname;
 
-    @Column(name = "email" , nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "role_id") }
-    )
-    private Set<Role> roles;
-
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "client_id", referencedColumnName = "client_id")
     private Client client;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "employee_id", referencedColumnName = "employee_id")
     private Employee employee;
 
-    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
-    private List<Order> orders;
-
-    public Optional<Employee> getEmployee(){
-        return Optional.ofNullable(this.employee);
-    }
-
-    public Optional<Client> getClient(){
-        return Optional.ofNullable(this.client);
-    }
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "role_id")}
+    )
+    private Set<Role> roles;
 
     @Override
     public boolean equals(Object o) {

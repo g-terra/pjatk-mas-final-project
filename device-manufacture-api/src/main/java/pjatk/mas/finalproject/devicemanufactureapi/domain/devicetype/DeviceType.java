@@ -23,25 +23,22 @@ public class DeviceType {
     @Column(name = "device_type_id")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
-
     @Column(name = "power_consumption")
     private int powerConsumption;
+
+    @Column(name = "name")
+    private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "device_type_status")
     private DeviceTypeStatus deviceTypeStatus;
 
-    @OneToMany
-    @JoinTable(name = "device_type_versions_map",
-            joinColumns = {@JoinColumn(name = "device_type_id", referencedColumnName = "device_type_id")},
-            inverseJoinColumns = {@JoinColumn(name = "device_type_version_id", referencedColumnName = "device_type_version_id")})
-    @MapKey(name = "id")
-    private Map<Long, DeviceTypeVersion> deviceTypeVersion;
-
     @OneToMany(mappedBy = "targetDeviceType")
     private List<Team> sellingTeams;
 
+
+    @OneToMany(mappedBy = "deviceType", orphanRemoval = true)
+    @MapKey(name = "id")
+    private Map<Long,DeviceTypeVersion> deviceTypeVersions = new java.util.HashMap<>();
 
 }
