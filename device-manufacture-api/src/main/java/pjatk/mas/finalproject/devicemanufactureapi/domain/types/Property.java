@@ -1,17 +1,15 @@
 package pjatk.mas.finalproject.devicemanufactureapi.domain.types;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Embeddable;
 
-@Embeddable
-@Getter
-@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@Embeddable
 public class Property {
 
     private String name;

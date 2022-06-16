@@ -1,21 +1,22 @@
 package pjatk.mas.finalproject.devicemanufactureapi.domain.OrderItem;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.Order.Order;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.Product.Product;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.employee.Employee;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
-@Entity
-@Getter
-@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@Entity(name = "OrderItem")
 @Table(name = "order_items")
 public class OrderItem {
 
@@ -24,16 +25,18 @@ public class OrderItem {
     @Column(name = "order_item_id", nullable = false)
     private Long id;
 
-    @Column(name = "color")
+    @Pattern(message = "must be hex", regexp = "^#(?:[0-9a-fA-F]{3}){1,2}$ ")
+    @NotNull
     private String color;
 
-    @ManyToOne
-    @JoinColumn(name = "employee_ID", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "advisor_id", nullable = false)
     private Employee advisor;
 
-    @OneToMany
-    @JoinColumn(name = "order_item_id" , referencedColumnName="order_item_id")
-    private List<Product> products;
 
+    @Size(min = 1)
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "order_item_id", unique = true)
+    private List<Product> products = new java.util.ArrayList<>();
 
 }

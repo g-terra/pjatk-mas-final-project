@@ -1,6 +1,7 @@
 package pjatk.mas.finalproject.devicemanufactureapi.domain.employee;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.OrderItem.OrderItem;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Paycheck;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.factory.Factory;
@@ -8,51 +9,59 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.team.Team;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.user.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
-@Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@Entity(name = "Employee")
 @Table(name = "employees")
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "employee_id")
     private Long id;
 
-    @Column(name = "phone")
+    @NotBlank
+    @NotEmpty
+    @NotNull
+    @Column(nullable = false)
     private String phone;
 
-    @Column(name = "employment_date")
+    @NotNull
+    @CreationTimestamp
+    @Column(name = "employement_date")
     private LocalDateTime employmentDate;
+
 
     @ElementCollection
     @CollectionTable(name = "employee_paychecks")
-    private List<Paycheck> paychecks;
+    private List<Paycheck> paychecks = new java.util.ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private User user;
 
-    @OneToMany(mappedBy = "advisor")
-    private List<OrderItem> advised;
+    @OneToMany(mappedBy = "advisor", orphanRemoval = true)
+    private List<OrderItem> advised = new java.util.ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "factory_id")
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "factory_id", nullable = false)
     private Factory worksAt;
 
-    @ManyToOne
-    @JoinColumn(name = "team_id")
-    private Team memberOf;
+    @NotNull
+    @OneToOne(optional = false, orphanRemoval = true)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    private User user;
 
-
-
-
-
+    @NotNull
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "team_id", nullable = false)
+    private Team team;
 
 }

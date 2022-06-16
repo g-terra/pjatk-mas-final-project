@@ -1,18 +1,16 @@
 package pjatk.mas.finalproject.devicemanufactureapi.domain.types;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Embeddable
-@Getter
-@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@Embeddable
 public class Material {
     String name;
 }

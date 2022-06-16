@@ -6,56 +6,53 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.types.IdDocument;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.user.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Objects;
 
-@Entity
-@Getter
-@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@Entity(name = "Client")
 @Table(name = "clients")
 public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "client_id")
+    @Column(name = "client_id", nullable = false)
     private Long id;
 
+    @Embedded
     private IdDocument idDocument;
 
-    @Column(name = "phone" , nullable = false)
+    @NotBlank
+    @NotEmpty
+    @NotNull
+    @Column(name = "phone", nullable = false)
     private String phone;
 
     @Column(name = "regon")
     private String regon;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+
+    @NotNull
+    @OneToOne(optional = false, orphanRemoval = true)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "recommended_by_client_id")
+    @JoinColumn(name = "recommender_id")
     private Client recommender;
 
-    @OneToMany(mappedBy = "recommender", fetch = FetchType.LAZY)
-    private List<Client> recommended;
+    @OneToMany(mappedBy = "recommender", orphanRemoval = true)
+    private List<Client> recommended = new java.util.ArrayList<>();
 
 
-    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
-    private List<Order> orders;
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders = new java.util.ArrayList<>();
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Client client = (Client) o;
-        return id.equals(client.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

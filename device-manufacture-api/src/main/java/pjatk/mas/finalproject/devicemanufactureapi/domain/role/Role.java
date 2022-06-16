@@ -7,21 +7,21 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
-@Entity
-@Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@Entity(name = "Role")
 @Table(name = "roles")
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id" , nullable = false)
+    @Column(name = "role_id", nullable = false)
     private Long id;
 
-    @Column(name = "name" , nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
 }

@@ -1,25 +1,26 @@
 package pjatk.mas.finalproject.devicemanufactureapi.domain.factory;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Address;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
-@Entity
-@Getter
-@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@Entity(name = "Factory")
 @Table(name = "factories")
 public class Factory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "factory_id")
     private Long id;
 
+
+    @NotNull
+    @Embedded
     private Address address;
 }
