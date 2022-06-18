@@ -2,20 +2,16 @@ package pjatk.mas.finalproject.devicemanufactureapi.domain.Product;
 
 import lombok.*;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.component.Component;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceType;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceTypeVersion;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.devicetypeversion.DeviceTypeVersion;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.factory.Factory;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 @Builder
 @AllArgsConstructor

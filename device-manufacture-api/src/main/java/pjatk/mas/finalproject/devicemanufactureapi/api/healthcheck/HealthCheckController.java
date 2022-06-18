@@ -12,9 +12,4 @@ public class HealthCheckController {
         return "ok";
     }
 
-    @GetMapping("/advisor-500")
-    public String error() {
-        throw new RuntimeException();
-    }
-
 }

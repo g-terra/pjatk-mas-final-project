@@ -5,6 +5,7 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceType;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.employee.Employee;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Builder
@@ -21,6 +22,7 @@ public class Team {
 
     private Long id;
 
+    @Size(min = 3, max = 5)
     @OneToMany(mappedBy = "team", orphanRemoval = true)
     private List<Employee> employees = new java.util.ArrayList<>();
 

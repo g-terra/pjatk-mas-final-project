@@ -1,7 +1,7 @@
 package pjatk.mas.finalproject.devicemanufactureapi.domain.functionality;
 
 import lombok.*;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceTypeVersion;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.devicetypeversion.DeviceTypeVersion;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Property;
 
 import javax.persistence.*;
@@ -20,7 +20,6 @@ import java.util.Set;
 @Setter
 @Entity(name = "Functionality")
 @Table(name = "functionalities")
-
 public class Functionality {
 
     @Id
@@ -31,7 +30,7 @@ public class Functionality {
     @NotBlank
     @NotEmpty
     @NotNull
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false , unique = true)
     private String name;
 
     @ElementCollection

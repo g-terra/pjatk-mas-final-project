@@ -1,8 +1,9 @@
-package pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype;
+package pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.devicetypeversion;
 
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceType;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.Functionality;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyValue;
 
@@ -28,10 +29,9 @@ public class DeviceTypeVersion {
 
     @ElementCollection
     @NotNull
-    private List<PropertyValue> propertyValues = new ArrayList<>();
+    private List<PropertyValue> propertyValues;
 
 
-    @NotNull
     @Column(nullable = false)
     @CreationTimestamp
     private LocalDateTime createDateTime;
@@ -45,7 +45,7 @@ public class DeviceTypeVersion {
     @JoinTable(name = "device_type_versions_functionalities",
             joinColumns = @JoinColumn(name = "device_type_version_id"),
             inverseJoinColumns = @JoinColumn(name = "functionality_id"))
-    private Set<Functionality> functionalities = new LinkedHashSet<>();
+    private List<Functionality> functionalities;
 
     @Override
     public boolean equals(Object o) {
