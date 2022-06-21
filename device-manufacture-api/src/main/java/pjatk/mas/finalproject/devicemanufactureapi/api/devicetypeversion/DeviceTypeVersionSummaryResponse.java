@@ -19,6 +19,7 @@ public class DeviceTypeVersionSummaryResponse {
     private String deviceName;
     private Integer powerConsumption;
     private List<String> functionalities;
+    private String status;
     private Map<String, String> propertyValues;
 
     public static DeviceTypeVersionSummaryResponse from(DeviceTypeVersion deviceTypeVersion) {
@@ -28,7 +29,7 @@ public class DeviceTypeVersionSummaryResponse {
                 .collect(Collectors.toList());
 
         Map<String, String> propertyValues = deviceTypeVersion.getPropertyValues().stream().collect(
-                Collectors.toMap(PropertyValue::getName, PropertyValue::getName));
+                Collectors.toMap(PropertyValue::getName, PropertyValue::getValue));
 
 
         return DeviceTypeVersionSummaryResponse.builder()
@@ -37,6 +38,7 @@ public class DeviceTypeVersionSummaryResponse {
                 .deviceName(deviceTypeVersion.getDeviceType().getName())
                 .powerConsumption(deviceTypeVersion.getDeviceType().getPowerConsumption())
                 .functionalities(functionalities)
+                .status(deviceTypeVersion.getDeviceType().getDeviceTypeStatus().name())
                 .propertyValues(propertyValues)
                 .build();
     }

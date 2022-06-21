@@ -107,7 +107,6 @@ public class ApiExceptionHandler{
         return new Error(Type, status.value(), message);
     }
 
-
     private Error processFieldErrors(List<org.springframework.validation.FieldError> fieldErrors) {
         ValidationError validationError = new ValidationError(BAD_REQUEST.value(), "validation error");
         for (org.springframework.validation.FieldError fieldError : fieldErrors) {
@@ -126,7 +125,6 @@ public class ApiExceptionHandler{
 
     @Getter
     public static class ValidationError extends Error {
-
 
         private final List<FieldErrorSimplified> fieldErrors = new ArrayList<>();
 

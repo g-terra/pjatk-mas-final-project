@@ -53,7 +53,7 @@ public class DeviceTypeService {
 
     public void setToVersioned(Long deviceId) {
         DeviceType deviceType = getDeviceType(deviceId);
-        deviceType.setDeviceTypeStatus(DeviceTypeStatus.VERSIONED);
+        deviceType.setDeviceTypeStatus(DeviceTypeStatus.AVAILABLE);
         deviceTypeRepository.save(deviceType);
     }
 }

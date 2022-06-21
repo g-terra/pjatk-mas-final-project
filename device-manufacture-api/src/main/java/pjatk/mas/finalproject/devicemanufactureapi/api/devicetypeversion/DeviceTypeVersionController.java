@@ -22,6 +22,7 @@ import static pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.devi
 @RequestMapping("/device-type-version")
 @RequiredArgsConstructor
 @Validated
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 public class DeviceTypeVersionController {
 
     private final DeviceTypeVersionService deviceTypeVersionService;
