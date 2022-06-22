@@ -24,6 +24,8 @@
 		<gmavenplus-plugin.version>1.7.1</gmavenplus-plugin.version>
 		<springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
 		<springdoc-openapi-ui.version>1.6.9</springdoc-openapi-ui.version>
+		<javafaker.version>1.0.2</javafaker.version>
+		<commons-lang3.version>3.12.0</commons-lang3.version>
 	</properties>
 
 	<dependencies>
@@ -47,7 +49,6 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.28</version>
 		</dependency>
 
 		<dependency>
@@ -58,9 +59,15 @@
 		<!--tools-->
 
 		<dependency>
+			<groupId>com.github.javafaker</groupId>
+			<artifactId>javafaker</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.12.0</version>
+			<version>${commons-lang3.version}</version>
 		</dependency>
 
 		<dependency>

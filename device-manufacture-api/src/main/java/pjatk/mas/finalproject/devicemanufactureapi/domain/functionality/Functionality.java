@@ -33,8 +33,8 @@ public class Functionality {
     @Column(name = "name", nullable = false , unique = true)
     private String name;
 
-    @ElementCollection
-    @CollectionTable(name = "functionality_properties")
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "functionality_properties" )
     private List<Property> properties = new ArrayList<>();
 
     @ManyToMany(mappedBy = "functionalities")

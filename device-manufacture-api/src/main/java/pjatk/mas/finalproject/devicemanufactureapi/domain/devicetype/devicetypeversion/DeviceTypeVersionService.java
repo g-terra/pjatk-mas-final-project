@@ -1,6 +1,7 @@
 package pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.devicetypeversion;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceType;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceTypeService;
@@ -24,6 +25,7 @@ import static pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.devi
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DeviceTypeVersionService {
 
     private final DeviceTypeVersionRepository deviceTypeVersionRepository;
@@ -59,6 +61,8 @@ public class DeviceTypeVersionService {
 
         deviceTypeService.setToVersioned(deviceType.getId());
 
+        log.info("DeviceTypeVersion with id {} created", save.getId());
+
         return save;
     }
 
@@ -69,6 +73,7 @@ public class DeviceTypeVersionService {
                 .deviceType(deviceType)
                 .functionalities(functionalities)
                 .propertyValues(createDetails.getPropertyValues())
+                .deviceTypeVersionStatus(DeviceTypeVersionStatus.AVAILABLE)
                 .build();
     }
 

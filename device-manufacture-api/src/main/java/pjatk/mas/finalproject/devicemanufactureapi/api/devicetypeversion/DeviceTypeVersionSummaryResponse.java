@@ -31,14 +31,13 @@ public class DeviceTypeVersionSummaryResponse {
         Map<String, String> propertyValues = deviceTypeVersion.getPropertyValues().stream().collect(
                 Collectors.toMap(PropertyValue::getName, PropertyValue::getValue));
 
-
         return DeviceTypeVersionSummaryResponse.builder()
                 .deviceTypeId(deviceTypeVersion.getDeviceType().getId())
                 .versionId(deviceTypeVersion.getId())
                 .deviceName(deviceTypeVersion.getDeviceType().getName())
                 .powerConsumption(deviceTypeVersion.getDeviceType().getPowerConsumption())
                 .functionalities(functionalities)
-                .status(deviceTypeVersion.getDeviceType().getDeviceTypeStatus().name())
+                .status(deviceTypeVersion.getDeviceTypeVersionStatus().name())
                 .propertyValues(propertyValues)
                 .build();
     }

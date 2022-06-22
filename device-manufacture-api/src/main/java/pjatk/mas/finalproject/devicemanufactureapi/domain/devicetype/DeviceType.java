@@ -39,7 +39,7 @@ public class DeviceType {
     private String name;
 
     @CreationTimestamp
-    @Column(name="crated_at")
+    @Column(name = "crated_at")
     private LocalDateTime createdAt;
 
     @NotNull
@@ -48,12 +48,21 @@ public class DeviceType {
     private DeviceTypeStatus deviceTypeStatus;
 
 
-    @OneToMany(mappedBy = "deviceType", cascade = CascadeType.ALL, orphanRemoval = true )
-    @MapKey(name="id")
+    @OneToMany(mappedBy = "deviceType", cascade = CascadeType.ALL, orphanRemoval = true)
+    @MapKey(name = "id")
     private Map<Long, DeviceTypeVersion> deviceTypeVersions = new HashMap<>();
 
 
     @OneToMany(mappedBy = "targetDeviceType", orphanRemoval = true)
     private List<Team> sellingTeams = new java.util.ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "DeviceType{" +
+                "id=" + id +
+                ", powerConsumption=" + powerConsumption +
+                ", name='" + name + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }

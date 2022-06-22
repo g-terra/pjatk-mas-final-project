@@ -44,8 +44,7 @@ public class DeviceTypeController {
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public List<DeviceTypeSummaryResponse> list() {
         List<DeviceType> allDevices = deviceTypeService.getAllDevices();
-        List<DeviceTypeSummaryResponse> from = DeviceTypeSummaryResponse.from(allDevices);
-        return from;
+        return DeviceTypeSummaryResponse.from(allDevices);
     }
 
     @GetMapping("/{id}")

@@ -10,7 +10,8 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyValue;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 @Builder
 @AllArgsConstructor
@@ -40,6 +41,10 @@ public class DeviceTypeVersion {
     @ManyToOne(optional = false)
     @JoinColumn(name = "device_type_id", nullable = false)
     private DeviceType deviceType;
+
+
+    @Enumerated(EnumType.STRING)
+    private DeviceTypeVersionStatus deviceTypeVersionStatus;
 
     @ManyToMany
     @JoinTable(name = "device_type_versions_functionalities",

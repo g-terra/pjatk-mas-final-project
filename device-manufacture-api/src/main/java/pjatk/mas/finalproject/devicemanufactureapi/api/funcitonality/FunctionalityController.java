@@ -33,7 +33,7 @@ public class FunctionalityController {
 
         FunctionalityCreateDetails functionalityCreateDetails = buildFunctionalityCreateDetails(createFunctionalityRequest);
 
-        Functionality functionality = functionalityService.createFunctionality(functionalityCreateDetails);
+        Functionality functionality = functionalityService.create(functionalityCreateDetails);
 
         return FunctionalityResponse.from(functionality);
     }

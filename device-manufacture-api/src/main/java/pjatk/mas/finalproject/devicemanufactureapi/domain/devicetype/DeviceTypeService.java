@@ -1,6 +1,7 @@
 package pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.exception.NotFoundException;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.exception.FunctionalityNameAlreadyTakenException;
@@ -13,12 +14,13 @@ import static pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.Devi
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DeviceTypeService {
 
     private final DeviceTypeRepository deviceTypeRepository;
 
     @Transactional
-    public DeviceType create(@Valid DeviceTypeCreateDetails createDetails){
+    public DeviceType create(@Valid DeviceTypeCreateDetails createDetails) {
 
         validateFunctionalityName(createDetails);
 
@@ -27,20 +29,23 @@ public class DeviceTypeService {
                 .powerConsumption(createDetails.getPowerConsumption())
                 .deviceTypeStatus(DeviceTypeStatus.DRAFT)
                 .build();
+        DeviceType newDevice = deviceTypeRepository.save(deviceType);
 
-        return deviceTypeRepository.save(deviceType);
+        log.info("DeviceType created: {}", newDevice);
+
+        return newDevice;
     }
 
-    public List<DeviceType> getAllDevices(){
+    public List<DeviceType> getAllDevices() {
         return deviceTypeRepository.findAll();
     }
 
-    public DeviceType getDeviceType(Long id){
+    public DeviceType getDeviceType(Long id) {
         return deviceTypeRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
     public boolean existsById(Long deviceId) {
-       return deviceTypeRepository.existsById(deviceId);
+        return deviceTypeRepository.existsById(deviceId);
     }
 
     private void validateFunctionalityName(DeviceTypeCreateDetails createDetails) {
@@ -53,7 +58,7 @@ public class DeviceTypeService {
 
     public void setToVersioned(Long deviceId) {
         DeviceType deviceType = getDeviceType(deviceId);
-        deviceType.setDeviceTypeStatus(DeviceTypeStatus.AVAILABLE);
+        deviceType.setDeviceTypeStatus(DeviceTypeStatus.VERSIONED);
         deviceTypeRepository.save(deviceType);
     }
 }

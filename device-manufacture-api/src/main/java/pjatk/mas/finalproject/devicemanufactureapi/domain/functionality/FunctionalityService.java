@@ -2,6 +2,7 @@ package pjatk.mas.finalproject.devicemanufactureapi.domain.functionality;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.exception.NotFoundException;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.exception.FunctionalityNameAlreadyTakenException;
@@ -13,6 +14,7 @@ import static pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.F
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FunctionalityService {
 
     private final FunctionalityRepository functionalityRepository;
@@ -41,16 +43,16 @@ public class FunctionalityService {
     }
 
     @Transactional
-    public Functionality createFunctionality(FunctionalityCreateDetails functionalityCreateDetails) {
+    public Functionality create(FunctionalityCreateDetails functionalityCreateDetails) {
 
         validateFunctionalityName(functionalityCreateDetails);
 
         Functionality functionality = Functionality.builder().name(functionalityCreateDetails.getName())
                 .properties(functionalityCreateDetails.getProperties())
                 .build();
-
-
-        return functionalityRepository.save(functionality);
+        Functionality newFunctionality = functionalityRepository.save(functionality);
+        log.info("Functionality with id {} created", newFunctionality.getId());
+        return newFunctionality;    
 
     }
 
@@ -61,6 +63,7 @@ public class FunctionalityService {
             throw new FunctionalityNameAlreadyTakenException(functionalityCreateDetails.getName());
         }
     }
+
 
 
 }

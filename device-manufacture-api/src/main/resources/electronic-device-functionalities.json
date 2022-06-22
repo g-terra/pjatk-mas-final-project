@@ -1,0 +1,55 @@
+[
+  {
+    "name": "multi-shape",
+    "properties": [
+      {
+        "name": "number of shapes",
+        "type": "NUMBER"
+      }
+    ]
+  },
+  {
+    "name": "adjustable-height",
+    "properties": [
+      {
+        "name": "min height",
+        "type": "NUMBER"
+      },
+      {
+        "name": "max height",
+        "type": "NUMBER"
+      }
+    ]
+  },
+  {
+    "name": "lcd-display",
+    "properties": [
+      {
+        "name": "width",
+        "type": "NUMBER"
+      },
+      {
+        "name": "height",
+        "type": "NUMBER"
+      }
+    ]
+  },
+  {
+    "name": "remote-control",
+    "properties": [
+      {
+        "name": "has control",
+        "type": "YES_NO"
+      }
+    ]
+  },
+  {
+    "name": "bread-toaster",
+    "properties": [
+      {
+        "name": "capacity",
+        "type": "NUMBER"
+      }
+    ]
+  }
+]
