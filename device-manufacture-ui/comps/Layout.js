@@ -20,6 +20,9 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { navLinks } from './NavLinks';
 import Link from 'next/link';
+import logo from '../public/crazy.png';
+import Image from 'next/image';
+import { useMediaQuery } from '@mui/material';
 
 const drawerWidth = 240;
 
@@ -93,6 +96,10 @@ export default function Layout2({ children }
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
+    const isMobile = useMediaQuery(theme.breakpoints.down('xs'), {
+        defaultMatches: true
+    });
+
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -108,8 +115,8 @@ export default function Layout2({ children }
             minHeight: '100vh',
             width: '100%',
         }}>
-            <CssBaseline />
-            <AppBar position="fixed" open={open}>
+
+            <AppBar open={open}>
                 <Toolbar>
                     <IconButton
                         color="inherit"
@@ -123,12 +130,17 @@ export default function Layout2({ children }
                     >
                         <MenuIcon />
                     </IconButton>
+                    <Box sx={{ m: 1 }}>
+                        <Image src={logo} alt="logo" />
+                    </Box>
                     <Typography variant="h6" noWrap component="div">
-                        Mini variant drawer
+                        The Weird Products Factory
                     </Typography>
                 </Toolbar>
             </AppBar>
+
             <Box sx={{ height: '100vh', display: 'inline-flex', width: '100%' }}>
+
                 <Drawer variant="permanent" open={open}>
                     <DrawerHeader>
                         <IconButton onClick={handleDrawerClose}>
@@ -147,7 +159,6 @@ export default function Layout2({ children }
                                             px: 2.5,
                                         }}
                                     >
-
                                         <ListItemIcon
                                             sx={{
                                                 minWidth: 0,
@@ -164,7 +175,14 @@ export default function Layout2({ children }
                         ))}
                     </List>
                 </Drawer>
-                <Box sx={{ width: '100%', justifyContent: 'center', p: 16 }}>
+                <Box sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop:20,
+                    width: "100%",
+                    marginLeft: open ? 30 : 25,
+                    marginRight: open ? 30 : 25,
+                }}>
                     {children}
                 </Box>
             </Box>
