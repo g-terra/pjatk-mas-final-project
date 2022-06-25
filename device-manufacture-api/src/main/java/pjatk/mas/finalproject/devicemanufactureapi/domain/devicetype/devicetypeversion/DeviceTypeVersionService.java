@@ -15,10 +15,7 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Property;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyValue;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.devicetypeversion.DeviceTypeVersionServiceRequest.DeviceTypeVersionCreateDetails;
@@ -69,12 +66,23 @@ public class DeviceTypeVersionService {
     private DeviceTypeVersion buildDeviceTypeVersion(DeviceTypeVersionCreateDetails createDetails, DeviceType deviceType) {
         List<Functionality> functionalities = functionalityService.getFunctionalities(createDetails.getFunctionalityIds());
 
+        Long versionNumber = getVersionNumber(deviceType);
+
         return DeviceTypeVersion.builder()
                 .deviceType(deviceType)
                 .functionalities(functionalities)
                 .propertyValues(createDetails.getPropertyValues())
                 .deviceTypeVersionStatus(DeviceTypeVersionStatus.AVAILABLE)
+                .versionNumber(versionNumber)
                 .build();
+    }
+
+    private Long getVersionNumber(DeviceType deviceType) {
+        return deviceTypeVersionRepository
+                .getDeviceTypeVersionByDeviceTypeIdOrderByCreateDateTimeDesc(deviceType.getId())
+                .map(DeviceTypeVersion::getVersionNumber)
+                .map(v -> v + 1)
+                .orElse(1L);
     }
 
     private void validateDeviceType(DeviceType deviceType) {
@@ -116,7 +124,7 @@ public class DeviceTypeVersionService {
     }
 
     private void validatePropertiesConstraints(List<Property> requiredProperties, List<PropertyValue> requiredPropertyValues) {
-        Map<String, Property> requiredPropertiesMap = requiredProperties.stream().collect(Collectors.toMap(Property::getName, r->r));
+        Map<String, Property> requiredPropertiesMap = requiredProperties.stream().collect(Collectors.toMap(Property::getName, r -> r));
         Map<String, String> requiredPropertiesValuesMap = requiredPropertyValues.stream().collect(Collectors.toMap(PropertyValue::getName, PropertyValue::getValue));
 
         requiredPropertiesMap.keySet().forEach(

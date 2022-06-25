@@ -27,6 +27,9 @@ public class DeviceTypeVersion {
     @Column(name = "device_type_version_id", nullable = false)
     private Long id;
 
+    @NotNull
+    @Column(name = "version_number", nullable = false)
+    private Long versionNumber;
 
     @ElementCollection
     @NotNull
