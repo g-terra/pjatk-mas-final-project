@@ -10,11 +10,11 @@ export function FunctionalitiesDataViewDefinition() {
     checkbox: true,
     columns:[
     {
-      id: 'functionalityId',
+      id: 'id',
       label: 'ID',
     },
     {
-      id: 'functionalityName',
+      id: 'name',
       label: 'Name',
     },
     {

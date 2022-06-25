@@ -1,17 +1,17 @@
 import { Add } from "@mui/icons-material"
-import { TextField } from "@mui/material"
+import { Box, Button, Stack, TextField } from "@mui/material"
+import { DataGrid } from "@mui/x-data-grid"
 import * as React from "react"
+import { PropertyDataviewerDefinition } from "./properties/PropertyDataViewDefinition"
 
 
 export function FunctionalityCreateFormDefinition(data) {
 
-    const onSave = (form) => {
-        console.log(form);
-    }
+
+    const onSave = (data) => { return axios.post(process.env.deviceManufactureApi + '/functionality', data) }
 
 
     return ({
-        // redirectTo: `/device-type/newVersion&=${newDeviceId}`
         title: "Create new Functionality",
         buttonText: "Create new Functionality",
         buttonIcon: <Add />,
@@ -38,23 +38,30 @@ export function FunctionalityCreateFormDefinition(data) {
                     variant="standard"
                 />
             }
-        }, {
+        },
+        {
             component: (data, handleChange, key) => {
-                return <TextField
-                    key={key}
-                    autoFocus
-                    margin="dense"
-                    id="powerConsumption"
-                    label="Power Consumption (W)"
-                    type="number"
-                    value={data.powerConsumption}
-                    onChange={handleChange}
-                    fullWidth
-                    variant="standard"
-                />
+                return (
+                    <Stack sx={{ marginTop:2, height: 200, width: '100%' }}>
+                        <Button>
+                            <Add /> Add Property
+                        </Button>
+
+                        <DataGrid
+                            rows={data}
+                            columns={PropertyDataviewerDefinition()}
+                            pageSize={5}
+                            rowsPerPageOptions={[5]}
+                            disableSelectionOnClick
+                        />
+                    </Stack>
+                );
+
             }
-        }]
+        }
+        ]
 
     });
 
 }
+

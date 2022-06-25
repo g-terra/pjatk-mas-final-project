@@ -2,12 +2,11 @@ import { Box, Button, LinearProgress, Paper, TextField, Typography } from "@mui/
 import axios from "axios";
 import * as React from "react";
 import Dataviewer from "../../../comps/Dataviewer";
-import { DeviceTypeCreateFormDefinition } from "../../../comps/device-type/DeviceTypeCreateFormDefinition";
-import FormDialog from "../../../comps/FormDialog";
+
 import { FunctionalitiesDataViewDefinition } from "../../../comps/functionality/FunctionalitiesDataViewDefinition";
-import { FunctionalityCreateFormDefinition } from "../../../comps/functionality/FunctionalityCreateFormDefinition";
 
 import { useRouter } from 'next/router'
+import CreateFunctionalityDialog from "../../../comps/functionality/CreateFunctionalityDialog";
 
 
 const NewDeviceVersion = () => {
@@ -16,18 +15,26 @@ const NewDeviceVersion = () => {
     const [searched, setSearched] = React.useState("");
     const [displayData, setDisplayData] = React.useState(data);
     const [selected, setSelected] = React.useState([]);
-    
+
     const router = useRouter()
 
-    const {id} = router.query
-
+    const { id } = router.query
 
     const handleSelectionChanged = (selected) => {
         setSelected(selected);
     }
 
+
     React.useEffect(() => {
-        return getData();
+        axios.get(process.env.deviceManufactureApi + '/functionality').then(response => {
+            setData(response.data);
+            setDisplayData(response.data);
+            setLoading(false);
+        }
+        ).catch(error => {
+            console.log(error);
+        }
+        );
     }, []);
 
 
@@ -68,11 +75,10 @@ const NewDeviceVersion = () => {
                         requestSearch(e.target.value);
                     }}
                     variant="outlined" />
-                <FormDialog sx={{ gridArea: 'create', minWidth: 250 }} definition={(FunctionalityCreateFormDefinition())}></FormDialog>
+                <CreateFunctionalityDialog sx={{ gridArea: 'create' }} />
             </Box>
             <Dataviewer sx={{ minWidth: 200, maxWidth: 700 }} definition={FunctionalitiesDataViewDefinition()} data={displayData} onSelectionChange={handleSelectionChanged} />
         </Box>;
-
 
     }
 
@@ -92,32 +98,10 @@ const NewDeviceVersion = () => {
 
     function filterDisplayedData(searchTerm) {
         setSearched(searchTerm);
-        setDisplayData(data.filter(row => row.functionalityName.toLowerCase().includes(searchTerm.toLowerCase())));
+        setDisplayData(data.filter(row => row.name.toLowerCase().includes(searchTerm.toLowerCase())));
     }
 
-    function getData() {
-        const fetchAllItems = async () => {
-            try {
-                const response = await axios.get(process.env.deviceManufactureApi + '/functionality');
-                if (response.data !== "") {
-                    let objects = response.data.map(JSON.stringify);
-                    let uniqueSet = new Set(objects);
-                    let uniqueArray = Array.from(uniqueSet).map(JSON.parse);
-                    setData(uniqueArray);
-                    setDisplayData(uniqueArray);
-                    setLoading(false);
-                } else {
-                }
-            } catch (err) {
-                console.log(err);
-            }
-        };
-        fetchAllItems();
-        return () => {
-            setDisplayData([]);
-            setData([]);
-        };
-    }
+
 }
 
 export default NewDeviceVersion

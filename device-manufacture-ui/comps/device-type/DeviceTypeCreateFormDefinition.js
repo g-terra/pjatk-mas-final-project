@@ -1,4 +1,4 @@
-import { Add } from "@mui/icons-material"
+import { Add, South } from "@mui/icons-material"
 import { TextField } from "@mui/material"
 import axios from "axios"
 import { useRouter } from 'next/router'
@@ -15,16 +15,10 @@ export function DeviceTypeCreateFormDefinition() {
 
     const router = useRouter()
 
-    const onSave = (form) => {
-        axios.post(process.env.deviceManufactureApi + '/device-type', form)
-            .then(function (response) {
-                router.push("/device-type/versions/new#id=" + response.data.id)
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
+    const onSave = (data) => { return axios.post(process.env.deviceManufactureApi + '/device-type', data) }
 
-    }
+    const redirect = (data) => { return router.push('/device-type/versions/new?id=' + data.id) }
+
 
     return ({
         title: "Create Device Type",
@@ -35,6 +29,7 @@ export function DeviceTypeCreateFormDefinition() {
             powerConsumption: 0
         },
         onSave: (form) => { return onSave(form) },
+        onSaveSucess: redirect,
         fields: [{
             component: (data, handleChange, key) => {
                 return <TextField

@@ -11,7 +11,7 @@ import { Checkbox } from '@mui/material';
 
 
 
-export default function Dataviewer(props) {
+export default function DataViewer(props) {
 
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -53,7 +53,7 @@ export default function Dataviewer(props) {
     return (
         <>
             <TableContainer component={Paper}>
-                <Table stickyHeader sx={{ minWidth: 800 }} aria-label="sticky table" size="small">
+                <Table stickyHeader sx={{ minWidth: props.minWidth ?  props.minWidth : 800}} aria-label="sticky table" size="small">
                     <TableHead>
                         <TableRow>
                             {getColumns(props.definition.checkbox)}
