@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class DeviceTypeVersionSummaryResponse {
 
     private Long deviceTypeId;
-    private Long versionId;
+    private String versionUniqueId;
     private String deviceName;
     private Integer powerConsumption;
     private List<String> functionalities;
@@ -33,7 +33,7 @@ public class DeviceTypeVersionSummaryResponse {
 
         return DeviceTypeVersionSummaryResponse.builder()
                 .deviceTypeId(deviceTypeVersion.getDeviceType().getId())
-                .versionId(deviceTypeVersion.getId())
+                .versionUniqueId(deviceTypeVersion.getVersionUniqueId())
                 .deviceName(deviceTypeVersion.getDeviceType().getName())
                 .powerConsumption(deviceTypeVersion.getDeviceType().getPowerConsumption())
                 .functionalities(functionalities)

@@ -24,6 +24,7 @@ import static pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.F
 @RequestMapping("/functionality")
 @RequiredArgsConstructor
 @Validated
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 public class FunctionalityController {
     private final FunctionalityService functionalityService;
 

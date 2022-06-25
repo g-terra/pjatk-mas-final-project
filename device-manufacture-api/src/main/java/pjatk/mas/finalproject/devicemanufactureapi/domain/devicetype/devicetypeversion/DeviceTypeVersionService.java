@@ -15,10 +15,7 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Property;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyValue;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.devicetypeversion.DeviceTypeVersionServiceRequest.DeviceTypeVersionCreateDetails;
@@ -73,6 +70,7 @@ public class DeviceTypeVersionService {
                 .deviceType(deviceType)
                 .functionalities(functionalities)
                 .propertyValues(createDetails.getPropertyValues())
+                .versionUniqueId(UUID.randomUUID().toString())
                 .deviceTypeVersionStatus(DeviceTypeVersionStatus.AVAILABLE)
                 .build();
     }

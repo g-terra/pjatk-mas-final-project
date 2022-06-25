@@ -15,7 +15,9 @@ import java.util.stream.Collectors;
 @Builder
 public class DeviceTypeVersionResponse {
 
-    private Long versionId;
+    private Long id;
+
+    private String versionUniqueId;
 
     private List<PropertyValue> propertyValues;
 
@@ -23,7 +25,7 @@ public class DeviceTypeVersionResponse {
 
     private Long deviceTypeId;
 
-    private Map<Long,String> functionalities;
+    private Map<Long, String> functionalities;
 
 
     public static DeviceTypeVersionResponse from(DeviceTypeVersion deviceTypeVersion) {
@@ -33,7 +35,8 @@ public class DeviceTypeVersionResponse {
 
 
         return DeviceTypeVersionResponse.builder()
-                .versionId(deviceTypeVersion.getId())
+                .id(deviceTypeVersion.getId())
+                .versionUniqueId(deviceTypeVersion.getVersionUniqueId())
                 .propertyValues(deviceTypeVersion.getPropertyValues())
                 .functionalities(functionalities)
                 .createDateTime(deviceTypeVersion.getCreateDateTime())
