@@ -3,6 +3,7 @@ import { Box, Collapse, LinearProgress, Stack, TextField, Typography } from '@mu
 import axios from 'axios';
 import DevicesTable from '../../components/device-type/DevicesTable';
 import DeviceCreationForm from '../../components/device-type/DeviceCreationForm';
+import Head from 'next/head';
 
 const products = () => {
 
@@ -23,37 +24,44 @@ const products = () => {
   }, []);
 
   return (
-    <Box m="auto" >
-      <Collapse in={loading}>
-        <LinearProgress />
-      </Collapse>
-      <Collapse in={!loading}>
-        <Stack spacing={3}>
-          <Typography variant="h5">Device types</Typography>
-          <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
-            <Box sx={{ display: "flex" }}>
-              <TextField
-                sx={{ width: "100%" }}
-                id="search"
-                label="Search"
-                value={searched}
-                onChange={(e) => {
-                  setSearched(e.target.value);
-                  search(e.target.value);
-                }}
-                variant="outlined" />
-            </Box>
-            <Box />
-            <Box sx={{ display: "flex" }}>
-              <DeviceCreationForm sx={{ width: "100%" }} />
-            </Box>
-          </Box>
-          <Box sx={{ display: 'flex' }}>
-            <DevicesTable data={displayData} />
-          </Box>
-        </Stack>
-      </Collapse>
-    </Box>
+    <>
+      <Head>
+        <title>Device Types</title>
+      </Head>
+      <>
+        <Box m="auto" >
+          <Collapse in={loading}>
+            <LinearProgress />
+          </Collapse>
+          <Collapse in={!loading}>
+            <Stack spacing={3}>
+              <Typography variant="h5">Device types</Typography>
+              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
+                <Box sx={{ display: "flex" }}>
+                  <TextField
+                    sx={{ width: "100%" }}
+                    id="search"
+                    label="Search"
+                    value={searched}
+                    onChange={(e) => {
+                      setSearched(e.target.value);
+                      search(e.target.value);
+                    }}
+                    variant="outlined" />
+                </Box>
+                <Box />
+                <Box sx={{ display: "flex" }}>
+                  <DeviceCreationForm sx={{ width: "100%" }} />
+                </Box>
+              </Box>
+              <Box sx={{ display: 'flex' }}>
+                <DevicesTable data={displayData} />
+              </Box>
+            </Stack>
+          </Collapse>
+        </Box>
+      </>
+    </>
   );
 
   function search(searchTerm) {

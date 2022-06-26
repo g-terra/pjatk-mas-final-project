@@ -6,6 +6,7 @@ import FunctionalitiesTable from "../../../components/funcitonality/Functionalit
 import DeviceCreationForm from '../../../components/device-type/DeviceCreationForm';
 import FunctionalityCreationForm from '../../../components/funcitonality/FunctionalityCreationForm';
 import DeviceNewVersionCreationForm from '../../../components/device-type/DeviceNewVersionCreationForm';
+import Head from 'next/head';
 
 
 const NewDeviceVersion = () => {
@@ -56,44 +57,51 @@ const NewDeviceVersion = () => {
   const requestSearch = (searchTerm) => search(searchTerm)
 
   return (
-    <Box m="auto" >
-      <Collapse in={loading}>
-        <LinearProgress />
-      </Collapse>
-      <Collapse in={!loading}>
-        <Stack spacing={3}>
-        <Typography variant="h5">Pick functionalites for the new version</Typography>
-          <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
-            <Box sx={{ display: "flex" }}>
-              <TextField
-                sx={{ width: "100%" }}
-                id="search"
-                label="Search"
-                value={searched}
-                onChange={(e) => {
-                  setSearched(e.target.value);
-                  search(e.target.value);
-                }}
-                variant="outlined" />
-            </Box>
-            <Box />
-            <Box sx={{ display: "flex" }}>
-              <FunctionalityCreationForm sx={{ width: "100%" }} onFuncitonalityCreatedSuccessfully={handleCreatedFunctionalitySuccessfully} />
-            </Box>
-          </Box>
-          <Box sx={{ display: 'flex' }}>
-            <FunctionalitiesTable data={displayData} onSelectionChanged={handleSelectionChanged} />
-          </Box>
-          <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
-            <Box />
-            <Box />
-            <Box sx={{ display: "flex" }} >
-              <DeviceNewVersionCreationForm sx={{ width: "100%" }} properties={selected} deviceId={id} ></DeviceNewVersionCreationForm>
-            </Box>
-          </Box>
-        </Stack>
-      </Collapse>
-    </Box>
+    <>
+      <Head>
+        <title>New Version </title>
+      </Head>
+      <>
+        <Box m="auto" >
+          <Collapse in={loading}>
+            <LinearProgress />
+          </Collapse>
+          <Collapse in={!loading}>
+            <Stack spacing={3}>
+              <Typography variant="h5">Pick functionalites for the new version</Typography>
+              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
+                <Box sx={{ display: "flex" }}>
+                  <TextField
+                    sx={{ width: "100%" }}
+                    id="search"
+                    label="Search"
+                    value={searched}
+                    onChange={(e) => {
+                      setSearched(e.target.value);
+                      search(e.target.value);
+                    }}
+                    variant="outlined" />
+                </Box>
+                <Box />
+                <Box sx={{ display: "flex" }}>
+                  <FunctionalityCreationForm sx={{ width: "100%" }} onFuncitonalityCreatedSuccessfully={handleCreatedFunctionalitySuccessfully} />
+                </Box>
+              </Box>
+              <Box sx={{ display: 'flex' }}>
+                <FunctionalitiesTable data={displayData} onSelectionChanged={handleSelectionChanged} />
+              </Box>
+              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
+                <Box />
+                <Box />
+                <Box sx={{ display: "flex" }} >
+                  <DeviceNewVersionCreationForm sx={{ width: "100%" }} properties={selected} deviceId={id} ></DeviceNewVersionCreationForm>
+                </Box>
+              </Box>
+            </Stack>
+          </Collapse>
+        </Box>
+      </>
+    </>
   );
 
   function search(searchTerm) {

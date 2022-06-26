@@ -20,6 +20,8 @@ import Link from 'next/link';
 import logo from '../public/crazy.png';
 import Image from 'next/image';
 import { Avatar, Button, Menu, Stack, Tooltip, useMediaQuery } from '@mui/material';
+import Head from 'next/head';
+import { Title } from '@mui/icons-material';
 
 const drawerWidth = 240;
 
@@ -105,105 +107,115 @@ export default function Layout2({ children }
         setOpen(false);
     };
 
+
+    const [title, setTitle] = React.useState('The Weird Products Factory');
+
     return (
-        <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            minHeight: '100vh',
-            width: '100%',
-        }}>
+        <>
+            <Head>
+                <title>{title}</title>
+            </Head>
+            <div>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    minHeight: '100vh',
+                    width: '100%',
+                }}>
 
-            <AppBar open={open}>
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        sx={{
-                            marginRight: 5,
-                            ...(open && { display: 'none' }),
-                        }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Box sx={{ m: 1 }}>
-                        <Image src={logo} alt="logo" />
-                    </Box>
-                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-                        The Weird Products Factory
-                    </Typography>
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
-                            <IconButton sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" />
+                    <AppBar open={open}>
+                        <Toolbar>
+                            <IconButton
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={handleDrawerOpen}
+                                edge="start"
+                                sx={{
+                                    marginRight: 5,
+                                    ...(open && { display: 'none' }),
+                                }}
+                            >
+                                <MenuIcon />
                             </IconButton>
-                        </Tooltip>
-
-                    </Box>
-                </Toolbar>
-            </AppBar>
-
-            <Box sx={{ height: '100vh', display: 'inline-flex', width: '100%' }}>
-                <Drawer variant="permanent" open={open}>
-                    <DrawerHeader>
-                        <IconButton onClick={handleDrawerClose}>
-                            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                        </IconButton>
-                    </DrawerHeader>
-                    <Divider />
-                    <List>
-                        {navLinks.map((link, index) => (
-                            <Link key={index} href={link.path} passHref>
-                                <Tooltip title={link.name}>
-                                    <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-                                        <ListItemButton
-                                            sx={{
-                                                minHeight: 48,
-                                                justifyContent: open ? 'initial' : 'center',
-                                                px: 2.5,
-                                            }}
-                                        >
-                                            <ListItemIcon
-                                                sx={{
-                                                    minWidth: 0,
-                                                    mr: open ? 3 : 'auto',
-                                                    justifyContent: 'center',
-                                                }}
-                                            >
-                                                {link.icon}
-                                            </ListItemIcon>
-                                            <ListItemText primary={link.name} sx={{ opacity: open ? 1 : 0 }} />
-                                        </ListItemButton>
-                                    </ListItem>
+                            <Box sx={{ m: 1 }}>
+                                <Image src={logo} alt="logo" />
+                            </Box>
+                            <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+                                The Weird Products Factory
+                            </Typography>
+                            <Box sx={{ flexGrow: 0 }}>
+                                <Tooltip title="Open settings">
+                                    <IconButton sx={{ p: 0 }}>
+                                        <Avatar alt="Remy Sharp" />
+                                    </IconButton>
                                 </Tooltip>
-                            </Link>
-                        ))}
-                    </List>
 
-                </Drawer>
+                            </Box>
+                        </Toolbar>
+                    </AppBar>
 
-                <Box sx={
-                    {
-                        display: 'flex',
-                        flexDirection: 'column',
-                        flexGrow: 1,
-                        width: '100%',
-                        position: 'relative',
-                        paddingLeft: 20,
-                        paddingRight: 20,
-                        paddingTop: 15,
-                    }
-                }>
-                    <Stack sx={{
-                        justifyContent: "center",
-                        width: "100%",
-                    }}>
-                        {children}
-                    </Stack>
+                    <Box sx={{ height: '100vh', display: 'inline-flex', width: '100%' }}>
+                        <Drawer variant="permanent" open={open}>
+                            <DrawerHeader>
+                                <IconButton onClick={handleDrawerClose}>
+                                    {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                                </IconButton>
+                            </DrawerHeader>
+                            <Divider />
+                            <List>
+                                {navLinks.map((link, index) => (
+                                    <Link key={index} href={link.path} passHref>
+                                        <Tooltip title={link.name}>
+                                            <ListItem key={index} disablePadding sx={{ display: 'block' }}>
+                                                <ListItemButton
+                                                    sx={{
+                                                        minHeight: 48,
+                                                        justifyContent: open ? 'initial' : 'center',
+                                                        px: 2.5,
+                                                    }}
+                                                >
+                                                    <ListItemIcon
+                                                        sx={{
+                                                            minWidth: 0,
+                                                            mr: open ? 3 : 'auto',
+                                                            justifyContent: 'center',
+                                                        }}
+                                                    >
+                                                        {link.icon}
+                                                    </ListItemIcon>
+                                                    <ListItemText primary={link.name} sx={{ opacity: open ? 1 : 0 }} />
+                                                </ListItemButton>
+                                            </ListItem>
+                                        </Tooltip>
+                                    </Link>
+                                ))}
+                            </List>
+
+                        </Drawer>
+
+                        <Box sx={
+                            {
+                                display: 'flex',
+                                flexDirection: 'column',
+                                flexGrow: 1,
+                                width: '100%',
+                                position: 'relative',
+                                paddingLeft: 20,
+                                paddingRight: 20,
+                                paddingTop: 15,
+                            }
+                        }>
+                            <Stack sx={{
+                                justifyContent: "center",
+                                width: "100%",
+                            }}>
+                                {children}
+                            </Stack>
+                        </Box>
+                    </Box>
                 </Box>
-            </Box>
-        </Box>
+            </div>
+        </>
     );
 }
 
