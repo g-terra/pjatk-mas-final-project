@@ -72,7 +72,6 @@ public class DeviceTypeVersionService {
                 .deviceType(deviceType)
                 .functionalities(functionalities)
                 .propertyValues(createDetails.getPropertyValues())
-                .versionUniqueId(UUID.randomUUID().toString())
                 .deviceTypeVersionStatus(DeviceTypeVersionStatus.AVAILABLE)
                 .versionNumber(versionNumber)
                 .build();

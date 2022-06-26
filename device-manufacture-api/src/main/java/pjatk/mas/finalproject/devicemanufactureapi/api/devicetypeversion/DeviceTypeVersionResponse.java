@@ -36,7 +36,6 @@ public class DeviceTypeVersionResponse {
 
         return DeviceTypeVersionResponse.builder()
                 .id(deviceTypeVersion.getId())
-                .versionUniqueId(deviceTypeVersion.getVersionUniqueId())
                 .propertyValues(deviceTypeVersion.getPropertyValues())
                 .functionalities(functionalities)
                 .createDateTime(deviceTypeVersion.getCreateDateTime())
