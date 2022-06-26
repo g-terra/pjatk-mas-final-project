@@ -25,7 +25,6 @@ export default function DataViewer(props) {
         setPage(0);
     };
 
-
     const [selected, setSelected] = React.useState([]);
 
     const isSelected = (id) => selected.includes(id);
@@ -46,8 +45,6 @@ export default function DataViewer(props) {
 
         setSelected(newSelected)
     };
-
-
 
 
     return (

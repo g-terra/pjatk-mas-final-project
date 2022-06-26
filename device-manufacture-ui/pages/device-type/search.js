@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Box, Collapse, LinearProgress, TextField } from '@mui/material';
+import { Box, Collapse, LinearProgress, Stack, TextField } from '@mui/material';
 import axios from 'axios';
-import DevicesTable from '../../comps/DevicesTable';
-import { DeviceTypeCreateFormDefinition } from '../../comps/device-type/DeviceTypeCreateFormDefinition';
-import FormDialog from '../../comps/FormDialog';
+import DevicesTable from '../../components/device-type/DevicesTable';
+import DeviceCreationForm from '../../components/device-type/DeviceCreationForm';
 
 const products = () => {
 
@@ -23,47 +22,38 @@ const products = () => {
     });
   }, []);
 
-
   return (
-    <Box>
+    <Box m="auto" >
       <Collapse in={loading}>
         <LinearProgress />
       </Collapse>
       <Collapse in={!loading}>
-        <Box
-          component="form" sx={{
-            display: 'grid',
-            minWidth: 700,
-            marginBottom: 3,
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gridTemplateRows: 'auto',
-            gridTemplateAreas: `
-      "search .  create"
-      `,
-          }}>
-          <TextField
-            sx={{ gridArea: 'search', minWidth: 250 }}
-            id="search"
-            label="Search"
-            value={searched}
-            onChange={(e) => {
-              setSearched(e.target.value);
-              search(e.target.value);
-            }}
-            variant="outlined" />
-          <FormDialog sx={{ gridArea: 'create', minWidth: 350 }} definition={DeviceTypeCreateFormDefinition()}></FormDialog>
-        </Box>
-        <DevicesTable sx={{ minWidth: 700 }} data={displayData} />
+        <Stack spacing={3}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
+            <Box sx={{ display: "flex" }}>
+              <TextField
+                sx={{ width: "100%" }}
+                id="search"
+                label="Search"
+                value={searched}
+                onChange={(e) => {
+                  setSearched(e.target.value);
+                  search(e.target.value);
+                }}
+                variant="outlined" />
+            </Box>
+            <Box />
+            <Box sx={{ display: "flex" }}>
+              <DeviceCreationForm sx={{ width: "100%" }} />
+            </Box>
+          </Box>
+          <Box sx={{ display: 'flex' }}>
+            <DevicesTable data={displayData} />
+          </Box>
+        </Stack>
       </Collapse>
     </Box>
   );
-
- 
-
-  function getDataViewer() {
-
-    return;
-  }
 
   function search(searchTerm) {
     if (searchTerm.length > 0) {
@@ -87,5 +77,3 @@ const products = () => {
 }
 
 export default products;
-
-

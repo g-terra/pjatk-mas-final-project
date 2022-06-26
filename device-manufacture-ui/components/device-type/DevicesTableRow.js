@@ -1,11 +1,10 @@
 import { Add, InfoOutlined } from "@mui/icons-material";
-import { Box, Button, Collapse, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Button, Chip, Collapse, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import React from "react";
-import DetailViewer from "./DetailViewer";
-import { DeviceTypeDetailsViewerDefinition } from "./device-type/DeviceTypeDetailsViewerDefinition";
 import Link from "next/link";
+import DeviceDetailViewer from "./DeviceDetailViewer";
 
 export function DevicesTableRow(props) {
     const [open, setOpen] = React.useState(false);
@@ -22,15 +21,22 @@ export function DevicesTableRow(props) {
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
-                <TableCell align="right">{props.data.deviceTypeId}</TableCell>
-                <TableCell align="right">{props.data.deviceTypeName}</TableCell>
-                <TableCell align="right">{props.data.powerConsumption}</TableCell>
-                <TableCell align="right">{props.data.deviceTypeStatus}</TableCell>
-                <TableCell align="right">
+                <TableCell width={200} align="center">{props.data.deviceTypeId}</TableCell>
+                <TableCell width={200} align="center">{props.data.deviceTypeName}</TableCell>
+                <TableCell width={200} align="center">{props.data.powerConsumption}</TableCell>
+                <TableCell width={200} align="center">
+                    <Chip 
+                        label={props.data.deviceTypeStatus}
+                        color={props.data.deviceTypeStatus === "VERSIONED" ? "primary" : "secondary"}
+                    />
+                </TableCell>
+                <TableCell width={200} align="center">
                     <Link href={`/device-type/versions/new?id=${props.data.deviceTypeId}`}>
-                        <Button>
-                            <Add></Add>
-                        </Button>
+                        <Tooltip title="Create new version">
+                            <Button>
+                                <Add></Add>
+                            </Button>
+                        </Tooltip>
                     </Link>
                 </TableCell>
             </TableRow>
@@ -57,7 +63,7 @@ export function DevicesTableRow(props) {
                                             <TableCell>{version.status}</TableCell>
                                             <TableCell>{version.createDateTime}</TableCell>
                                             <TableCell padding="checkbox">
-                                                <DetailViewer definition={DeviceTypeDetailsViewerDefinition()} data={version} />
+                                                <DeviceDetailViewer data={version} />
                                             </TableCell>
                                         </TableRow>
                                     ))}

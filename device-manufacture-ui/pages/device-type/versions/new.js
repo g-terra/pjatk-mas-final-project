@@ -1,106 +1,118 @@
-import { Box, Button, LinearProgress, Paper, TextField, Typography } from "@mui/material";
+import { Box, Collapse, LinearProgress, Stack, TextField } from '@mui/material';
 import axios from "axios";
 import * as React from "react";
-import Dataviewer from "../../../comps/Dataviewer";
-
-import { FunctionalitiesDataViewDefinition } from "../../../comps/functionality/FunctionalitiesDataViewDefinition";
-
 import { useRouter } from 'next/router'
-import CreateFunctionalityDialog from "../../../comps/functionality/CreateFunctionalityDialog";
+import FunctionalitiesTable from "../../../components/funcitonality/FunctionalitiesTable";
+import DeviceCreationForm from '../../../components/device-type/DeviceCreationForm';
+import FunctionalityCreationForm from '../../../components/funcitonality/FunctionalityCreationForm';
+import DeviceNewVersionCreationForm from '../../../components/device-type/DeviceNewVersionCreationForm';
 
 
 const NewDeviceVersion = () => {
-    const [data, setData] = React.useState([]);
-    const [loading, setLoading] = React.useState(true);
-    const [searched, setSearched] = React.useState("");
-    const [displayData, setDisplayData] = React.useState(data);
-    const [selected, setSelected] = React.useState([]);
+  const [selected, setSelected] = React.useState([]);
+  const [data, setData] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [searched, setSearched] = React.useState("");
+  const [displayData, setDisplayData] = React.useState(data);
 
-    const router = useRouter()
+  const router = useRouter()
 
-    const { id } = router.query
+  const { id } = router.query;
 
-    const handleSelectionChanged = (selected) => {
-        setSelected(selected);
+  React.useEffect(() => {
+    axios.get(process.env.deviceManufactureApi + '/device-type/' + id)
+      .catch
+      (error => {
+        console.log(error);
+        router.push('/device-type/search');
+      }
+      )
+  }, [id]);
+
+
+
+  const handleSelectionChanged = (selected) => {
+    setSelected(selected);
+  }
+
+  const [refresh, setRefresh] = React.useState(0);
+
+  React.useEffect(() => {
+    axios.get(process.env.deviceManufactureApi + '/functionality').then(response => {
+      setData(response.data);
+      setDisplayData(response.data);
+      setLoading(false);
     }
-
-
-    React.useEffect(() => {
-        axios.get(process.env.deviceManufactureApi + '/functionality').then(response => {
-            setData(response.data);
-            setDisplayData(response.data);
-            setLoading(false);
-        }
-        ).catch(error => {
-            console.log(error);
-        }
-        );
-    }, []);
-
-
-    return (loading ? loadingBar() : getPopulatedDataViewer());
-
-    function loadingBar() {
-        return (<Box sx={{ width: '100%' }}>
-            <LinearProgress />
-        </Box>);
+    ).catch(error => {
+      console.log(error);
     }
+    );
+  }, [refresh]);
 
-    function getPopulatedDataViewer() {
+  const handleCreatedFunctionalitySuccessfully = () => {
+    setRefresh(oldKey => oldKey + 1)
+  };
 
-        const requestSearch = (searchTerm) => search(searchTerm);
+  const requestSearch = (searchTerm) => search(searchTerm)
 
-        return <Box>
-            <Typography variant="h6" color={'primary.main'} marginBottom={3}>
-                Create New Device Version
-            </Typography>
-            <Box
-                component="form" sx={{
-                    display: 'grid',
-                    minWidth: 700,
-                    marginBottom: 3,
-                    gridTemplateColumns: 'repeat(3, 1fr)',
-                    gridTemplateRows: 'auto',
-                    gridTemplateAreas: `
-          "search .  create"
-          `,
-                }}>
-                <TextField
-                    sx={{ gridArea: 'search', minWidth: 250 }}
-                    id="search"
-                    label="Search"
-                    value={searched}
-                    onChange={(e) => {
-                        setSearched(e.target.value);
-                        requestSearch(e.target.value);
-                    }}
-                    variant="outlined" />
-                <CreateFunctionalityDialog sx={{ gridArea: 'create' }} />
+  return (
+    <Box m="auto" >
+      <Collapse in={loading}>
+        <LinearProgress />
+      </Collapse>
+      <Collapse in={!loading}>
+        <Stack spacing={3}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
+            <Box sx={{ display: "flex" }}>
+              <TextField
+                sx={{ width: "100%" }}
+                id="search"
+                label="Search"
+                value={searched}
+                onChange={(e) => {
+                  setSearched(e.target.value);
+                  search(e.target.value);
+                }}
+                variant="outlined" />
             </Box>
-            <Dataviewer sx={{ minWidth: 200, maxWidth: 700 }} definition={FunctionalitiesDataViewDefinition()} data={displayData} onSelectionChange={handleSelectionChanged} />
-        </Box>;
+            <Box />
+            <Box sx={{ display: "flex" }}>
+              <FunctionalityCreationForm sx={{ width: "100%" }} onFuncitonalityCreatedSuccessfully={handleCreatedFunctionalitySuccessfully} />
+            </Box>
+          </Box>
+          <Box sx={{ display: 'flex' }}>
+            <FunctionalitiesTable data={displayData} onSelectionChanged={handleSelectionChanged} />
+          </Box>
+          <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
+            <Box />
+            <Box />
+            <Box sx={{ display: "flex" }} >
+              <DeviceNewVersionCreationForm sx={{ width: "100%" }} properties={selected} deviceId={id} ></DeviceNewVersionCreationForm>
+            </Box>
+          </Box>
+        </Stack>
+      </Collapse>
+    </Box>
+  );
 
+  function search(searchTerm) {
+    if (searchTerm.length > 0) {
+      filterDisplayedData(searchTerm);
     }
-
-    function search(searchTerm) {
-        if (searchTerm.length > 0) {
-            filterDisplayedData(searchTerm);
-        }
-        else {
-            resetDisplayedData();
-        }
+    else {
+      resetDisplayedData();
     }
+  }
 
-    function resetDisplayedData() {
-        setSearched("");
-        setDisplayData(data);
-    }
+  function resetDisplayedData() {
+    setSearched("");
+    setDisplayData(data);
+  }
 
-    function filterDisplayedData(searchTerm) {
-        setSearched(searchTerm);
-        setDisplayData(data.filter(row => row.name.toLowerCase().includes(searchTerm.toLowerCase())));
-    }
-
+  function filterDisplayedData(searchTerm) {
+    setSearched(searchTerm);
+    setDisplayData(data.filter(row => row.name.toLowerCase().includes(searchTerm.toLowerCase())));
+  }
 
 }
 

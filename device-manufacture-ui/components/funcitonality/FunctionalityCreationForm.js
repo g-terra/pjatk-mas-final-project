@@ -4,11 +4,12 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Stack, TextField } from '@mui/material';
-import AddPropertyDialog from './AddPropertyDialog';
+import { Stack, Alert, Collapse, TextField } from '@mui/material';
+import AddPropertyDialog from './FunctionalityNewPropertyForm';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+
 const columns = [
     { field: 'id', headerName: '', width: 1 },
     { field: 'name', headerName: 'Name', width: 150 },
@@ -19,29 +20,33 @@ const columns = [
     }
 ];
 
-export default function CreateFunctionalityDialog(props) {
+const initialState = {
+    name: "",
+    properties: []
+}
+
+export default function FunctionalityCreationForm(props) {
     const [open, setOpen] = React.useState(false);
     const [showError, setShowError] = React.useState(false);
     const [errors, setErrors] = React.useState([]);
-    const [data, setData] = React.useState({
-        name: "",
-        properties: []
-    });
-    const router = useRouter()
+    const [data, setData] = React.useState(initialState);
 
+    const resetState = () => {
+        setData(initialState);
+    }
 
-
+    const cleanErrors = () => {
+        setErrors([]);
+        setShowError(false);
+    }
 
     const handleClickOpen = () => {
         setOpen(true);
     };
 
     const handleClose = () => {
-        setData({
-            name: "",
-            properties: []
-        });
-
+        resetState()
+        cleanErrors()
         setOpen(false);
     };
 
@@ -50,12 +55,12 @@ export default function CreateFunctionalityDialog(props) {
             .then((response) => {
                 console.log("response", response);
                 handleClose()
-                router.reload(window.location.pathname)
+                props.onFuncitonalityCreatedSuccessfully()
             })
             .catch(
                 (error) => {
                     console.log("error", error);
-                    if (error.response.data.type === "validation-error") {
+                    if (error.response.data.type && error.response.data.type === "validation-error") {
                         setErrors(error.response.data.fieldErrors.map((fieldError) => { return fieldError.message }));
                     } else {
                         setErrors([error.response.data.message]);
@@ -90,6 +95,15 @@ export default function CreateFunctionalityDialog(props) {
                 Create new Functionality
             </Button>
             <Dialog open={open} onClose={handleClose} maxWidth={'xs'} fullWidth={true} >
+                <Collapse in={showError} >
+                    {
+                        errors.map((message) => {
+                            return (
+                                <Alert severity="error">{message}</Alert>
+                            )
+                        })
+                    }
+                </Collapse>
                 <DialogTitle>Create New Functionality</DialogTitle>
                 <DialogContent>
                     <TextField

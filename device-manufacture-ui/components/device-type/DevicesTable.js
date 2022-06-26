@@ -25,12 +25,12 @@ export default function DevicesTable(props) {
             <Table aria-label="collapsible table">
                 <TableHead>
                     <TableRow>
-                        <TableCell key={1} align="right"></TableCell>
-                        <TableCell key={2} align="right">Id</TableCell>
-                        <TableCell key={3} align="right">Name</TableCell>
-                        <TableCell key={4} align="right">Power Comsumption</TableCell>
-                        <TableCell key={5} align="right">Status</TableCell>
-                        <TableCell key={6} align="right"></TableCell>
+                        <TableCell key={1} align="center"></TableCell>
+                        <TableCell key={2} align="center">Id</TableCell>
+                        <TableCell key={3} align="center">Name</TableCell>
+                        <TableCell key={4} align="center">Power Comsumption</TableCell>
+                        <TableCell key={5} align="center">Status</TableCell>
+                        <TableCell key={6} align="center"></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

@@ -10,10 +10,7 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceType;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceTypeService;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -61,11 +58,11 @@ public class DeviceTypeController {
 
         @NotNull
         @Max(value = 2000, message = "power consumption must be less than 2000")
-        @Positive
+        @Min(value = 1, message = "power consumption must be greater than 0")
         private Integer powerConsumption;
 
-        @NotNull
-        @NotBlank
+        @NotNull(message = "name must be provided")
+        @NotBlank(message = "name is required")
         private String name;
     }
 }

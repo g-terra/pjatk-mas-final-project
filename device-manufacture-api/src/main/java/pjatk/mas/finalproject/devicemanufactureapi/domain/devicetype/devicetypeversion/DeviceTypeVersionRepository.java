@@ -8,5 +8,6 @@ import java.util.Optional;
 @Repository
 public interface DeviceTypeVersionRepository extends JpaRepository<DeviceTypeVersion, Long> {
 
-    Optional<DeviceTypeVersion> getDeviceTypeVersionByDeviceTypeIdOrderByCreateDateTimeDesc(long id);
+
+    Optional<DeviceTypeVersion> findFirstByDeviceTypeIdOrderByCreateDateTimeDesc(Long deviceTypeId);
 }

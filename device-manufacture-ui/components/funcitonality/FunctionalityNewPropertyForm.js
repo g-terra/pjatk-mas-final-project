@@ -21,7 +21,7 @@ const types =
     ]
 
 
-export default function AddPropertyDialog(props) {
+export default function FunctionalityNewPropertyForm(props) {
 
     const [open, setOpen] = React.useState(false);
 
@@ -33,6 +33,7 @@ export default function AddPropertyDialog(props) {
     };
 
     const handleClose = () => {
+        setName("");
         setOpen(false);
     };
 

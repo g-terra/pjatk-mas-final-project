@@ -1,9 +1,6 @@
 package pjatk.mas.finalproject.devicemanufactureapi.api.funcitonality;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -39,9 +36,8 @@ public class FunctionalityController {
         return FunctionalityResponse.from(functionality);
     }
 
-    @GetMapping
-    @PostMapping(produces = APPLICATION_JSON_VALUE , consumes = APPLICATION_JSON_VALUE)
-    public List<FunctionalitySummaryResponse> getAllFunctionalities() {
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    public List<FunctionalitySummaryResponse> getAll() {
         List<Functionality> functionalities = functionalityService.getAllFunctionalities();
         return FunctionalitySummaryResponse.from(functionalities);
     }
@@ -59,18 +55,33 @@ public class FunctionalityController {
                 .build();
     }
 
+    @PostMapping("/required-properties")
+    public FunctionalitiesRequiredPropertiesResponse getAllRequiredPropertiesFromFunctionalities(@RequestBody @Valid GetFunctionalitiesRequiredPropertiesRequest getFunctionalitiesRequiredPropertiesRequest) {
+        List<Functionality> functionalities = functionalityService.getFunctionalities(getFunctionalitiesRequiredPropertiesRequest.getFunctionalityIds());
+        return FunctionalitiesRequiredPropertiesResponse.from(functionalities);
+    }
+
 
     @Builder
     @Getter
     @AllArgsConstructor
     private static class CreateFunctionalityRequest {
 
-        @NotEmpty(message = "Name cannot be empty")
-        @NotNull(message = "Name cannot be null")
+        @NotEmpty(message = "name must be provided")
+        @NotNull(message = "name must be provided")
         private String name;
 
         @Size(min = 1, message = "At least one property must be specified")
         private List<@Valid Property> properties;
     }
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    private static class GetFunctionalitiesRequiredPropertiesRequest {
 
+        @Size(min = 1, message = "At least one functionality must be specified")
+        private List<Long> functionalityIds;
+
+    }
 }
