@@ -28,8 +28,8 @@ public class DeviceTypeVersion {
     private Long id;
 
     @NotNull
-    @Column(name = "version_unique_id", nullable = false, unique = true)
-    private String versionUniqueId;
+    @Column(name = "version_number", nullable = false)
+    private Long versionNumber;
 
     @ElementCollection
     @NotNull

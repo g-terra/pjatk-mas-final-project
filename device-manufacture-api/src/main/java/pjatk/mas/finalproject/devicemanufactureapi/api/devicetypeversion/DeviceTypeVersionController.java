@@ -59,10 +59,10 @@ public class DeviceTypeVersionController {
     @Builder
     private static class CreateDeviceTypeVersionRequest {
 
-        @NotNull
+        @NotNull(message = "Device id cannot be null")
         private Long deviceId;
 
-        @Size(min=1 , message = "At least one functionality is required")
+        @Size(min=1 , message = "At least one functionality id must be provided")
         private List<Long> functionalityIds;
 
         @Size(min=1 , message = "At least one property value is required")

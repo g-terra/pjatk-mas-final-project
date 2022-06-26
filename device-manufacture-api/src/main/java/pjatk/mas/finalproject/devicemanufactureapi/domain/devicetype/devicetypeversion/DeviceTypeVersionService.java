@@ -66,13 +66,24 @@ public class DeviceTypeVersionService {
     private DeviceTypeVersion buildDeviceTypeVersion(DeviceTypeVersionCreateDetails createDetails, DeviceType deviceType) {
         List<Functionality> functionalities = functionalityService.getFunctionalities(createDetails.getFunctionalityIds());
 
+        Long versionNumber = getVersionNumber(deviceType);
+
         return DeviceTypeVersion.builder()
                 .deviceType(deviceType)
                 .functionalities(functionalities)
                 .propertyValues(createDetails.getPropertyValues())
                 .versionUniqueId(UUID.randomUUID().toString())
                 .deviceTypeVersionStatus(DeviceTypeVersionStatus.AVAILABLE)
+                .versionNumber(versionNumber)
                 .build();
+    }
+
+    private Long getVersionNumber(DeviceType deviceType) {
+        return deviceTypeVersionRepository
+                .findFirstByDeviceTypeIdOrderByCreateDateTimeDesc(deviceType.getId())
+                .map(DeviceTypeVersion::getVersionNumber)
+                .map(v -> v + 1)
+                .orElse(1L);
     }
 
     private void validateDeviceType(DeviceType deviceType) {
@@ -90,31 +101,31 @@ public class DeviceTypeVersionService {
         );
     }
 
-    private List<Property> getFunctionalityRequiredProperties(DeviceTypeVersion deviceTypeVersion) {
+    private Set<Property> getFunctionalityRequiredProperties(DeviceTypeVersion deviceTypeVersion) {
         return deviceTypeVersion.getFunctionalities()
                 .stream()
                 .map(Functionality::getProperties)
-                .collect(ArrayList::new, ArrayList::addAll, ArrayList::addAll);
+                .collect(HashSet::new, HashSet::addAll, HashSet::addAll);
     }
 
-    private void validateAllProperties(List<Property> requiredProperties, List<PropertyValue> requiredPropertyValues) {
+    private void validateAllProperties(Set<Property> requiredProperties, List<PropertyValue> requiredPropertyValues) {
         validatePropertyMappingSize(requiredProperties, requiredPropertyValues);
         validatePropertiesMappings(requiredProperties, requiredPropertyValues);
         validatePropertiesConstraints(requiredProperties, requiredPropertyValues);
     }
 
-    private void validatePropertyMappingSize(List<Property> requiredProperties, List<PropertyValue> requiredPropertyValues) {
+    private void validatePropertyMappingSize(Set<Property> requiredProperties, List<PropertyValue> requiredPropertyValues) {
         if (requiredProperties.size() != requiredPropertyValues.size()) {
             throw new PropertyOneToOneMappingMismatchException();
         }
     }
 
-    private void validatePropertiesMappings(List<Property> requiredProperties, List<PropertyValue> requiredPropertyValues) {
+    private void validatePropertiesMappings(Set<Property> requiredProperties, List<PropertyValue> requiredPropertyValues) {
         requiredProperties.forEach(property -> checkProperValuePresence(requiredPropertyValues, property));
     }
 
-    private void validatePropertiesConstraints(List<Property> requiredProperties, List<PropertyValue> requiredPropertyValues) {
-        Map<String, Property> requiredPropertiesMap = requiredProperties.stream().collect(Collectors.toMap(Property::getName, r->r));
+    private void validatePropertiesConstraints(Set<Property> requiredProperties, List<PropertyValue> requiredPropertyValues) {
+        Map<String, Property> requiredPropertiesMap = requiredProperties.stream().collect(Collectors.toMap(Property::getName, r -> r));
         Map<String, String> requiredPropertiesValuesMap = requiredPropertyValues.stream().collect(Collectors.toMap(PropertyValue::getName, PropertyValue::getValue));
 
         requiredPropertiesMap.keySet().forEach(

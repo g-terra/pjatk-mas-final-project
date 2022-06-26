@@ -45,10 +45,10 @@ public class SampleDataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws JsonProcessingException {
-        log.info("sample data initializer started");
-        createDeviceTypes();
-        createFunctionalities();
-        createRandomDeviceTypeVersions();
+//        log.info("sample data initializer started");
+//        createDeviceTypes();
+//        createFunctionalities();
+//        createRandomDeviceTypeVersions();
     }
 
     private void createDeviceTypes() {

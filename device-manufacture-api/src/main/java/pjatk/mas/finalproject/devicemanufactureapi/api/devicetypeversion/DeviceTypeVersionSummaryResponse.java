@@ -6,6 +6,8 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.devicetypev
 import pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.Functionality;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyValue;
 
+import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,9 +17,9 @@ import java.util.stream.Collectors;
 public class DeviceTypeVersionSummaryResponse {
 
     private Long deviceTypeId;
-    private String versionUniqueId;
-    private String deviceName;
-    private Integer powerConsumption;
+    private Long versionId;
+    private Long versionNumber;
+    private LocalDateTime createDateTime;
     private List<String> functionalities;
     private String status;
     private Map<String, String> propertyValues;
@@ -33,16 +35,16 @@ public class DeviceTypeVersionSummaryResponse {
 
         return DeviceTypeVersionSummaryResponse.builder()
                 .deviceTypeId(deviceTypeVersion.getDeviceType().getId())
-                .versionUniqueId(deviceTypeVersion.getVersionUniqueId())
-                .deviceName(deviceTypeVersion.getDeviceType().getName())
-                .powerConsumption(deviceTypeVersion.getDeviceType().getPowerConsumption())
+                .versionId(deviceTypeVersion.getId())
+                .versionNumber(deviceTypeVersion.getVersionNumber())
                 .functionalities(functionalities)
+                .createDateTime(deviceTypeVersion.getCreateDateTime())
                 .status(deviceTypeVersion.getDeviceTypeVersionStatus().name())
                 .propertyValues(propertyValues)
                 .build();
     }
 
-    public static List<DeviceTypeVersionSummaryResponse> from(List<DeviceTypeVersion> deviceTypeVersion) {
+    public static List<DeviceTypeVersionSummaryResponse> from(Collection<DeviceTypeVersion> deviceTypeVersion) {
         return deviceTypeVersion.stream()
                 .map(DeviceTypeVersionSummaryResponse::from)
                 .collect(Collectors.toList());

@@ -7,6 +7,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Builder
 @AllArgsConstructor
@@ -24,4 +25,16 @@ public class Property {
     @NotNull(message = "Type cannot be null")
     private PropertyType type;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Property property = (Property) o;
+        return name.equals(property.name) && type == property.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, type);
+    }
 }

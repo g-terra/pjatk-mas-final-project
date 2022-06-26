@@ -5,7 +5,6 @@ import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -16,13 +15,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { navLinks } from './NavLinks';
 import Link from 'next/link';
 import logo from '../public/crazy.png';
 import Image from 'next/image';
-import { useMediaQuery } from '@mui/material';
+import { Avatar, Button, Menu, Stack, Tooltip, useMediaQuery } from '@mui/material';
 
 const drawerWidth = 240;
 
@@ -133,14 +130,21 @@ export default function Layout2({ children }
                     <Box sx={{ m: 1 }}>
                         <Image src={logo} alt="logo" />
                     </Box>
-                    <Typography variant="h6" noWrap component="div">
+                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
                         The Weird Products Factory
                     </Typography>
+                    <Box sx={{ flexGrow: 0 }}>
+                        <Tooltip title="Open settings">
+                            <IconButton sx={{ p: 0 }}>
+                                <Avatar alt="Remy Sharp" />
+                            </IconButton>
+                        </Tooltip>
+
+                    </Box>
                 </Toolbar>
             </AppBar>
 
             <Box sx={{ height: '100vh', display: 'inline-flex', width: '100%' }}>
-
                 <Drawer variant="permanent" open={open}>
                     <DrawerHeader>
                         <IconButton onClick={handleDrawerClose}>
@@ -151,39 +155,52 @@ export default function Layout2({ children }
                     <List>
                         {navLinks.map((link, index) => (
                             <Link key={index} href={link.path} passHref>
-                                <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-                                    <ListItemButton
-                                        sx={{
-                                            minHeight: 48,
-                                            justifyContent: open ? 'initial' : 'center',
-                                            px: 2.5,
-                                        }}
-                                    >
-                                        <ListItemIcon
+                                <Tooltip title={link.name}>
+                                    <ListItem key={index} disablePadding sx={{ display: 'block' }}>
+                                        <ListItemButton
                                             sx={{
-                                                minWidth: 0,
-                                                mr: open ? 3 : 'auto',
-                                                justifyContent: 'center',
+                                                minHeight: 48,
+                                                justifyContent: open ? 'initial' : 'center',
+                                                px: 2.5,
                                             }}
                                         >
-                                            {link.icon}
-                                        </ListItemIcon>
-                                        <ListItemText primary={link.name} sx={{ opacity: open ? 1 : 0 }} />
-                                    </ListItemButton>
-                                </ListItem>
+                                            <ListItemIcon
+                                                sx={{
+                                                    minWidth: 0,
+                                                    mr: open ? 3 : 'auto',
+                                                    justifyContent: 'center',
+                                                }}
+                                            >
+                                                {link.icon}
+                                            </ListItemIcon>
+                                            <ListItemText primary={link.name} sx={{ opacity: open ? 1 : 0 }} />
+                                        </ListItemButton>
+                                    </ListItem>
+                                </Tooltip>
                             </Link>
                         ))}
                     </List>
+
                 </Drawer>
-                <Box sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginTop:20,
-                    width: "100%",
-                    marginLeft: open ? 30 : 25,
-                    marginRight: open ? 30 : 25,
-                }}>
-                    {children}
+
+                <Box sx={
+                    {
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flexGrow: 1,
+                        width: '100%',
+                        position: 'relative',
+                        paddingLeft: 20,
+                        paddingRight: 20,
+                        paddingTop: 15,
+                    }
+                }>
+                    <Stack sx={{
+                        justifyContent: "center",
+                        width: "100%",
+                    }}>
+                        {children}
+                    </Stack>
                 </Box>
             </Box>
         </Box>
