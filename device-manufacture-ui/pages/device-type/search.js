@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Collapse, LinearProgress, Stack, TextField } from '@mui/material';
+import { Box, Collapse, LinearProgress, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import DevicesTable from '../../components/device-type/DevicesTable';
 import DeviceCreationForm from '../../components/device-type/DeviceCreationForm';
@@ -29,6 +29,7 @@ const products = () => {
       </Collapse>
       <Collapse in={!loading}>
         <Stack spacing={3}>
+          <Typography variant="h5">Device types</Typography>
           <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
             <Box sx={{ display: "flex" }}>
               <TextField

@@ -1,4 +1,4 @@
-import { Box, Collapse, LinearProgress, Stack, TextField } from '@mui/material';
+import { Box, Collapse, LinearProgress, Stack, TextField, Typography } from '@mui/material';
 import axios from "axios";
 import * as React from "react";
 import { useRouter } from 'next/router'
@@ -62,6 +62,7 @@ const NewDeviceVersion = () => {
       </Collapse>
       <Collapse in={!loading}>
         <Stack spacing={3}>
+        <Typography variant="h5">Pick functionalites for the new version</Typography>
           <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
             <Box sx={{ display: "flex" }}>
               <TextField
