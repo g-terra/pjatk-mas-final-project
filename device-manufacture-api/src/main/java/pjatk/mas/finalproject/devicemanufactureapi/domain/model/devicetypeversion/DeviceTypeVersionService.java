@@ -1,11 +1,10 @@
 package pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetypeversion;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.NotFoundException;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype.DeviceType;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype.DeviceTypeService;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.NotFoundException;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality.Functionality;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality.FunctionalityService;
 
@@ -17,7 +16,6 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class DeviceTypeVersionService {
 
     private final DeviceTypeVersionRepository deviceTypeVersionRepository;
@@ -65,8 +63,7 @@ public class DeviceTypeVersionService {
     }
 
     private DeviceTypeVersion persist(DeviceTypeVersion deviceTypeVersion) {
-        DeviceTypeVersion save = deviceTypeVersionRepository.save(deviceTypeVersion);
-        return save;
+        return deviceTypeVersionRepository.save(deviceTypeVersion);
     }
 
 

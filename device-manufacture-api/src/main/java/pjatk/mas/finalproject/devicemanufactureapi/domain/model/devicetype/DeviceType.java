@@ -21,6 +21,7 @@ import java.util.Map;
 @Setter
 @Entity(name = "DeviceType")
 @Table(name = "device_types")
+@EntityListeners(DeviceTypeListener.class)
 public class DeviceType {
 
     @Id
@@ -56,13 +57,4 @@ public class DeviceType {
     @OneToMany(mappedBy = "targetDeviceType", orphanRemoval = true)
     private List<Team> sellingTeams = new java.util.ArrayList<>();
 
-    @Override
-    public String toString() {
-        return "DeviceType{" +
-                "id=" + id +
-                ", powerConsumption=" + powerConsumption +
-                ", name='" + name + '\'' +
-                ", createdAt=" + createdAt +
-                '}';
-    }
 }

@@ -20,6 +20,7 @@ import java.util.Set;
 @Setter
 @Entity(name = "Functionality")
 @Table(name = "functionalities")
+@EntityListeners(FunctionalityListener.class)
 public class Functionality {
 
     @Id

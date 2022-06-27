@@ -20,6 +20,7 @@ import java.util.Objects;
 @Setter
 @Entity(name = "DeviceTypeVersion")
 @Table(name = "device_type_versions")
+@EntityListeners(DeviceTypeVersionListener.class)
 public class DeviceTypeVersion {
 
     @Id

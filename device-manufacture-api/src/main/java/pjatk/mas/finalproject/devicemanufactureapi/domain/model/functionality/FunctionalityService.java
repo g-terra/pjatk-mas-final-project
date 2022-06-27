@@ -2,7 +2,6 @@ package pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality;
 
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.NotFoundException;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.FunctionalityNameAlreadyTakenException;
@@ -17,7 +16,6 @@ import static pjatk.mas.finalproject.devicemanufactureapi.domain.model.functiona
  */
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class FunctionalityService {
 
     private final FunctionalityRepository functionalityRepository;

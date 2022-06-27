@@ -38,11 +38,7 @@ public class DeviceTypeService {
                 .powerConsumption(createDetails.getPowerConsumption())
                 .deviceTypeStatus(DeviceTypeStatus.DRAFT)
                 .build();
-        DeviceType newDevice = deviceTypeRepository.save(deviceType);
-
-        log.info("DeviceType created: {}", newDevice);
-
-        return newDevice;
+        return deviceTypeRepository.save(deviceType);
     }
 
     /**
