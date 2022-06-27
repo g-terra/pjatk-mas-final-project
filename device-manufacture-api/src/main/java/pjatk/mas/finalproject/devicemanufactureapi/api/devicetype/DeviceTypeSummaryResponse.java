@@ -6,6 +6,7 @@ import lombok.Data;
 import pjatk.mas.finalproject.devicemanufactureapi.api.devicetypeversion.DeviceTypeVersionSummaryResponse;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype.DeviceType;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,29 +26,30 @@ public class DeviceTypeSummaryResponse {
 
     /**
      * Converts list of DeviceType(domain object) to DeviceTypeSummaryResponse
+     *
      * @param deviceTypes List of DeviceType objects to be converted to DeviceTypeSummaryResponse objects
      * @return List<DeviceTypeSummaryResponse> List of DeviceTypeSummaryResponse objects
      */
-    public static List<DeviceTypeSummaryResponse> from(List<DeviceType> deviceTypes) {
+    public static List<DeviceTypeSummaryResponse> from(List<DeviceType> deviceTypes, DateTimeFormatter dateTimeFormatter) {
 
         return deviceTypes.stream()
-                .map(DeviceTypeSummaryResponse::mapToDeviceTypeSummaryResponse)
+                .map(deviceType -> mapToDeviceTypeSummaryResponse(deviceType, dateTimeFormatter))
                 .collect(Collectors.toList());
     }
 
 
-    private static DeviceTypeSummaryResponse mapToDeviceTypeSummaryResponse(DeviceType deviceType) {
+    private static DeviceTypeSummaryResponse mapToDeviceTypeSummaryResponse(DeviceType deviceType, DateTimeFormatter dateTimeFormatter) {
         return DeviceTypeSummaryResponse.builder()
                 .deviceTypeId(deviceType.getId())
                 .deviceTypeName(deviceType.getName())
                 .powerConsumption(deviceType.getPowerConsumption())
                 .deviceTypeStatus(deviceType.getDeviceTypeStatus().name())
-                .versions(collectVersionsToVersionIdFunctionalityMap(deviceType))
+                .versions(collectVersionsToVersionIdFunctionalityMap(deviceType, dateTimeFormatter))
                 .build();
     }
 
-    private static List<DeviceTypeVersionSummaryResponse> collectVersionsToVersionIdFunctionalityMap(DeviceType deviceType) {
-        return DeviceTypeVersionSummaryResponse.from(deviceType.getDeviceTypeVersions().values());
+    private static List<DeviceTypeVersionSummaryResponse> collectVersionsToVersionIdFunctionalityMap(DeviceType deviceType, DateTimeFormatter dateTimeFormatter) {
+        return DeviceTypeVersionSummaryResponse.from(deviceType.getDeviceTypeVersions().values(), dateTimeFormatter);
     }
 
 }

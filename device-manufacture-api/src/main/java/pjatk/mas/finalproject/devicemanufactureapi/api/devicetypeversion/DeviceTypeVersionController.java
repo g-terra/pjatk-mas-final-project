@@ -14,6 +14,7 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyValue;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -25,6 +26,8 @@ import static pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetyp
 @Validated
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 public class DeviceTypeVersionController {
+
+    private final DateTimeFormatter dateTimeFormatter;
 
     private final DeviceTypeVersionService deviceTypeVersionService;
     private final DeviceTypeService deviceTypeService;
@@ -50,7 +53,7 @@ public class DeviceTypeVersionController {
 
         deviceTypeService.setDeviceAsVersioned(createDeviceTypeVersionRequest.getDeviceId());
 
-        return DeviceTypeVersionResponse.from(deviceTypeVersion);
+        return DeviceTypeVersionResponse.from(deviceTypeVersion, dateTimeFormatter);
     }
 
     /**
@@ -61,13 +64,13 @@ public class DeviceTypeVersionController {
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public List<DeviceTypeVersionSummaryResponse> list() {
         List<DeviceTypeVersion> allDevices = deviceTypeVersionService.getAllDeviceTypeVersions();
-        return DeviceTypeVersionSummaryResponse.from(allDevices);
+        return DeviceTypeVersionSummaryResponse.from(allDevices, dateTimeFormatter);
     }
 
     @GetMapping("/{id}")
     public DeviceTypeVersionResponse getDeviceTypeVersion(@PathVariable Long id) {
         DeviceTypeVersion deviceTypeVersion = deviceTypeVersionService.getDeviceTypeVersion(id);
-        return DeviceTypeVersionResponse.from(deviceTypeVersion);
+        return DeviceTypeVersionResponse.from(deviceTypeVersion, dateTimeFormatter);
     }
 
     @Getter

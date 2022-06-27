@@ -1,6 +1,6 @@
 import { Box, Collapse, LinearProgress, Stack, TextField, Typography } from '@mui/material';
 import axios from "axios";
-import * as React from "react";
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import FunctionalitiesTable from "../../../components/funcitonality/FunctionalitiesTable";
 import DeviceCreationForm from '../../../components/device-type/DeviceCreationForm';
@@ -9,45 +9,48 @@ import DeviceNewVersionCreationForm from '../../../components/device-type/Device
 import Head from 'next/head';
 
 
-const NewDeviceVersion = () => {
-  const [selected, setSelected] = React.useState([]);
-  const [data, setData] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-  const [searched, setSearched] = React.useState("");
-  const [displayData, setDisplayData] = React.useState(data);
+export default function NewDeviceVersion() {
+  const [selected, setSelected] = useState([]);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searched, setSearched] = useState("");
+  const [displayData, setDisplayData] = useState(data);
 
   const router = useRouter()
 
   const { id } = router.query;
 
-  React.useEffect(() => {
-    axios.get(process.env.deviceManufactureApi + '/device-type/' + id)
-      .catch
-      (error => {
-        console.log(error);
-        router.push('/device-type/search');
-      }
-      )
+  useEffect(() => {
+    function fetch() {
+      axios.get(process.env.deviceManufactureApi + '/device-type/' + id)
+        .catch
+        (error => {
+          console.log(error);
+          router.push('/device-type/search');
+        }
+        )
+    }
+    fetch();
   }, [id]);
-
-
 
   const handleSelectionChanged = (selected) => {
     setSelected(selected);
   }
 
-  const [refresh, setRefresh] = React.useState(0);
+  const [refresh, setRefresh] = useState(0);
 
-  React.useEffect(() => {
-    axios.get(process.env.deviceManufactureApi + '/functionality').then(response => {
-      setData(response.data);
-      setDisplayData(response.data);
-      setLoading(false);
+  useEffect(() => {
+    function fetch() {
+      axios.get(process.env.deviceManufactureApi + '/functionality').then(response => {
+        setData(response.data);
+        setDisplayData(response.data);
+        setLoading(false);
+      }
+      ).catch(error => {
+        console.log(error);
+      }
+      );
     }
-    ).catch(error => {
-      console.log(error);
-    }
-    );
   }, [refresh]);
 
   const handleCreatedFunctionalitySuccessfully = () => {
@@ -124,5 +127,3 @@ const NewDeviceVersion = () => {
   }
 
 }
-
-export default NewDeviceVersion

@@ -10,7 +10,11 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype.Devic
 import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype.DeviceTypeService;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -24,6 +28,8 @@ import static pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetyp
 public class DeviceTypeController {
 
     private final DeviceTypeService deviceTypeService;
+
+    private final DateTimeFormatter dateTimeFormatter;
 
 
     /**
@@ -53,7 +59,7 @@ public class DeviceTypeController {
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public List<DeviceTypeSummaryResponse> list() {
         List<DeviceType> allDevices = deviceTypeService.getAllDevices();
-        return DeviceTypeSummaryResponse.from(allDevices);
+        return DeviceTypeSummaryResponse.from(allDevices,dateTimeFormatter);
     }
 
 

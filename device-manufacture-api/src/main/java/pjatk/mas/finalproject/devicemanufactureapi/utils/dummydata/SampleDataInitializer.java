@@ -33,7 +33,6 @@ import static pjatk.mas.finalproject.devicemanufactureapi.domain.model.functiona
 @RequiredArgsConstructor
 public class SampleDataInitializer implements CommandLineRunner {
 
-
     Faker faker = new Faker();
     private final DeviceTypeService deviceTypeService;
     private final FunctionalityService functionalityService;

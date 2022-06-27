@@ -1,18 +1,18 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Collapse, LinearProgress, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import DevicesTable from '../../components/device-type/DevicesTable';
 import DeviceCreationForm from '../../components/device-type/DeviceCreationForm';
 import Head from 'next/head';
 
-const products = () => {
+export default function Search() {
 
-  const [data, setData] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-  const [searched, setSearched] = React.useState("");
-  const [displayData, setDisplayData] = React.useState(data);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searched, setSearched] = useState("");
+  const [displayData, setDisplayData] = useState(data);
 
-  React.useEffect(() => {
+  useEffect(() => {
     axios.get(process.env.deviceManufactureApi + "/device-type").then(response => {
       setData(response.data);
       setDisplayData(response.data);
@@ -85,4 +85,3 @@ const products = () => {
 
 }
 
-export default products;

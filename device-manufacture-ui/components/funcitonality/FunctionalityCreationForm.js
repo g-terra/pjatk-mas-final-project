@@ -8,7 +8,6 @@ import { Stack, Alert, Collapse, TextField } from '@mui/material';
 import AddPropertyDialog from './FunctionalityNewPropertyForm';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
-import { useRouter } from 'next/router';
 
 const columns = [
     { field: 'id', headerName: '', width: 1 },
@@ -97,9 +96,9 @@ export default function FunctionalityCreationForm(props) {
             <Dialog open={open} onClose={handleClose} maxWidth={'xs'} fullWidth={true} >
                 <Collapse in={showError} >
                     {
-                        errors.map((message) => {
+                        errors.map((message, index) => {
                             return (
-                                <Alert severity="error">{message}</Alert>
+                                <Alert key={index} severity="error">{message}</Alert>
                             )
                         })
                     }

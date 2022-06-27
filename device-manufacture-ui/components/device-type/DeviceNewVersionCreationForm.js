@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import axios from 'axios';
 import { Box } from '@mui/system';
-import { Alert, Collapse, MenuItem, Stack, TextField } from '@mui/material';
+import { Alert, Collapse, MenuItem, Stack, Switch, TextField } from '@mui/material';
 import { useRouter } from 'next/router'
 
 
@@ -90,56 +90,80 @@ export default function DeviceNewVersionCreationForm(props) {
         </>
     );
 
+    function fieldCreationFunctions (){
+        return {
+            "NUMBER": getNumberField,
+            "YES_NO": getYesOrNoField,
+            "TEXT": getTextField
+        }
+    }
+
+
     function getField(index, property) {
 
-        if (property.type === 'NUMBER') {
-            return (
-                <Box key={index}>
-                    <TextField
-                        id={property.name}
-                        label={property.name}
-                        value={formFieldState[property.name]}
-                        onChange={handleChange}
-                        type="number"
-                        margin="normal"
-                        variant="outlined"
-                        fullWidth
-                    />
-                </Box>
-            )
-        } else if (property.type === 'YES_NO') {
-            return (
-                <Box key={index}>
-                    <TextField
-                        id={property.name}
-                        label={property.name}
-                        value={formFieldState[property.name]}
-                        onChange={(event) => {
-                            setFormFieldState({ ...formFieldState, [property.name]: event.target.value })
-                        }}
-                        select
-                        fullWidth
-                    >{
-                            [{
-                                value: 'yes',
-                                label: 'Yes'
-                            }, {
-                                value: 'no',
-                                label: 'No'
-                            }].map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))
-                        }
-                    </TextField>
-                </Box >
-            )
+        const field = fieldCreationFunctions()[property.type];
+
+        if (field) {
+            return field(index, property)
         } else {
-            throw new Error("Unknown property type")
+            throw new Error(`${property.type} is not a valid type`)
         }
 
     }
+
+    function getYesOrNoField(index, property) {
+        return <Box key={index}>
+            <TextField
+                id={property.name}
+                label={property.name}
+                value={formFieldState[property.name]}
+                onChange={(event) => {
+                    setFormFieldState({ ...formFieldState, [property.name]: event.target.value });
+                }}
+                select
+                fullWidth
+            >{[{
+                value: 'yes',
+                label: 'Yes'
+            }, {
+                value: 'no',
+                label: 'No'
+            }].map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                </MenuItem>
+            ))}
+            </TextField>
+        </Box>;
+    }
+
+    function getNumberField(index, property) {
+        return <Box key={index}>
+            <TextField
+                id={property.name}
+                label={property.name}
+                value={formFieldState[property.name]}
+                onChange={handleChange}
+                type="number"
+                margin="normal"
+                variant="outlined"
+                fullWidth />
+        </Box>;
+    }
+
+    function getTextField(index, property) {
+        return <Box key={index}>
+            <TextField
+                id={property.name}
+                label={property.name}
+                value={formFieldState[property.name]}
+                onChange={handleChange}
+                margin="normal"
+                variant="outlined"
+                fullWidth />
+        </Box>;
+    }
+
 
     function getInitialFormFieldsState(properties) {
         const initialFieldState = {};

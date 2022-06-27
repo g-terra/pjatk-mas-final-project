@@ -4,8 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Alert, Box, Collapse, MenuItem, Stack, TextField } from '@mui/material';
-import { Add } from '@mui/icons-material';
+import { MenuItem, Stack, TextField } from '@mui/material';
 
 const types =
     [
@@ -16,6 +15,10 @@ const types =
         {
             value: 'NUMBER',
             label: 'Number',
+        },
+        {
+            value: 'TEXT',
+            label: 'Text',
         }
 
     ]

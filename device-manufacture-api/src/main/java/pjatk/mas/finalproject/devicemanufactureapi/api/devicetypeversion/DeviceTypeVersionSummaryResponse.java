@@ -6,7 +6,7 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetypeversio
 import pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality.Functionality;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyValue;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +22,7 @@ public class DeviceTypeVersionSummaryResponse {
     private Long deviceTypeId;
     private Long versionId;
     private Long versionNumber;
-    private LocalDateTime createDateTime;
+    private String createDateTime;
     private List<String> functionalities;
     private String status;
     private Map<String, String> propertyValues;
@@ -31,7 +31,7 @@ public class DeviceTypeVersionSummaryResponse {
      * @param deviceTypeVersion DeviceTypeVersion object to be converted
      * @return DeviceTypeVersionSummaryResponse
      */
-    public static DeviceTypeVersionSummaryResponse from(DeviceTypeVersion deviceTypeVersion) {
+    public static DeviceTypeVersionSummaryResponse from(DeviceTypeVersion deviceTypeVersion, DateTimeFormatter dateTimeFormatter) {
 
         List<String> functionalities = deviceTypeVersion.getFunctionalities().stream()
                 .map(Functionality::getName)
@@ -45,7 +45,7 @@ public class DeviceTypeVersionSummaryResponse {
                 .versionId(deviceTypeVersion.getId())
                 .versionNumber(deviceTypeVersion.getVersionNumber())
                 .functionalities(functionalities)
-                .createDateTime(deviceTypeVersion.getCreateDateTime())
+                .createDateTime(deviceTypeVersion.getCreateDateTime().format(dateTimeFormatter))
                 .status(deviceTypeVersion.getDeviceTypeVersionStatus().name())
                 .propertyValues(propertyValues)
                 .build();
@@ -55,9 +55,11 @@ public class DeviceTypeVersionSummaryResponse {
      * @param deviceTypeVersions Collection of DeviceTypeVersion objects to be converted
      * @return List<DeviceTypeVersionSummaryResponse> list of DeviceTypeVersionSummaryResponse objects
      */
-    public static List<DeviceTypeVersionSummaryResponse> from(Collection<DeviceTypeVersion> deviceTypeVersions) {
+    public static List<DeviceTypeVersionSummaryResponse> from(Collection<DeviceTypeVersion> deviceTypeVersions, DateTimeFormatter dateTimeFormatter) {
         return deviceTypeVersions.stream()
-                .map(DeviceTypeVersionSummaryResponse::from)
+                .map(
+                        deviceTypeVersion -> DeviceTypeVersionSummaryResponse.from(deviceTypeVersion, dateTimeFormatter)
+                )
                 .collect(Collectors.toList());
     }
 
