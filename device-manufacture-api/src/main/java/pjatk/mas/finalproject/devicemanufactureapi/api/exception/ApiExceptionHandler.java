@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.exception.NotFoundException;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.exception.FunctionalityNameAlreadyTakenException;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.types.exceptions.PropertyOneToOneMappingMismatchException;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.types.exceptions.PropertyValueMappingMismatchException;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.types.exceptions.PropertyValueTypeMismatchException;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.NotFoundException;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.FunctionalityNameAlreadyTakenException;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.PropertyOneToOneMappingMismatchException;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.PropertyValueMappingMismatchException;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.PropertyValueTypeMismatchException;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;

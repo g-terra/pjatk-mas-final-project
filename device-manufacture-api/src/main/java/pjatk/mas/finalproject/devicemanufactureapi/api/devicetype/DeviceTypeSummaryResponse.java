@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import pjatk.mas.finalproject.devicemanufactureapi.api.devicetypeversion.DeviceTypeVersionSummaryResponse;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceType;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype.DeviceType;
 
 import java.util.List;
 import java.util.stream.Collectors;

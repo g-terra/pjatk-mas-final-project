@@ -1,6 +1,6 @@
 package pjatk.mas.finalproject.devicemanufactureapi.domain.types;
 
-import pjatk.mas.finalproject.devicemanufactureapi.domain.types.exceptions.PropertyValueTypeMismatchException;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.PropertyValueTypeMismatchException;
 
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -11,6 +11,12 @@ public enum PropertyType {
     YES_NO,
     NUMBER;
 
+
+    /**
+     * validate a value against a given property type
+     * @param property Property Type to be used as base for validation.
+     * @param value    value to be checked
+     */
     public static void Validate(Property property, String value) {
         validations.get(property.getType()).accept(property.getName(), value);
     }

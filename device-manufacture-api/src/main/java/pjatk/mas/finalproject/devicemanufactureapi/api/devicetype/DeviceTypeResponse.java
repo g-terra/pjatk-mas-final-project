@@ -2,7 +2,7 @@ package pjatk.mas.finalproject.devicemanufactureapi.api.devicetype;
 
 import lombok.Builder;
 import lombok.Getter;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceType;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype.DeviceType;
 
 import java.time.LocalDateTime;
 

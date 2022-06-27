@@ -2,7 +2,7 @@ package pjatk.mas.finalproject.devicemanufactureapi.api.funcitonality;
 
 import lombok.Builder;
 import lombok.Getter;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.Functionality;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality.Functionality;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Property;
 
 import java.util.List;

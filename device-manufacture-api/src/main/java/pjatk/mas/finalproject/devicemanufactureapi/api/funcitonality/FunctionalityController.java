@@ -4,8 +4,8 @@ import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.Functionality;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.FunctionalityService;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality.Functionality;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality.FunctionalityService;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Property;
 
 import javax.validation.Valid;
@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.FunctionalityServiceRequests.FunctionalityCreateDetails;
+import static pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality.FunctionalityServiceRequests.FunctionalityCreateDetails;
 
 @RestController
 @RequestMapping("/functionality")

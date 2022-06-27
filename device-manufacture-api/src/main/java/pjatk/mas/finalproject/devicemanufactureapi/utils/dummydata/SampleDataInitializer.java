@@ -11,20 +11,20 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceType;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceTypeService;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.devicetypeversion.DeviceTypeVersionService;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.Functionality;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.FunctionalityService;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype.DeviceType;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype.DeviceTypeService;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetypeversion.DeviceTypeVersionService;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality.Functionality;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality.FunctionalityService;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyType;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyValue;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceTypeServiceRequests.DeviceTypeCreateDetails;
-import static pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.devicetypeversion.DeviceTypeVersionServiceRequest.DeviceTypeVersionCreateDetails;
-import static pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.FunctionalityServiceRequests.FunctionalityCreateDetails;
+import static pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype.DeviceTypeServiceRequests.DeviceTypeCreateDetails;
+import static pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetypeversion.DeviceTypeVersionServiceRequest.DeviceTypeVersionCreateDetails;
+import static pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality.FunctionalityServiceRequests.FunctionalityCreateDetails;
 
 @Component
 @Order(1)

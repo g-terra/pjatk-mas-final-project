@@ -6,8 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.devicetypeversion.DeviceTypeVersion;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.devicetypeversion.DeviceTypeVersionService;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype.DeviceTypeService;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetypeversion.DeviceTypeVersion;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetypeversion.DeviceTypeVersionService;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyValue;
 
 import javax.validation.Valid;
@@ -16,7 +17,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.devicetypeversion.DeviceTypeVersionServiceRequest.DeviceTypeVersionCreateDetails;
+import static pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetypeversion.DeviceTypeVersionServiceRequest.DeviceTypeVersionCreateDetails;
 
 @RestController
 @RequestMapping("/device-type-version")
@@ -26,9 +27,11 @@ import static pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.devi
 public class DeviceTypeVersionController {
 
     private final DeviceTypeVersionService deviceTypeVersionService;
+    private final DeviceTypeService deviceTypeService;
 
     /**
      * Post endpoint for creating a new device type version.
+     *
      * @param createDeviceTypeVersionRequest - client request with device type version details that will be used to create new device type version
      * @return DeviceTypeVersionResponse - response with created device type version details
      */
@@ -45,11 +48,14 @@ public class DeviceTypeVersionController {
 
         DeviceTypeVersion deviceTypeVersion = deviceTypeVersionService.create(deviceTypeVersionCreateDetails);
 
+        deviceTypeService.setDeviceAsVersioned(createDeviceTypeVersionRequest.getDeviceId());
+
         return DeviceTypeVersionResponse.from(deviceTypeVersion);
     }
 
     /**
      * Get endpoint for listing all device type versions.
+     *
      * @return List<DeviceTypeVersionSummaryResponse> - list of device type version summaries for all device type versions
      */
     @GetMapping(produces = APPLICATION_JSON_VALUE)
@@ -71,10 +77,10 @@ public class DeviceTypeVersionController {
         @NotNull(message = "Device id cannot be null")
         private Long deviceId;
 
-        @Size(min=1 , message = "At least one functionality id must be provided")
+        @Size(min = 1, message = "At least one functionality id must be provided")
         private List<Long> functionalityIds;
 
-        @Size(min=1 , message = "At least one property value is required")
-        private List<PropertyValue> propertyValues ;
+        @Size(min = 1, message = "At least one property value is required")
+        private List<PropertyValue> propertyValues;
     }
 }

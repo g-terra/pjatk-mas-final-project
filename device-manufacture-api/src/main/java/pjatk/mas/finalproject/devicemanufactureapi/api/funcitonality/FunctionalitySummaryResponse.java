@@ -3,7 +3,7 @@ package pjatk.mas.finalproject.devicemanufactureapi.api.funcitonality;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.Functionality;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality.Functionality;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Property;
 
 import java.util.Comparator;
