@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Wrapper class for API response containing details of a DeviceTypeVersion object.
+ */
 @Getter
 @Builder
 public class DeviceTypeVersionResponse {
@@ -28,6 +31,11 @@ public class DeviceTypeVersionResponse {
     private Map<Long, String> functionalities;
 
 
+    /**
+     * Converts DeviceTypeVersion(domain object) to DeviceTypeVersionResponse
+     * @param deviceTypeVersion DeviceTypeVersion object to be converted
+     * @return DeviceTypeVersionResponse
+     */
     public static DeviceTypeVersionResponse from(DeviceTypeVersion deviceTypeVersion) {
 
         Map<Long, String> functionalities = deviceTypeVersion.getFunctionalities().stream().collect(

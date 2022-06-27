@@ -1,4 +1,4 @@
-package pjatk.mas.finalproject.devicemanufactureapi.config;
+package pjatk.mas.finalproject.devicemanufactureapi.utils.dummydata;
 
 import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;

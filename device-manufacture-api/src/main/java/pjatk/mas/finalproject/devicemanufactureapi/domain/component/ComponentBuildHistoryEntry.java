@@ -14,12 +14,11 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity(name = "ComponentBuildHistoryEntry")
-@Table(name = "componenet_build_history")
+@Table(name = "components_build_history")
 public class ComponentBuildHistoryEntry {
 
     @EmbeddedId
     private ComponentBuildHistoryId id;
-
 
     @NotNull
     @Column(nullable = false)

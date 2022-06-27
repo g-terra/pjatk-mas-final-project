@@ -25,6 +25,12 @@ public class DeviceTypeController {
 
     private final DeviceTypeService deviceTypeService;
 
+
+    /**
+     * Post endpoint for creating a new device type.
+     * @param createDeviceTypeRequest - client request with device type details that will be used to create new device type
+     * @return DeviceTypeResponse - response with created device type details
+     */
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public DeviceTypeResponse createDeviceType(@RequestBody @Valid CreateDeviceTypeRequest createDeviceTypeRequest) {
@@ -39,12 +45,23 @@ public class DeviceTypeController {
         return DeviceTypeResponse.from(deviceType);
     }
 
+
+    /**
+     * Get endpoint for listing all device types.
+     * @return List<DeviceTypeSummaryResponse> - list of device type summaries for all device types
+     */
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public List<DeviceTypeSummaryResponse> list() {
         List<DeviceType> allDevices = deviceTypeService.getAllDevices();
         return DeviceTypeSummaryResponse.from(allDevices);
     }
 
+
+    /**
+     * Get endpoint for getting device type details by id.
+     * @param id - id of device type to get
+     * @return DeviceTypeResponse - response with device type details
+     */
     @GetMapping("/{id}")
     public DeviceTypeResponse getDeviceType(@PathVariable Long id) {
         DeviceType deviceType = deviceTypeService.getDeviceType(id);
@@ -52,9 +69,12 @@ public class DeviceTypeController {
     }
 
 
+    /**
+     * Data transformation object for handling required client data on creating new device type endpoint.
+     */
     @Getter
     @Builder
-    private static class CreateDeviceTypeRequest {
+    public static class CreateDeviceTypeRequest {
 
         @NotNull
         @Max(value = 2000, message = "power consumption must be less than 2000")

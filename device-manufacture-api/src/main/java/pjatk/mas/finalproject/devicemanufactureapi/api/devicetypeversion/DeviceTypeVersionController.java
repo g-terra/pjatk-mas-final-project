@@ -27,6 +27,11 @@ public class DeviceTypeVersionController {
 
     private final DeviceTypeVersionService deviceTypeVersionService;
 
+    /**
+     * Post endpoint for creating a new device type version.
+     * @param createDeviceTypeVersionRequest - client request with device type version details that will be used to create new device type version
+     * @return DeviceTypeVersionResponse - response with created device type version details
+     */
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public DeviceTypeVersionResponse createDeviceTypeVersion(@RequestBody @Valid CreateDeviceTypeVersionRequest createDeviceTypeVersionRequest) {
@@ -43,6 +48,10 @@ public class DeviceTypeVersionController {
         return DeviceTypeVersionResponse.from(deviceTypeVersion);
     }
 
+    /**
+     * Get endpoint for listing all device type versions.
+     * @return List<DeviceTypeVersionSummaryResponse> - list of device type version summaries for all device type versions
+     */
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public List<DeviceTypeVersionSummaryResponse> list() {
         List<DeviceTypeVersion> allDevices = deviceTypeVersionService.getAllDeviceTypeVersions();
@@ -57,7 +66,7 @@ public class DeviceTypeVersionController {
 
     @Getter
     @Builder
-    private static class CreateDeviceTypeVersionRequest {
+    public static class CreateDeviceTypeVersionRequest {
 
         @NotNull(message = "Device id cannot be null")
         private Long deviceId;

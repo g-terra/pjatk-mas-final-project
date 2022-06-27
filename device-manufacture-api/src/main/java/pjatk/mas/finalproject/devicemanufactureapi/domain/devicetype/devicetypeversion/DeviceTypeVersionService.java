@@ -8,18 +8,15 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceTypeS
 import pjatk.mas.finalproject.devicemanufactureapi.domain.exception.NotFoundException;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.Functionality;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.FunctionalityService;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyType;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.types.exceptions.PropertyOneToOneMappingMismatchException;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.types.exceptions.PropertyValueMappingMismatchException;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Property;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyValue;
 
 import javax.transaction.Transactional;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
 import static pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.devicetypeversion.DeviceTypeVersionServiceRequest.DeviceTypeVersionCreateDetails;
 
+/**
+ * Service for creating and managing device type versions.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -27,41 +24,54 @@ public class DeviceTypeVersionService {
 
     private final DeviceTypeVersionRepository deviceTypeVersionRepository;
     private final DeviceTypeService deviceTypeService;
-
     private final FunctionalityService functionalityService;
+    private final DeviceTypeVersionValidator deviceTypeVersionValidator;
 
+    /**
+     * Gets all device type by its version id.
+     * @param deviceTypeVersionId id of the device type version to be retrieved
+     * @return device type version with the given id
+     */
     public DeviceTypeVersion getDeviceTypeVersion(Long deviceTypeVersionId) {
         return deviceTypeVersionRepository.findById(deviceTypeVersionId).orElseThrow(() -> new NotFoundException(deviceTypeVersionId));
     }
 
-
+    /**
+     * Creates a new device type version.
+     * @return List<DeviceTypeVersion> - all device type versions
+     */
     public List<DeviceTypeVersion> getAllDeviceTypeVersions() {
         return deviceTypeVersionRepository.findAll();
     }
 
 
+    /**
+     * Creates a new device type version and persists it.
+     * @param createDetails - details of the device type version to be created
+     * @return DeviceTypeVersion - created device type version
+     */
     @Transactional
     public DeviceTypeVersion create(DeviceTypeVersionCreateDetails createDetails) {
-        DeviceType deviceType = deviceTypeService.getDeviceType(createDetails.getDeviceId());
-        return createVersion(createDetails, deviceType);
+        DeviceTypeVersion deviceTypeVersion = createNewVersion(createDetails);
+        return  persist(deviceTypeVersion);
     }
 
-    private DeviceTypeVersion createVersion(DeviceTypeVersionCreateDetails createDetails, DeviceType deviceType) {
-
-        validateDeviceType(deviceType);
-
+    private DeviceTypeVersion createNewVersion(DeviceTypeVersionCreateDetails createDetails) {
+        DeviceType deviceType = deviceTypeService.getDeviceType(createDetails.getDeviceId());
         DeviceTypeVersion deviceTypeVersion = buildDeviceTypeVersion(createDetails, deviceType);
+        deviceTypeVersionValidator.validate(deviceTypeVersion);
+        return deviceTypeVersion;
+    }
 
-        validateAllProperties(deviceTypeVersion);
-
+    private DeviceTypeVersion persist(DeviceTypeVersion deviceTypeVersion) {
         DeviceTypeVersion save = deviceTypeVersionRepository.save(deviceTypeVersion);
 
-        deviceTypeService.setToVersioned(deviceType.getId());
+        deviceTypeService.setToVersioned(deviceTypeVersion.getDeviceType().getId());
 
         log.info("DeviceTypeVersion with id {} created", save.getId());
-
         return save;
     }
+
 
     private DeviceTypeVersion buildDeviceTypeVersion(DeviceTypeVersionCreateDetails createDetails, DeviceType deviceType) {
         List<Functionality> functionalities = functionalityService.getFunctionalities(createDetails.getFunctionalityIds());
@@ -85,63 +95,6 @@ public class DeviceTypeVersionService {
                 .orElse(1L);
     }
 
-    private void validateDeviceType(DeviceType deviceType) {
-        boolean deviceTypeExists = deviceTypeService.existsById(deviceType.getId());
-        if (!deviceTypeExists) {
-            throw new NotFoundException("No device type found with id: " + deviceType.getId());
-        }
-    }
-
-    private void validateAllProperties(DeviceTypeVersion deviceTypeVersion) {
-
-        validateAllProperties(
-                getFunctionalityRequiredProperties(deviceTypeVersion),
-                deviceTypeVersion.getPropertyValues()
-        );
-    }
-
-    private Set<Property> getFunctionalityRequiredProperties(DeviceTypeVersion deviceTypeVersion) {
-        return deviceTypeVersion.getFunctionalities()
-                .stream()
-                .map(Functionality::getProperties)
-                .collect(HashSet::new, HashSet::addAll, HashSet::addAll);
-    }
-
-    private void validateAllProperties(Set<Property> requiredProperties, List<PropertyValue> requiredPropertyValues) {
-        validatePropertyMappingSize(requiredProperties, requiredPropertyValues);
-        validatePropertiesMappings(requiredProperties, requiredPropertyValues);
-        validatePropertiesConstraints(requiredProperties, requiredPropertyValues);
-    }
-
-    private void validatePropertyMappingSize(Set<Property> requiredProperties, List<PropertyValue> requiredPropertyValues) {
-        if (requiredProperties.size() != requiredPropertyValues.size()) {
-            throw new PropertyOneToOneMappingMismatchException();
-        }
-    }
-
-    private void validatePropertiesMappings(Set<Property> requiredProperties, List<PropertyValue> requiredPropertyValues) {
-        requiredProperties.forEach(property -> checkProperValuePresence(requiredPropertyValues, property));
-    }
-
-    private void validatePropertiesConstraints(Set<Property> requiredProperties, List<PropertyValue> requiredPropertyValues) {
-        Map<String, Property> requiredPropertiesMap = requiredProperties.stream().collect(Collectors.toMap(Property::getName, r -> r));
-        Map<String, String> requiredPropertiesValuesMap = requiredPropertyValues.stream().collect(Collectors.toMap(PropertyValue::getName, PropertyValue::getValue));
-
-        requiredPropertiesMap.keySet().forEach(
-                key -> PropertyType.Validate(requiredPropertiesMap.get(key), requiredPropertiesValuesMap.get(key))
-        );
-    }
-
-    private void checkProperValuePresence(List<PropertyValue> requiredPropertyValues, Property property) {
-
-        boolean match = requiredPropertyValues.stream()
-                .map(PropertyValue::getName)
-                .anyMatch(n -> Objects.equals(n, property.getName()));
-
-        if (!match) {
-            throw new PropertyValueMappingMismatchException(property.getName());
-        }
-    }
 
 
 }

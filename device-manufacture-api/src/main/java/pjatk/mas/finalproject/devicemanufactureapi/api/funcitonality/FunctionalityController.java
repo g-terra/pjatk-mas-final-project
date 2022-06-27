@@ -25,6 +25,11 @@ import static pjatk.mas.finalproject.devicemanufactureapi.domain.functionality.F
 public class FunctionalityController {
     private final FunctionalityService functionalityService;
 
+    /**
+     * Post endpoint for creating a new functionality.
+     * @param createFunctionalityRequest - client request with functionality details that will be used to create new functionality
+     * @return FunctionalityResponse - response with created functionality details
+     */
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public FunctionalityResponse createFunctionality(@RequestBody @Valid CreateFunctionalityRequest createFunctionalityRequest) {
@@ -36,16 +41,36 @@ public class FunctionalityController {
         return FunctionalityResponse.from(functionality);
     }
 
+    /**
+     * Get endpoint for listing all functionalities.
+     * @return List<FunctionalitySummaryResponse> - list of functionality summaries for all functionalities
+     */
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public List<FunctionalitySummaryResponse> getAll() {
         List<Functionality> functionalities = functionalityService.getAllFunctionalities();
         return FunctionalitySummaryResponse.from(functionalities);
     }
 
+    /**
+     * Get endpoint for getting functionality details by id.
+     * @param id - id of functionality to get
+     * @return FunctionalityResponse - response with functionality details
+     */
     @GetMapping("/{id}")
     public FunctionalityResponse getFunctionality(@PathVariable Long id) {
         Functionality functionality = functionalityService.getFunctionality(id);
         return FunctionalityResponse.from(functionality);
+    }
+
+    /**
+     * Post endpoint for getting list of required properties of functionalities listed on the request body. {@link GetFunctionalitiesRequiredPropertiesRequest}
+     * @param getFunctionalitiesRequiredPropertiesRequest  - client request with list of required ids of functionalities to get
+     * @return List<FunctionalityRequiredPropertiesResponse> - list of response with required properties of functionalities
+     */
+    @PostMapping("/required-properties")
+    public FunctionalitiesRequiredPropertiesResponse getAllRequiredPropertiesFromFunctionalities(@RequestBody @Valid GetFunctionalitiesRequiredPropertiesRequest getFunctionalitiesRequiredPropertiesRequest) {
+        List<Functionality> functionalities = functionalityService.getFunctionalities(getFunctionalitiesRequiredPropertiesRequest.getFunctionalityIds());
+        return FunctionalitiesRequiredPropertiesResponse.from(functionalities);
     }
 
     private FunctionalityCreateDetails buildFunctionalityCreateDetails(CreateFunctionalityRequest createFunctionalityRequest) {
@@ -55,17 +80,14 @@ public class FunctionalityController {
                 .build();
     }
 
-    @PostMapping("/required-properties")
-    public FunctionalitiesRequiredPropertiesResponse getAllRequiredPropertiesFromFunctionalities(@RequestBody @Valid GetFunctionalitiesRequiredPropertiesRequest getFunctionalitiesRequiredPropertiesRequest) {
-        List<Functionality> functionalities = functionalityService.getFunctionalities(getFunctionalitiesRequiredPropertiesRequest.getFunctionalityIds());
-        return FunctionalitiesRequiredPropertiesResponse.from(functionalities);
-    }
 
-
+    /**
+     * Client request with list of required details to create new functionality.
+     */
     @Builder
     @Getter
     @AllArgsConstructor
-    private static class CreateFunctionalityRequest {
+    public static class CreateFunctionalityRequest {
 
         @NotEmpty(message = "name must be provided")
         @NotNull(message = "name must be provided")
@@ -74,11 +96,15 @@ public class FunctionalityController {
         @Size(min = 1, message = "At least one property must be specified")
         private List<@Valid Property> properties;
     }
+
+    /**
+     * Client request with list of required ids of functionalities to get their required properties.
+     */
     @Builder
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    private static class GetFunctionalitiesRequiredPropertiesRequest {
+    public static class GetFunctionalitiesRequiredPropertiesRequest {
 
         @Size(min = 1, message = "At least one functionality must be specified")
         private List<Long> functionalityIds;

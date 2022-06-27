@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Wrapper class for API response containing A more detailed view of a {@link Functionality} object.
+ */
 @Builder
 @AllArgsConstructor
 @Data
@@ -20,6 +23,11 @@ public class FunctionalitySummaryResponse {
     private final String name;
     private Map<String, String> requiredProperties;
 
+    /**
+     * Converts Functionality objects to FunctionalitySummaryResponse objects.
+     * @param functionalities List of Functionality objects to be converted
+     * @return List of FunctionalitySummaryResponse objects
+     */
     static List<FunctionalitySummaryResponse> from(List<Functionality> functionalities) {
 
         return functionalities.stream()

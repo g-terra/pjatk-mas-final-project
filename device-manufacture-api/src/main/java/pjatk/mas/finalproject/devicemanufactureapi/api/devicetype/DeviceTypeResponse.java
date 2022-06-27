@@ -6,6 +6,9 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceType;
 
 import java.time.LocalDateTime;
 
+/**
+ * Wrapper class for API response containing details of a DeviceType object.
+ */
 @Getter
 @Builder
 public class DeviceTypeResponse {
@@ -15,6 +18,11 @@ public class DeviceTypeResponse {
     private final int powerConsumption;
     private final LocalDateTime createdAt;
 
+    /**
+     * Converts DeviceType(domain object) to DeviceTypeResponse
+     * @param deviceType DeviceType object to be converted
+     * @return DeviceTypeResponse
+     */
     static DeviceTypeResponse from(DeviceType deviceType) {
         return DeviceTypeResponse.builder()
                 .id(deviceType.getId())

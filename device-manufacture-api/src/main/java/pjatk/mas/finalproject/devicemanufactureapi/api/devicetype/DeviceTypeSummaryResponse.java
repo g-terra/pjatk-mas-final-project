@@ -9,6 +9,9 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.devicetype.DeviceType;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Wrapper class for API response containing a more detailed view of a DeviceType object.
+ */
 @Builder
 @AllArgsConstructor
 @Data
@@ -20,12 +23,18 @@ public class DeviceTypeSummaryResponse {
     private final String deviceTypeStatus;
     private final List<DeviceTypeVersionSummaryResponse> versions;
 
-    static List<DeviceTypeSummaryResponse> from(List<DeviceType> deviceTypes) {
+    /**
+     * Converts list of DeviceType(domain object) to DeviceTypeSummaryResponse
+     * @param deviceTypes List of DeviceType objects to be converted to DeviceTypeSummaryResponse objects
+     * @return List<DeviceTypeSummaryResponse> List of DeviceTypeSummaryResponse objects
+     */
+    public static List<DeviceTypeSummaryResponse> from(List<DeviceType> deviceTypes) {
 
         return deviceTypes.stream()
                 .map(DeviceTypeSummaryResponse::mapToDeviceTypeSummaryResponse)
                 .collect(Collectors.toList());
     }
+
 
     private static DeviceTypeSummaryResponse mapToDeviceTypeSummaryResponse(DeviceType deviceType) {
         return DeviceTypeSummaryResponse.builder()

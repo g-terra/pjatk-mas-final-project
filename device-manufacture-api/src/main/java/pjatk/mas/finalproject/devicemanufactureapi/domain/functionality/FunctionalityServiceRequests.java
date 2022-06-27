@@ -1,10 +1,8 @@
 package pjatk.mas.finalproject.devicemanufactureapi.domain.functionality;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import pjatk.mas.finalproject.devicemanufactureapi.config.InnerListDeserializer;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Property;
 
 import javax.validation.constraints.NotEmpty;

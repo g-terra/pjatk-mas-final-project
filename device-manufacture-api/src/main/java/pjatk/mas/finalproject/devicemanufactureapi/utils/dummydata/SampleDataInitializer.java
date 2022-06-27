@@ -1,4 +1,4 @@
-package pjatk.mas.finalproject.devicemanufactureapi.config;
+package pjatk.mas.finalproject.devicemanufactureapi.utils.dummydata;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

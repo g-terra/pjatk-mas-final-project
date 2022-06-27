@@ -8,7 +8,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+/**
+ * Wrapper for DeviceTypeVersion Service requests
+ */
 public class DeviceTypeVersionServiceRequest {
+
+    /**
+     * Information required to create a new DeviceTypeVersion
+     */
     @Getter
     @Builder
     public static class DeviceTypeVersionCreateDetails {

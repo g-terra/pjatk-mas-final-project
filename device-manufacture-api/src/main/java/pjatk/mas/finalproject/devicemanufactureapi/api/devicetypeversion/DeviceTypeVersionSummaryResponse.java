@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Wrapper class for API response containing a more details view of a DeviceTypeVersion object.
+ */
 @Getter
 @Builder
 public class DeviceTypeVersionSummaryResponse {
@@ -24,6 +27,10 @@ public class DeviceTypeVersionSummaryResponse {
     private String status;
     private Map<String, String> propertyValues;
 
+    /**
+     * @param deviceTypeVersion DeviceTypeVersion object to be converted
+     * @return DeviceTypeVersionSummaryResponse
+     */
     public static DeviceTypeVersionSummaryResponse from(DeviceTypeVersion deviceTypeVersion) {
 
         List<String> functionalities = deviceTypeVersion.getFunctionalities().stream()
@@ -44,8 +51,12 @@ public class DeviceTypeVersionSummaryResponse {
                 .build();
     }
 
-    public static List<DeviceTypeVersionSummaryResponse> from(Collection<DeviceTypeVersion> deviceTypeVersion) {
-        return deviceTypeVersion.stream()
+    /**
+     * @param deviceTypeVersions Collection of DeviceTypeVersion objects to be converted
+     * @return List<DeviceTypeVersionSummaryResponse> list of DeviceTypeVersionSummaryResponse objects
+     */
+    public static List<DeviceTypeVersionSummaryResponse> from(Collection<DeviceTypeVersion> deviceTypeVersions) {
+        return deviceTypeVersions.stream()
                 .map(DeviceTypeVersionSummaryResponse::from)
                 .collect(Collectors.toList());
     }
