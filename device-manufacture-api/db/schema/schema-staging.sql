@@ -24,6 +24,7 @@ create table device_type_version_property_values
 (
     device_type_version_device_type_version_id bigint       not null,
     name                                       varchar(255) null,
+    parent_functionality_id                    bigint       not null,
     value                                      varchar(255) null,
     constraint FK50f1w22ynhqc8kbncyxbyevxi
         foreign key (device_type_version_device_type_version_id) references device_type_versions (device_type_version_id)

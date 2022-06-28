@@ -35,7 +35,7 @@ export default function DevicesTable(props) {
                 </TableHead>
                 <TableBody>
                     {props.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((entry) => (
-                        <DevicesTableRow key={entry.deviceTypeId} data={entry} />
+                        <DevicesTableRow key={entry.deviceTypeId} data={entry}  onRefeshRequired={props.onRefeshRequired} />
                     ))}
                 </TableBody>
             </Table>
