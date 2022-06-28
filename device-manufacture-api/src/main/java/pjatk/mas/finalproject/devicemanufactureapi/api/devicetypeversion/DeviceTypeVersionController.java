@@ -56,6 +56,8 @@ public class DeviceTypeVersionController {
         return DeviceTypeVersionResponse.from(deviceTypeVersion, dateTimeFormatter);
     }
 
+
+
     /**
      * Get endpoint for listing all device type versions.
      *
@@ -72,6 +74,15 @@ public class DeviceTypeVersionController {
         DeviceTypeVersion deviceTypeVersion = deviceTypeVersionService.getDeviceTypeVersion(id);
         return DeviceTypeVersionResponse.from(deviceTypeVersion, dateTimeFormatter);
     }
+
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void deleteDeviceTypeVersion(@PathVariable Long id) {
+        deviceTypeVersionService.deleteDeviceTypeVersion(id);
+    }
+
+
 
     @Getter
     @Builder

@@ -3,9 +3,8 @@ import axios from "axios";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import FunctionalitiesTable from "../../../components/funcitonality/FunctionalitiesTable";
-import DeviceCreationForm from '../../../components/device-type/DeviceCreationForm';
 import FunctionalityCreationForm from '../../../components/funcitonality/FunctionalityCreationForm';
-import DeviceNewVersionCreationForm from '../../../components/device-type/DeviceNewVersionCreationForm';
+import DeviceNewVersionCreationForm from '../../../components/device-type/versions/DeviceNewVersionCreationForm';
 import Head from 'next/head';
 
 
@@ -46,6 +45,10 @@ export default function NewDeviceVersion() {
 
   const [refresh, setRefresh] = useState(0);
 
+  const handleCreatedFunctionalitySuccessfully = () => {
+    setRefresh(oldKey => oldKey + 1)
+  };
+
   useEffect(() => {
     function fetch() {
       axios.get(process.env.deviceManufactureApi + '/functionality').then(response => {
@@ -61,11 +64,6 @@ export default function NewDeviceVersion() {
     fetch();
   }, [refresh]);
 
-  const handleCreatedFunctionalitySuccessfully = () => {
-    setRefresh(oldKey => oldKey + 1)
-  };
-
-  const requestSearch = (searchTerm) => search(searchTerm)
 
   return (
     <>

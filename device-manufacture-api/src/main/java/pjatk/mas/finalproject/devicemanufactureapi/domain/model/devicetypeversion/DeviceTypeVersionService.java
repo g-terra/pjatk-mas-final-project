@@ -10,6 +10,7 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality.Fu
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service for creating and managing device type versions.
@@ -95,4 +96,16 @@ public class DeviceTypeVersionService {
     }
 
 
+    @Transactional
+    public void deleteDeviceTypeVersion(Long id) {
+        Optional<DeviceTypeVersion> optionalDeviceTypeVersion = deviceTypeVersionRepository.findById(id);
+        if (optionalDeviceTypeVersion.isPresent()) {
+            DeviceTypeVersion deviceTypeVersion = optionalDeviceTypeVersion.get();
+            deviceTypeVersion.setDeviceTypeVersionStatus(DeviceTypeVersionStatus.DEPRECATED);
+            deviceTypeVersionRepository.save(deviceTypeVersion);
+        } else {
+            throw new NotFoundException(id);
+        }
+
+    }
 }

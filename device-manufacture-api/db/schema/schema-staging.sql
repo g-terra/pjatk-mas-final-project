@@ -237,8 +237,3 @@ create table user_roles
         foreign key (user_id) references users (user_id)
 );
 
-
-INSERT INTO roles(role_id, name) value (1, 'DEFAULT');
-INSERT INTO roles(role_id, name) value (2, 'CLIENT');
-INSERT INTO roles(role_id, name) value (3, 'EMPLOYEE');
-INSERT INTO roles(role_id, name) value (4, 'OWNER');

@@ -4,7 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Box, Chip, Typography } from '@mui/material';
+import { Box, Chip, Tooltip, Typography } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
 
 export default function DeviceDetailViewer(props) {
@@ -33,9 +33,11 @@ export default function DeviceDetailViewer(props) {
 
     return (
         <React.Fragment>
-            <Button onClick={handleClickOpen}>
-                <InfoOutlined />
-            </Button>
+           <Tooltip title={"see more info"} >
+                <Button onClick={handleClickOpen}>
+                    <InfoOutlined />
+                </Button>
+            </Tooltip>
             <Dialog
                 fullWidth={fullWidth}
                 maxWidth='xs'

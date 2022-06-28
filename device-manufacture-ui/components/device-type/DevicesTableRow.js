@@ -5,9 +5,11 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import React from "react";
 import Link from "next/link";
 import DeviceDetailViewer from "./DeviceDetailViewer";
+import DeleteVersionDialog from "./versions/DeleteVersionDialog";
 
 export function DevicesTableRow(props) {
     const [open, setOpen] = React.useState(false);
+
 
     return (
         <React.Fragment>
@@ -25,7 +27,7 @@ export function DevicesTableRow(props) {
                 <TableCell width={200} align="center">{props.data.deviceTypeName}</TableCell>
                 <TableCell width={200} align="center">{props.data.powerConsumption}</TableCell>
                 <TableCell width={200} align="center">
-                    <Chip 
+                    <Chip
                         label={props.data.deviceTypeStatus}
                         color={props.data.deviceTypeStatus === "VERSIONED" ? "primary" : "secondary"}
                     />
@@ -54,16 +56,28 @@ export function DevicesTableRow(props) {
                                         <TableCell >status</TableCell>
                                         <TableCell >created at</TableCell>
                                         <TableCell padding="checkbox"></TableCell>
+                                        <TableCell padding="checkbox"></TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {props.data.versions.map((version, index) => (
                                         <TableRow key={index}>
                                             <TableCell >{version.versionNumber}</TableCell>
-                                            <TableCell>{version.status}</TableCell>
+                                            <TableCell>
+                                                {getDeviceVersionStatusChip(version)}
+                                            </TableCell>
                                             <TableCell>{version.createDateTime}</TableCell>
                                             <TableCell padding="checkbox">
                                                 <DeviceDetailViewer data={version} />
+                                            </TableCell>
+                                            <TableCell padding="checkbox">
+                                                {
+                                                    version.status === "AVAILABLE" ?
+                                                        <DeleteVersionDialog
+                                                            version={version}
+                                                            onRefeshRequired={props.onRefeshRequired} />
+                                                        : null
+                                                }
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -76,3 +90,32 @@ export function DevicesTableRow(props) {
         </React.Fragment>
     );
 }
+
+function getDeviceVersionStatusChip(version) {
+
+    if (version.status === "AVAILABLE") {
+        return (
+            <Chip
+                label={version.status}
+                color="primary"
+            />
+        );
+    } else if (version.status === "DEPRECATED") {
+        return (
+            <Chip
+                label={version.status}
+                color="warning"
+            />
+        );
+    }
+    return (
+        <Chip
+            label={version.status}
+            color="default"
+        />
+    );
+}
+
+
+
+

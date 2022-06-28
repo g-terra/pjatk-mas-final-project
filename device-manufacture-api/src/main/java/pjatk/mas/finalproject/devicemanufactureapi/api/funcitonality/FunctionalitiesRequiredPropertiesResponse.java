@@ -42,7 +42,7 @@ public class FunctionalitiesRequiredPropertiesResponse {
         private String functionalityName;
         private List<Property> properties;
 
-        public static FunctionalityRequirementsGroup from(Functionality functionality) {
+        private static FunctionalityRequirementsGroup from(Functionality functionality) {
             return FunctionalityRequirementsGroup.builder()
                     .functionalityId(functionality.getId())
                     .functionalityName(functionality.getName())

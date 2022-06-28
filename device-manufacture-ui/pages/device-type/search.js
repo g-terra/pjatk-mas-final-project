@@ -12,6 +12,8 @@ export default function Search() {
   const [searched, setSearched] = useState("");
   const [displayData, setDisplayData] = useState(data);
 
+  const [refresh, setRefresh] = useState(0);
+
   useEffect(() => {
     axios.get(process.env.deviceManufactureApi + "/device-type").then(response => {
       setData(response.data);
@@ -21,7 +23,7 @@ export default function Search() {
     ).catch(error => {
       console.log(error);
     });
-  }, []);
+  }, [refresh]);
 
   return (
     <>
@@ -55,7 +57,7 @@ export default function Search() {
                 </Box>
               </Box>
               <Box sx={{ display: 'flex' }}>
-                <DevicesTable data={displayData} />
+                <DevicesTable data={displayData}   onRefeshRequired={setRefresh}/>
               </Box>
             </Stack>
           </Collapse>
