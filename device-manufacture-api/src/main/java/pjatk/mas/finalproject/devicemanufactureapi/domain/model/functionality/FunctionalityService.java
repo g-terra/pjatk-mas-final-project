@@ -3,8 +3,10 @@ package pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.NotFoundException;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.DuplicatedPropertyNameException;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.FunctionalityNameAlreadyTakenException;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.NotFoundException;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Property;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -29,6 +31,11 @@ public class FunctionalityService {
     public Functionality create(FunctionalityCreateDetails functionalityCreateDetails) {
 
         validateFunctionalityName(functionalityCreateDetails);
+
+        long uniquePropertiesCount = functionalityCreateDetails.getProperties().stream().map(Property::getName).distinct().count();
+        if (uniquePropertiesCount != functionalityCreateDetails.getProperties().size()) {
+            throw new DuplicatedPropertyNameException();
+        }
 
         Functionality functionality = Functionality.builder().name(functionalityCreateDetails.getName())
                 .properties(functionalityCreateDetails.getProperties())

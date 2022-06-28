@@ -11,11 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.NotFoundException;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.FunctionalityNameAlreadyTakenException;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.PropertyOneToOneMappingMismatchException;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.PropertyValueMappingMismatchException;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.PropertyValueTypeMismatchException;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.*;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
@@ -40,7 +36,6 @@ public class ApiExceptionHandler{
     public ApiError httpMessageNotReadableException(HttpMessageNotReadableException ex){
           return apiErrorProcessor.processException("Invalid request body", BAD_REQUEST, ex.getMessage());
     }
-
 
     @ResponseStatus(BAD_REQUEST)
     @ResponseBody
@@ -99,6 +94,13 @@ public class ApiExceptionHandler{
     @ExceptionHandler(NotFoundException.class)
     public ApiError handleNotFoundException(NotFoundException ex) {
         return apiErrorProcessor.processException("resource-not-found", NOT_FOUND, ex);
+    }
+
+    @ResponseStatus(BAD_REQUEST)
+    @ResponseBody
+    @ExceptionHandler(DuplicatedPropertyNameException.class)
+    public ApiError handleDuplicatedPropertyNameException(DuplicatedPropertyNameException ex) {
+        return apiErrorProcessor.processException("duplicated", NOT_FOUND, ex);
     }
 
 

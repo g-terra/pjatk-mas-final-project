@@ -15,23 +15,30 @@ export default function NewDeviceVersion() {
   const [loading, setLoading] = useState(true);
   const [searched, setSearched] = useState("");
   const [displayData, setDisplayData] = useState(data);
+  const [device, setDevice] = useState({});
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const { id } = router.query;
 
   useEffect(() => {
     function fetch() {
-      axios.get(process.env.deviceManufactureApi + '/device-type/' + id)
+      if(router.isReady){
+        axios.get(process.env.deviceManufactureApi + '/device-type/' + router.query['id'])
+        .then((response) => {
+          setDevice(response.data);
+          console.log("response device", response);
+        })
         .catch
         (error => {
           console.log(error);
-          router.push('/device-type/search');
+          router.push('/404');
         }
         )
+      }
     }
     fetch();
-  }, [id]);
+
+  }, [router.isReady]);
 
   const handleSelectionChanged = (selected) => {
     setSelected(selected);
@@ -71,8 +78,8 @@ export default function NewDeviceVersion() {
             <LinearProgress />
           </Collapse>
           <Collapse in={!loading}>
-            <Stack spacing={3}>
-              <Typography variant="h5">Pick functionalites for the new version</Typography>
+            <Stack spacing={3} color="primary.main">
+              <Typography variant="h5" >Pick functionalites for the new version of {device.name}</Typography>
               <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
                 <Box sx={{ display: "flex" }}>
                   <TextField
@@ -98,7 +105,7 @@ export default function NewDeviceVersion() {
                 <Box />
                 <Box />
                 <Box sx={{ display: "flex" }} >
-                  <DeviceNewVersionCreationForm sx={{ width: "100%" }} properties={selected} deviceId={id} ></DeviceNewVersionCreationForm>
+                  <DeviceNewVersionCreationForm sx={{ width: "100%" }} functionalites={selected} deviceId={device.id} ></DeviceNewVersionCreationForm>
                 </Box>
               </Box>
             </Stack>

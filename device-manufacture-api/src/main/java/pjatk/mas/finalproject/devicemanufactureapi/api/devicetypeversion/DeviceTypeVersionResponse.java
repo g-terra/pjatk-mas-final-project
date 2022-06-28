@@ -20,7 +20,7 @@ public class DeviceTypeVersionResponse {
 
     private Long id;
 
-    private String versionUniqueId;
+    private Long versionNumber;
 
     private List<PropertyValue> propertyValues;
 
@@ -35,9 +35,6 @@ public class DeviceTypeVersionResponse {
      * @param deviceTypeVersion DeviceTypeVersion object to be converted
      * @return DeviceTypeVersionResponse
      */
-
-
-
     public static DeviceTypeVersionResponse from(DeviceTypeVersion deviceTypeVersion , DateTimeFormatter dateTimeFormatter) {
 
         Map<Long, String> functionalities = deviceTypeVersion.getFunctionalities().stream().collect(
@@ -47,6 +44,7 @@ public class DeviceTypeVersionResponse {
 
         return DeviceTypeVersionResponse.builder()
                 .id(deviceTypeVersion.getId())
+                .versionNumber(deviceTypeVersion.getVersionNumber())
                 .propertyValues(deviceTypeVersion.getPropertyValues())
                 .functionalities(functionalities)
                 .createDateTime(formattedDate)

@@ -200,8 +200,8 @@ export default function Layout2({ children }
                                 flexGrow: 1,
                                 width: '100%',
                                 position: 'relative',
-                                paddingLeft: 20,
-                                paddingRight: 20,
+                                paddingLeft: 5,
+                                paddingRight: 5,
                                 paddingTop: 15,
                             }
                         }>

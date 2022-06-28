@@ -6,41 +6,34 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import axios from 'axios';
 import { Box } from '@mui/system';
-import { Alert, Collapse, MenuItem, Stack, Switch, TextField } from '@mui/material';
+import { Alert, Collapse, MenuItem, Paper, Stack, Switch, TextField } from '@mui/material';
 import { useRouter } from 'next/router'
-
-
-const initialFormSetup = {
-    functionalityIds: [],
-    requiredProperties: []
-}
+import { Typography } from '@material-ui/core';
 
 export default function DeviceNewVersionCreationForm(props) {
     const [deviceId, setDeviceId] = React.useState(-1);
     const [open, setOpen] = React.useState(false);
-    const [formSetup, setFormSetup] = React.useState(initialFormSetup);
-    const [formFieldState, setFormFieldState] = React.useState({});
     const [showError, setShowError] = React.useState(false);
     const [errors, setErrors] = React.useState([]);
-
+    const router = useRouter()
+    const [formState, setFormState] = React.useState([]);
 
     const resetState = () => {
-        setFormSetup(initialFormSetup);
+        setFormState([]);
     }
-
-    const router = useRouter()
 
     const cleanErrors = () => {
         setErrors([]);
         setShowError(false);
     }
 
-
     const handleClickOpen = () => {
         setOpen(true);
+        resetState()
         setDeviceId(props.deviceId)
-        getrequiredProperties()
+        getRequiredFunctionalityInformation()
     };
+
 
     const handleClose = () => {
         resetState()
@@ -48,19 +41,51 @@ export default function DeviceNewVersionCreationForm(props) {
         setOpen(false);
     };
 
+
+    const handleStateFormCreation = (props) => {
+        const formState = props.map(element => {
+            return {
+                "groupId": element.functionalityId.toString(),
+                "groupName": element.functionalityName,
+                "fields": element.properties.map(property => {
+                    return {
+                        "name": property.name,
+                        "type": property.type,
+                        "value": getDefaultValuesForField(property.type)
+                    }
+                })
+
+            }
+        })
+
+        setFormState(formState)
+    }
+
+    const queryFormValue = (groupId, fieldName) => {
+        const group = formState.find(element => element.groupId === groupId);
+        const field = group.fields.find(element => element.name === fieldName);
+        return field.value;
+    }
+
+    const handleFieldValueChange = (groupId, fieldName, value) => {
+
+        const newFormState = [...formState];
+        const group = newFormState.find(element => element.groupId === groupId);
+        const field = group.fields.find(element => element.name === fieldName);
+        field.value = value;
+
+        setFormState(newFormState)
+    }
+
+
     const handleSave = () => {
-        console.log("formFieldState", formFieldState);
         createNewVersionRequest(router)
     }
 
-    const handleChange = (event) => {
-        console.log(event.target, event.target.value)
-        setFormFieldState({ ...formFieldState, [event.target.id]: event.target.value });
-    }
 
     return (
         <>
-            <Button sx={props.sx} variant="contained" color="primary" onClick={handleClickOpen} disabled={props.properties.length <= 0} >
+            <Button sx={props.sx} variant="contained" color="primary" onClick={handleClickOpen} disabled={props.functionalites.length <= 0} >
                 Next
             </Button>
             <Dialog open={open} onClose={handleClose} maxWidth={'xs'} fullWidth={true} >
@@ -73,11 +98,11 @@ export default function DeviceNewVersionCreationForm(props) {
                         })
                     }
                 </Collapse>
-                <DialogTitle>Property values</DialogTitle>
+                <DialogTitle color="primary.main">Property values</DialogTitle>
                 <DialogContent>
-                    <Stack margin={2} spacing={2}>
-                        {formSetup.requiredProperties.map((property, index) => {
-                            return getField(index, property)
+                    <Stack margin={2} spacing={1}>
+                        {formState.map((group, index) => {
+                            return createFunctionalityGroup(group, index)
                         }
                         )}
                     </Stack>
@@ -90,35 +115,57 @@ export default function DeviceNewVersionCreationForm(props) {
         </>
     );
 
-    function fieldCreationFunctions (){
-        return {
-            "NUMBER": getNumberField,
-            "YES_NO": getYesOrNoField,
-            "TEXT": getTextField
-        }
+
+    function createFunctionalityGroup(group, index) {
+        return (
+            <Box key={index} component={Paper} p={2} >
+                <Stack spacing={2}>
+                    <Typography variant="h6" >{group.groupName}</Typography>
+                    {group.fields.map((field, index) => {
+                        return createField(group.groupId, field, index)
+                    }
+                    )}
+                </Stack>
+            </Box>
+        );
     }
 
 
-    function getField(index, property) {
+    function createField(groupId, field, index) {
 
-        const field = fieldCreationFunctions()[property.type];
-
-        if (field) {
-            return field(index, property)
+        if (field.type === "TEXT") {
+            return getTextField(groupId, field, index)
+        } else if (field.type === "NUMBER") {
+            return getNumberField(groupId, field, index)
+        } else if (field.type === "YES_NO") {
+            return getYesOrNoField(groupId, field, index)
         } else {
-            throw new Error(`${property.type} is not a valid type`)
+            console.log("Unknown field type: " + field.type)
         }
 
     }
 
-    function getYesOrNoField(index, property) {
+    function getDefaultValuesForField(type) {
+        if (type === "TEXT") {
+            return ""
+        } else if (type === "NUMBER") {
+            return 0
+        } else if (type === "YES_NO") {
+            return 'yes'
+        } else {
+            console.log("Unknown field type: " + type)
+        }
+    }
+
+
+    function getYesOrNoField(groupId, field, index) {
         return <Box key={index}>
             <TextField
-                id={property.name}
-                label={property.name}
-                value={formFieldState[property.name]}
+                id={groupId}
+                label={field.name}
+                value={queryFormValue(groupId, field.name)}
                 onChange={(event) => {
-                    setFormFieldState({ ...formFieldState, [property.name]: event.target.value });
+                    handleFieldValueChange(groupId, field.name, event.target.value)
                 }}
                 select
                 fullWidth
@@ -137,13 +184,15 @@ export default function DeviceNewVersionCreationForm(props) {
         </Box>;
     }
 
-    function getNumberField(index, property) {
+    function getNumberField(groupId, field, index) {
         return <Box key={index}>
             <TextField
-                id={property.name}
-                label={property.name}
-                value={formFieldState[property.name]}
-                onChange={handleChange}
+                id={groupId}
+                label={field.name}
+                value={queryFormValue(groupId, field.name)}
+                onChange={(event) => {
+                    handleFieldValueChange(groupId, field.name, event.target.value)
+                }}
                 type="number"
                 margin="normal"
                 variant="outlined"
@@ -151,40 +200,32 @@ export default function DeviceNewVersionCreationForm(props) {
         </Box>;
     }
 
-    function getTextField(index, property) {
+    function getTextField(groupId, field, index) {
         return <Box key={index}>
             <TextField
-                id={property.name}
-                label={property.name}
-                value={formFieldState[property.name]}
-                onChange={handleChange}
+                id={groupId}
+                label={field.name}
+                value={queryFormValue(groupId, field.name)}
+                onChange={(event) => {
+                    handleFieldValueChange(groupId, field.name, event.target.value)
+                }}
                 margin="normal"
                 variant="outlined"
                 fullWidth />
         </Box>;
     }
 
-
-    function getInitialFormFieldsState(properties) {
-        const initialFieldState = {};
-        properties.forEach(property => {
-            initialFieldState[property.name] = "";
-        });
-        return initialFieldState;
-    }
-
-    function getrequiredProperties() {
+    function getRequiredFunctionalityInformation() {
 
         const request = {
-            functionalityIds: [...props.properties]
+            functionalityIds: [...props.functionalites]
         }
 
-        console.log(request)
-
         axios.post(process.env.deviceManufactureApi + '/functionality/required-properties', request).then((response) => {
-            console.log("response", response);
-            setFormSetup(response.data);
-            setFormFieldState(getInitialFormFieldsState(response.data.requiredProperties))
+            console.log("required properties", response.data.requiredProperties);
+
+            handleStateFormCreation(response.data.requiredProperties);
+
         }
         ).catch(
             (error) => {
@@ -193,33 +234,37 @@ export default function DeviceNewVersionCreationForm(props) {
         )
     }
 
+
+
     function createNewVersionRequest(router) {
 
-        const propertyValues = [];
-        Object.entries(formFieldState).forEach(([key, value]) => {
-            propertyValues.push({
-                name: key,
-                value: value
-            })
-        })
+        console.log("form state", formState);
 
+        const values = [].concat.apply([], formState.map(group => {
+            return group.fields.map(field => {
+                return {
+                    parentFunctionalityId: group.groupId,
+                    name: field.name,
+                    value: field.value
+                }
+            })
+        }));
+       
 
         const request = {
             deviceId: deviceId,
-            functionalityIds: [...formSetup.functionalityIds],
-            propertyValues: [...propertyValues]
+            functionalityIds: [...props.functionalites],
+            propertyValues: values
         }
 
-        console.log(request)
+        console.log("request", request);
 
         axios.post(process.env.deviceManufactureApi + '/device-type-version', request).then((response) => {
-            console.log("response", response);
             handleClose()
             router.push('/device-type/search')
 
         }).catch(
             (error) => {
-                console.log("error", error);
                 if (error.response.data.type && error.response.data.type === "validation-error") {
                     setErrors(error.response.data.fieldErrors.map((fieldError) => { return fieldError.message }));
                 } else {

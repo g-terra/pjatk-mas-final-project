@@ -2,14 +2,15 @@ package pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetypeversi
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality.Functionality;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Property;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyType;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyValue;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.PropertyOneToOneMappingMismatchException;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.PropertyValueMappingMismatchException;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality.Functionality;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Property;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyValue;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -34,46 +35,58 @@ public class DeviceTypeVersionValidator {
         );
     }
 
-    private Set<Property> getFunctionalityRequiredProperties(DeviceTypeVersion deviceTypeVersion) {
+    private Map<Long, List<Property>> getFunctionalityRequiredProperties(DeviceTypeVersion deviceTypeVersion) {
         return deviceTypeVersion.getFunctionalities()
                 .stream()
-                .map(Functionality::getProperties)
-                .collect(HashSet::new, HashSet::addAll, HashSet::addAll);
+                .collect(Collectors.toMap(
+                        Functionality::getId,
+                        Functionality::getProperties
+                ));
+
     }
 
-    private void validateAll(Set<Property> requiredProperties, List<PropertyValue> requiredPropertyValues) {
+    private void validateAll(Map<Long, List<Property>> requiredProperties, List<PropertyValue> requiredPropertyValues) {
         validatePropertyMappingSize(requiredProperties, requiredPropertyValues);
         validatePropertiesMappings(requiredProperties, requiredPropertyValues);
-        validatePropertiesConstraints(requiredProperties, requiredPropertyValues);
     }
 
-    private void validatePropertyMappingSize(Set<Property> requiredProperties, List<PropertyValue> requiredPropertyValues) {
-        if (requiredProperties.size() != requiredPropertyValues.size()) {
-            throw new PropertyOneToOneMappingMismatchException();
-        }
-    }
+    private void validatePropertyMappingSize(Map<Long, List<Property>> requiredProperties, List<PropertyValue> requiredPropertyValues) {
+        requiredProperties.keySet().forEach(
+                functionalityId -> {
+                    long valueCount = requiredPropertyValues.stream().filter(
+                            propertyValue -> propertyValue.getParentFunctionalityId() == functionalityId).count();
 
-    private void validatePropertiesMappings(Set<Property> requiredProperties, List<PropertyValue> requiredPropertyValues) {
-        requiredProperties.forEach(property -> checkProperValuePresence(requiredPropertyValues, property));
-    }
-
-    private void validatePropertiesConstraints(Set<Property> requiredProperties, List<PropertyValue> requiredPropertyValues) {
-        Map<String, Property> requiredPropertiesMap = requiredProperties.stream().collect(Collectors.toMap(Property::getName, r -> r));
-        Map<String, String> requiredPropertiesValuesMap = requiredPropertyValues.stream().collect(Collectors.toMap(PropertyValue::getName, PropertyValue::getValue));
-
-        requiredPropertiesMap.keySet().forEach(
-                key -> PropertyType.Validate(requiredPropertiesMap.get(key), requiredPropertiesValuesMap.get(key))
+                    if (requiredProperties.get(functionalityId).size() != valueCount) {
+                        throw new PropertyOneToOneMappingMismatchException();
+                    }
+                }
         );
     }
 
-    private void checkProperValuePresence(List<PropertyValue> requiredPropertyValues, Property property) {
+    private void validatePropertiesMappings(
+            Map<Long, List<Property>> functionalityProperties,
+            List<PropertyValue> providedPropertyValues
+    ) {
+        functionalityProperties.keySet().forEach(
+                functionalityId -> checkRequiredPropertiesPresence(functionalityProperties, providedPropertyValues, functionalityId)
+        );
+    }
 
-        boolean match = requiredPropertyValues.stream()
-                .map(PropertyValue::getName)
-                .anyMatch(n -> Objects.equals(n, property.getName()));
+    private void checkRequiredPropertiesPresence(Map<Long, List<Property>> functionalityProperties, List<PropertyValue> providedPropertyValues, Long functionalityId) {
+        List<Property> requiredProperty = functionalityProperties.get(functionalityId);
 
-        if (!match) {
-            throw new PropertyValueMappingMismatchException(property.getName());
-        }
+        List<PropertyValue> propertyValuesForFunctionality = providedPropertyValues.stream().filter(
+                propertyValue -> propertyValue.getParentFunctionalityId() == functionalityId).collect(Collectors.toList());
+
+        requiredProperty.forEach(
+                property -> checkRequiredPropertyPresence(propertyValuesForFunctionality, property)
+        );
+    }
+
+    private void checkRequiredPropertyPresence(List<PropertyValue> propertyValuesForFunctionality, Property property) {
+
+        propertyValuesForFunctionality.stream().filter(
+                value -> Objects.equals(value.getName(), property.getName())).findFirst().orElseThrow(
+                () -> new PropertyValueMappingMismatchException(property.getName()));
     }
 }

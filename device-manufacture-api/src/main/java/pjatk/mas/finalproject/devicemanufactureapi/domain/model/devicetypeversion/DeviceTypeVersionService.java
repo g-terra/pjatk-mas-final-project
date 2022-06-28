@@ -23,6 +23,21 @@ public class DeviceTypeVersionService {
     private final FunctionalityService functionalityService;
     private final DeviceTypeVersionValidator deviceTypeVersionValidator;
 
+
+    /**
+     * Creates a new device type version and persists it.
+     *
+     * @param createDetails - details of the device type version to be created
+     * @return DeviceTypeVersion - created device type version
+     */
+    @Transactional
+    public DeviceTypeVersion create(DeviceTypeVersionServiceRequest.DeviceTypeVersionCreateDetails createDetails) {
+        DeviceTypeVersion deviceTypeVersion = createNewVersion(createDetails);
+        return persist(deviceTypeVersion);
+    }
+
+
+
     /**
      * Gets all device type by its version id.
      *
@@ -43,17 +58,7 @@ public class DeviceTypeVersionService {
     }
 
 
-    /**
-     * Creates a new device type version and persists it.
-     *
-     * @param createDetails - details of the device type version to be created
-     * @return DeviceTypeVersion - created device type version
-     */
-    @Transactional
-    public DeviceTypeVersion create(DeviceTypeVersionServiceRequest.DeviceTypeVersionCreateDetails createDetails) {
-        DeviceTypeVersion deviceTypeVersion = createNewVersion(createDetails);
-        return persist(deviceTypeVersion);
-    }
+
 
     private DeviceTypeVersion createNewVersion(DeviceTypeVersionServiceRequest.DeviceTypeVersionCreateDetails createDetails) {
         DeviceType deviceType = deviceTypeService.getDeviceType(createDetails.getDeviceId());

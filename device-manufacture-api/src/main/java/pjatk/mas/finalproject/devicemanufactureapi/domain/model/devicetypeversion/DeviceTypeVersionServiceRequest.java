@@ -29,6 +29,5 @@ public class DeviceTypeVersionServiceRequest {
         @Size(min=1 , message = "At least one property value is required")
         private List<PropertyValue> propertyValues ;
 
-
     }
 }

@@ -6,7 +6,6 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality.Fu
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Property;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -16,27 +15,39 @@ import java.util.stream.Collectors;
 @Builder
 public class FunctionalitiesRequiredPropertiesResponse {
 
-    private Set<Long> functionalityIds;
-    private Set<Property> requiredProperties;
+    private List<FunctionalityRequirementsGroup> requiredProperties;
 
     /**
      * Converts Functionality objects to FunctionalityRequiredPropertiesResponse objects.
+     *
      * @param functionalities Functionality objects to be converted
-     * @return List<FunctionalityRequiredPropertiesResponse> list of FunctionalityRequiredPropertiesResponse objects
+     * @return {@link FunctionalitiesRequiredPropertiesResponse} list of FunctionalityRequiredPropertiesResponse objects
      */
     public static FunctionalitiesRequiredPropertiesResponse from(List<Functionality> functionalities) {
-        Set<Long> functionalityIds = functionalities.stream().map(Functionality::getId).collect(Collectors.toSet());
+        List<FunctionalityRequirementsGroup> requiredProperties = functionalities.stream()
+                .map(FunctionalityRequirementsGroup::from)
+                .collect(Collectors.toList());
 
-        Set<Property> requiredProperties = functionalities.stream()
-                .map(Functionality::getProperties)
-                .flatMap(List::stream)
-                .collect(Collectors.toSet());
 
         return FunctionalitiesRequiredPropertiesResponse.builder()
-                .functionalityIds(functionalityIds)
                 .requiredProperties(requiredProperties)
                 .build();
+    }
 
 
+    @Getter
+    @Builder
+    private static class FunctionalityRequirementsGroup {
+        private Long functionalityId;
+        private String functionalityName;
+        private List<Property> properties;
+
+        public static FunctionalityRequirementsGroup from(Functionality functionality) {
+            return FunctionalityRequirementsGroup.builder()
+                    .functionalityId(functionality.getId())
+                    .functionalityName(functionality.getName())
+                    .properties(functionality.getProperties())
+                    .build();
+        }
     }
 }

@@ -16,6 +16,7 @@ import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype.Devic
 import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetypeversion.DeviceTypeVersionService;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality.Functionality;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.model.functionality.FunctionalityService;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.types.Property;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyType;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyValue;
 
@@ -92,12 +93,16 @@ public class SampleDataInitializer implements CommandLineRunner {
     }
 
     private List<PropertyValue> getRequiredProperties(List<Long> randoFunctionalities) {
-        return randoFunctionalities.stream()
+
+        Map<Long, List<Property>> requiredPropertiesPerFuncId = randoFunctionalities.stream()
                 .map(functionalityService::getFunctionality)
-                .map(Functionality::getProperties)
-                .map(
-                        properties -> properties.stream()
+                .collect(
+                        Collectors.toMap(Functionality::getId, Functionality::getProperties));
+
+        return requiredPropertiesPerFuncId.entrySet().stream().map(
+                        entry -> entry.getValue().stream()
                                 .map(property -> PropertyValue.builder()
+                                        .parentFunctionalityId(entry.getKey())
                                         .Name(property.getName())
                                         .value(property.getType() == PropertyType.YES_NO ? "yes" : String.valueOf(faker.random().nextInt(0, 100)))
                                         .build())

@@ -14,6 +14,9 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class PropertyValue {
 
+    @NotNull(message = "Parent functionality id cannot be null")
+    private long parentFunctionalityId;
+
     @NotEmpty(message = "Name cannot be empty")
     @NotNull(message = "Name cannot be null")
     private String Name;
@@ -21,4 +24,5 @@ public class PropertyValue {
     @NotEmpty(message = "Value cannot be empty")
     @NotNull(message = "value cannot be null")
     private String value;
+
 }
