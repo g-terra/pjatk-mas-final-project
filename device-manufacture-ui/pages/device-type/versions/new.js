@@ -51,6 +51,7 @@ export default function NewDeviceVersion() {
       }
       );
     }
+    fetch();
   }, [refresh]);
 
   const handleCreatedFunctionalitySuccessfully = () => {

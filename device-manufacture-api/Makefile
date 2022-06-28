@@ -7,10 +7,8 @@ start-local:build
 build:
 	mvn clean verify
 
-stop:
+stop-db:
 	docker-compose down
 
-up:
+start-db:
 	docker-compose up -d
-
-start-db: up
