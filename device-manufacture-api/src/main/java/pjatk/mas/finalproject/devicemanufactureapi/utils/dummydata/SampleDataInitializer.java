@@ -90,6 +90,12 @@ public class SampleDataInitializer implements CommandLineRunner {
                             .build();
                 }
         ).forEach(deviceTypeVersionService::create);
+
+        deviceTypeService.getAllDevices().forEach(deviceType -> {
+            deviceTypeService.setDeviceAsVersioned(deviceType.getId());
+        });
+
+
     }
 
     private List<PropertyValue> getRequiredProperties(List<Long> randoFunctionalities) {
