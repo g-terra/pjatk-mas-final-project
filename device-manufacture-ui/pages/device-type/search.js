@@ -20,6 +20,7 @@ export default function Search() {
   });
 
   function handlePageParamsChanged(params) {
+    setLoading(true);
     setParams(params);
     setRefresh(refresh + 1);
   }
@@ -30,15 +31,18 @@ export default function Search() {
       search: search,
       pageNumber: 0,
     });
-    setRefresh(refresh + 1);
   }
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       setLoading(true);
       requestData();
-    }, 350);
+    }, 400);
     return () => clearTimeout(delayDebounceFn)
+  }, [pageParams.search]);
+
+  useEffect(() => {
+    requestData();
   }, [refresh]);
 
   return (
@@ -84,7 +88,7 @@ export default function Search() {
   function requestData() {
     axios.get(process.env.deviceManufactureApi + `/device-type?pageNumber=${pageParams.pageNumber}&pageSize=${pageParams.pageSize}&name=${pageParams.search}`).then(response => {
       setData(response.data.content);
-      const newPageParams = {...pageParams}
+      const newPageParams = { ...pageParams }
       setLoading(false);
 
       newPageParams.totalPages = response.data.totalPages;
