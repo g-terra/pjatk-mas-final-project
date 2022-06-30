@@ -3,6 +3,7 @@ package pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetypeversi
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -16,5 +17,7 @@ public interface DeviceTypeVersionRepository extends JpaRepository<DeviceTypeVer
      * @return Optional<DeviceTypeVersion> - optional latest device type version
      */
     Optional<DeviceTypeVersion> findFirstByDeviceTypeIdOrderByCreateDateTimeDesc(Long deviceTypeId);
+
+    List<DeviceTypeVersion> findByDeviceTypeId(Long deviceTypeId);
 
 }

@@ -97,7 +97,7 @@ public class DeviceTypeVersionService {
 
 
     @Transactional
-    public void deleteDeviceTypeVersion(Long id) {
+    public void deprecateDeviceTypeVersionByVersionId(Long id) {
         Optional<DeviceTypeVersion> optionalDeviceTypeVersion = deviceTypeVersionRepository.findById(id);
         if (optionalDeviceTypeVersion.isPresent()) {
             DeviceTypeVersion deviceTypeVersion = optionalDeviceTypeVersion.get();
@@ -105,6 +105,17 @@ public class DeviceTypeVersionService {
             deviceTypeVersionRepository.save(deviceTypeVersion);
         } else {
             throw new NotFoundException(id);
+        }
+    }
+
+    @Transactional
+    public void deprecateAllDeviceTypeVersionByDeviceTypeId(Long deviceTypeId) {
+
+        List<DeviceTypeVersion> versionsByDeviceTypeId = deviceTypeVersionRepository.findByDeviceTypeId(deviceTypeId);
+
+        for (DeviceTypeVersion version : versionsByDeviceTypeId) {
+            version.setDeviceTypeVersionStatus(DeviceTypeVersionStatus.DEPRECATED);
+            deviceTypeVersionRepository.save(version);
         }
 
     }

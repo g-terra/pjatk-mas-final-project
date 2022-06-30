@@ -6,6 +6,7 @@ import React from "react";
 import Link from "next/link";
 import DeviceDetailViewer from "./DeviceDetailViewer";
 import DeleteVersionDialog from "./versions/DeleteVersionDialog";
+import DeleteDeviceTypeDialog from "./DeleteDeviceTypeDialog";
 
 export function DevicesTableRow(props) {
     const [open, setOpen] = React.useState(false);
@@ -27,10 +28,7 @@ export function DevicesTableRow(props) {
                 <TableCell width={200} align="center">{props.data.deviceTypeName}</TableCell>
                 <TableCell width={200} align="center">{props.data.powerConsumption}</TableCell>
                 <TableCell width={200} align="center">
-                    <Chip
-                        label={props.data.deviceTypeStatus}
-                        color={props.data.deviceTypeStatus === "VERSIONED" ? "primary" : "secondary"}
-                    />
+                    {getStatusChip(props.data.deviceTypeStatus)}
                 </TableCell>
                 <TableCell width={200} align="center">
                     <Link href={`/device-type/versions/new?id=${props.data.deviceTypeId}`}>
@@ -40,6 +38,15 @@ export function DevicesTableRow(props) {
                             </Button>
                         </Tooltip>
                     </Link>
+                </TableCell>
+                <TableCell padding="checkbox">
+                    {
+                        props.data.status !== "DEPRECATED" ?
+                            <DeleteDeviceTypeDialog
+                                deviceId={props.data.deviceTypeId}
+                                onRefeshRequired={props.onRefeshRequired} />
+                            : null
+                    }
                 </TableCell>
             </TableRow>
             <TableRow key={props.data.deviceTypeId + "-SUB"} bgcolor='#f2f7fa' >
@@ -64,7 +71,7 @@ export function DevicesTableRow(props) {
                                         <TableRow key={index}>
                                             <TableCell >{version.versionNumber}</TableCell>
                                             <TableCell>
-                                                {getDeviceVersionStatusChip(version)}
+                                                {getStatusChip(version.status)}
                                             </TableCell>
                                             <TableCell>{version.createDateTime}</TableCell>
                                             <TableCell padding="checkbox">
@@ -91,26 +98,26 @@ export function DevicesTableRow(props) {
     );
 }
 
-function getDeviceVersionStatusChip(version) {
+function getStatusChip(status) {
 
-    if (version.status === "AVAILABLE") {
+    if (status === "AVAILABLE" || status === "VERSIONED")  {
         return (
             <Chip
-                label={version.status}
+                label={status}
                 color="primary"
             />
         );
-    } else if (version.status === "DEPRECATED") {
+    } else if (status === "DEPRECATED") {
         return (
             <Chip
-                label={version.status}
+                label={status}
                 color="warning"
             />
         );
-    }
+    } 
     return (
         <Chip
-            label={version.status}
+            label={status}
             color="default"
         />
     );

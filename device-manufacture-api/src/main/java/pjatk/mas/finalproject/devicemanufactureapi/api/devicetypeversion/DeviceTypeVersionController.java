@@ -79,7 +79,7 @@ public class DeviceTypeVersionController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteDeviceTypeVersion(@PathVariable Long id) {
-        deviceTypeVersionService.deleteDeviceTypeVersion(id);
+        deviceTypeVersionService.deprecateDeviceTypeVersionByVersionId(id);
     }
 
 

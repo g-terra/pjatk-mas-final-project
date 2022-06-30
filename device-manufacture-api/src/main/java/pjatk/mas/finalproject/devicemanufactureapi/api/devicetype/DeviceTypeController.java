@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype.DeviceType;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype.DeviceTypeService;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetypeversion.DeviceTypeVersionService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -28,8 +29,8 @@ import static pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetyp
 public class DeviceTypeController {
 
     private final DeviceTypeService deviceTypeService;
-
     private final DateTimeFormatter dateTimeFormatter;
+    private final DeviceTypeVersionService deviceTypeVersionService;
 
 
     /**
@@ -74,6 +75,17 @@ public class DeviceTypeController {
         return DeviceTypeResponse.from(deviceType);
     }
 
+
+    /**
+     * endpoint to deprecate device type with all its versions.
+     * @param id - id of device type to be deprecated
+     */
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void deprecateDeviceType(@PathVariable Long id) {
+        deviceTypeService.deprecateDevice(id);
+        deviceTypeVersionService.deprecateAllDeviceTypeVersionByDeviceTypeId(id);
+    }
 
     /**
      * Data transformation object for handling required client data on creating new device type endpoint.

@@ -9,11 +9,10 @@ import axios from 'axios';
 import { Cancel, Delete } from '@mui/icons-material';
 
 
-export default function DeleteVersionDialog(props) {
+export default function DeleteDeviceTypeDialog(props) {
     const [open, setOpen] = React.useState(false);
     const [showError, setShowError] = React.useState(false);
     const [errors, setErrors] = React.useState([]);
-    const [onRefesh, setOnRefesh] = React.useState(props.onRefresh);
 
 
     const cleanErrors = () => {
@@ -30,7 +29,7 @@ export default function DeleteVersionDialog(props) {
 
 
     const handleDeprecate = () => {
-        axios.delete(process.env.deviceManufactureApi + '/device-type-version/' + props.version.versionId)
+        axios.delete(process.env.deviceManufactureApi + '/device-type/' + props.deviceId)
             .then((response) => {
                 console.log("response", response);
                 props.onRefeshRequired(OldKey => OldKey + 1);
@@ -47,7 +46,7 @@ export default function DeleteVersionDialog(props) {
 
     return (
         <>
-            <Tooltip title="Deprecate version">
+            <Tooltip title="Deprecate device">
                 <IconButton sx={props.sx} color="warning"
                     aria-label="expand row"
                     size="small"
@@ -65,14 +64,14 @@ export default function DeleteVersionDialog(props) {
                         })
                     }
                 </Collapse>
-                <DialogTitle style={{ color: '#ed8c02' }}>You are deprecatint a device type version!</DialogTitle>
+                <DialogTitle style={{ color: '#ed8c02' }}>You are depracating a device type!</DialogTitle>
                 <DialogContent>
                     <Stack sx={{ marginTop: 2, width: '100%' }} spacing={2}>
                         <Typography variant="body1">
-                            Are you sure you want to set this version to deprecated?
+                            Are you sure you want to set this device type to deprecated?
                         </Typography>
                         <Typography variant="body2">
-                            This version will no longer be available for usage however it will still be available in the device type history.                        </Typography>
+                            This device type will no longer be available for usage however it will still be available in the device type history.                        </Typography>
                     </Stack>
                 </DialogContent>
                 <DialogActions>

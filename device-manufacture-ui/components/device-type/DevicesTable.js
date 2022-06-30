@@ -30,7 +30,8 @@ export default function DevicesTable(props) {
                         <TableCell key={3} align="center">Name</TableCell>
                         <TableCell key={4} align="center">Power Comsumption</TableCell>
                         <TableCell key={5} align="center">Status</TableCell>
-                        <TableCell key={6} align="center"></TableCell>
+                        <TableCell padding="checkbox"></TableCell>
+                        <TableCell padding="checkbox"></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

@@ -77,4 +77,10 @@ public class DeviceTypeService {
         }
     }
 
+    @Transactional
+    public void deprecateDevice(Long id) {
+        DeviceType deviceType = getDeviceType(id);
+        deviceType.setDeviceTypeStatus(DeviceTypeStatus.DEPRECATED);
+        deviceTypeRepository.save(deviceType);
+    }
 }
