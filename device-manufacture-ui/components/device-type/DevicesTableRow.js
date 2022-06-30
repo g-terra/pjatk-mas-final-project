@@ -4,9 +4,10 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import React from "react";
 import Link from "next/link";
-import DeviceDetailViewer from "./DeviceDetailViewer";
+import DeviceVersionDetailViewer from "./versions/DeviceVersionDetailViewer";
 import DeleteVersionDialog from "./versions/DeleteVersionDialog";
 import DeleteDeviceTypeDialog from "./DeleteDeviceTypeDialog";
+import DeviceDetailViewer from "./DeviceDetailViewer";
 
 export function DevicesTableRow(props) {
     const [open, setOpen] = React.useState(false);
@@ -27,10 +28,13 @@ export function DevicesTableRow(props) {
                 <TableCell width={200} align="center">{props.data.deviceTypeId}</TableCell>
                 <TableCell width={200} align="center">{props.data.deviceTypeName}</TableCell>
                 <TableCell width={200} align="center">{props.data.powerConsumption}</TableCell>
-                <TableCell width={200} align="center">
+                <TableCell padding="checkbox" align="center">
                     {getStatusChip(props.data.deviceTypeStatus)}
                 </TableCell>
-                <TableCell width={200} align="center">
+                <TableCell padding="checkbox" align="center">
+                    <DeviceDetailViewer data={props.data} ></DeviceDetailViewer>
+                </TableCell>
+                <TableCell padding="checkbox" align="center">
                     <Link href={`/device-type/versions/new?id=${props.data.deviceTypeId}`}>
                         <Tooltip title="Create new version">
                             <Button>
@@ -75,7 +79,7 @@ export function DevicesTableRow(props) {
                                             </TableCell>
                                             <TableCell>{version.createDateTime}</TableCell>
                                             <TableCell padding="checkbox">
-                                                <DeviceDetailViewer data={version} />
+                                                <DeviceVersionDetailViewer data={version} />
                                             </TableCell>
                                             <TableCell padding="checkbox">
                                                 {
@@ -100,7 +104,7 @@ export function DevicesTableRow(props) {
 
 function getStatusChip(status) {
 
-    if (status === "AVAILABLE" || status === "VERSIONED")  {
+    if (status === "AVAILABLE" || status === "VERSIONED") {
         return (
             <Chip
                 label={status}
@@ -114,7 +118,7 @@ function getStatusChip(status) {
                 color="warning"
             />
         );
-    } 
+    }
     return (
         <Chip
             label={status}

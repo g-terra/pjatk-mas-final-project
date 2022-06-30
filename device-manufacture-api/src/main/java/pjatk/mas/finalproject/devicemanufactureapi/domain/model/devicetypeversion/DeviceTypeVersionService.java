@@ -69,7 +69,9 @@ public class DeviceTypeVersionService {
     }
 
     private DeviceTypeVersion persist(DeviceTypeVersion deviceTypeVersion) {
-        return deviceTypeVersionRepository.save(deviceTypeVersion);
+        DeviceTypeVersion newVersion = deviceTypeVersionRepository.save(deviceTypeVersion);
+        deviceTypeService.setDeviceAsVersioned(newVersion.getDeviceType().getId());
+        return newVersion;
     }
 
 

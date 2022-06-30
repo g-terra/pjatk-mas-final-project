@@ -22,6 +22,7 @@ import java.util.List;
 @Setter
 @Entity(name = "Employee")
 @Table(name = "employees")
+@EntityListeners(EmployeeListener.class)
 public class Employee {
 
     @Id
@@ -34,7 +35,6 @@ public class Employee {
     @Column(nullable = false)
     private String phone;
 
-    @NotNull
     @CreationTimestamp
     @Column(name = "employement_date")
     private LocalDateTime employmentDate;
@@ -42,11 +42,11 @@ public class Employee {
 
     @ElementCollection
     @CollectionTable(name = "employee_paychecks")
-    private List<Paycheck> paychecks = new java.util.ArrayList<>();
+    private List<Paycheck> paychecks;
 
 
     @OneToMany(mappedBy = "advisor", orphanRemoval = true)
-    private List<OrderItem> advised = new java.util.ArrayList<>();
+    private List<OrderItem> advised;
 
 
     @ManyToOne(optional = false)
@@ -58,9 +58,8 @@ public class Employee {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    @NotNull
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "team_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "team_id" )
     private Team team;
 
 }

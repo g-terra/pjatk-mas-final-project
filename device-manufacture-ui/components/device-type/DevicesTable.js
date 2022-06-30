@@ -25,18 +25,19 @@ export default function DevicesTable(props) {
             <Table aria-label="collapsible table">
                 <TableHead>
                     <TableRow>
-                        <TableCell key={1} align="center"></TableCell>
-                        <TableCell key={2} align="center">Id</TableCell>
-                        <TableCell key={3} align="center">Name</TableCell>
-                        <TableCell key={4} align="center">Power Comsumption</TableCell>
-                        <TableCell key={5} align="center">Status</TableCell>
-                        <TableCell padding="checkbox"></TableCell>
-                        <TableCell padding="checkbox"></TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center">Id</TableCell>
+                        <TableCell align="center">Name</TableCell>
+                        <TableCell align="center">Power Comsumption</TableCell>
+                        <TableCell width={150} align="center">Status</TableCell>
+                        <TableCell align="center" ></TableCell>
+                        <TableCell align="center" ></TableCell>
+                        <TableCell align="center" ></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {props.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((entry) => (
-                        <DevicesTableRow key={entry.deviceTypeId} data={entry}  onRefeshRequired={props.onRefeshRequired} />
+                        <DevicesTableRow key={entry.deviceTypeId} data={entry} onRefeshRequired={props.onRefeshRequired} />
                     ))}
                 </TableBody>
             </Table>

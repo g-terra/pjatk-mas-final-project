@@ -51,8 +51,6 @@ public class DeviceTypeVersionController {
 
         DeviceTypeVersion deviceTypeVersion = deviceTypeVersionService.create(deviceTypeVersionCreateDetails);
 
-        deviceTypeService.setDeviceAsVersioned(createDeviceTypeVersionRequest.getDeviceId());
-
         return DeviceTypeVersionResponse.from(deviceTypeVersion, dateTimeFormatter);
     }
 

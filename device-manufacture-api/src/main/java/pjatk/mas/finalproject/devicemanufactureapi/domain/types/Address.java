@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @Embeddable
+@ToString
 public class Address {
 
     @NotNull
@@ -22,8 +23,7 @@ public class Address {
     @Column(name = "building_number", nullable = false)
     private String buildingNumber;
 
-    @Column(name = "flat_number", nullable = false)
-    @NotNull
+    @Column(name = "flat_number")
     private String flatNumber;
 
     @NotNull
@@ -33,5 +33,7 @@ public class Address {
     @NotNull
     @Column(name = "city", nullable = false)
     private String City;
+
+
 
 }

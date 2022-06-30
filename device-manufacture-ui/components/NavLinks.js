@@ -1,10 +1,16 @@
-import { Category, Dashboard, Inventory, Logout, Search } from "@mui/icons-material";
+import { Category, Dashboard, Inventory, Logout, ManageAccounts, Search } from "@mui/icons-material";
 
 export const navLinks = [
     {
         name: "Dashboard",
         path: "/",
         icon: <Dashboard />
+
+    },
+    {
+        name: "Management",
+        path: "/",
+        icon: <ManageAccounts />
 
     },
     {
@@ -27,4 +33,5 @@ export const navLinks = [
         path: "/logout",
         icon: <Logout />
     }
+    
 ];

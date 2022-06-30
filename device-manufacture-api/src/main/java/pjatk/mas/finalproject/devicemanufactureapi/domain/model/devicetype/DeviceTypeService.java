@@ -3,8 +3,8 @@ package pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.NotFoundException;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.FunctionalityNameAlreadyTakenException;
+import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.NotFoundException;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -82,5 +82,9 @@ public class DeviceTypeService {
         DeviceType deviceType = getDeviceType(id);
         deviceType.setDeviceTypeStatus(DeviceTypeStatus.DEPRECATED);
         deviceTypeRepository.save(deviceType);
+    }
+
+    public DeviceType findById(Long deviceTypeId) {
+        return deviceTypeRepository.findById(deviceTypeId).orElseThrow(() -> new NotFoundException(deviceTypeId));
     }
 }

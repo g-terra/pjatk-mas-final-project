@@ -36,7 +36,7 @@ create table factories
         primary key,
     city            varchar(255) not null,
     building_number varchar(255) not null,
-    flat_number     varchar(255) not null,
+    flat_number     varchar(255) null,
     street          varchar(255) not null,
     zip             varchar(255) not null
 );
@@ -82,7 +82,10 @@ create table teams
 (
     id                    bigint auto_increment
         primary key,
-    target_device_type_id bigint not null,
+    team_name             varchar(255) not null,
+    target_device_type_id bigint       not null,
+    constraint UK_dsqu2wx93en6lbl2bnrjy7kol
+        unique (team_name),
     constraint FKc8fneu7fhgy1nfta9p8the69
         foreign key (target_device_type_id) references device_types (device_type_id)
 );
@@ -120,9 +123,9 @@ create table employees
 (
     id               bigint auto_increment
         primary key,
-    employement_date datetime(6)  not null,
+    employement_date datetime(6)  null,
     phone            varchar(255) not null,
-    team_id          bigint       not null,
+    team_id          bigint       null,
     user_id          bigint       not null,
     factory_id       bigint       not null,
     constraint UK_j2dmgsma6pont6kf7nic9elpd
@@ -153,7 +156,7 @@ create table orders
     placement_date  datetime(6)  not null,
     city            varchar(255) not null,
     building_number varchar(255) not null,
-    flat_number     varchar(255) not null,
+    flat_number     varchar(255) null,
     street          varchar(255) not null,
     zip             varchar(255) not null,
     shipping_date   datetime(6)  null,

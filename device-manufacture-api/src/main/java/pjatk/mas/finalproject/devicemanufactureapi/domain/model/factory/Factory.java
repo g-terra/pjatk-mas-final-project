@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Entity(name = "Factory")
 @Table(name = "factories")
+@EntityListeners(FactoryListener.class)
 public class Factory {
 
     @Id

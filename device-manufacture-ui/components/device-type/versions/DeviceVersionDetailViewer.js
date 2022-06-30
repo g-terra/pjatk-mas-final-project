@@ -4,10 +4,10 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Box, Chip, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, Chip, Tooltip, Typography } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
 
-export default function DeviceDetailViewer(props) {
+export default function DeviceVersionDetailViewer(props) {
     const [open, setOpen] = React.useState(false);
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('sm');
@@ -33,19 +33,19 @@ export default function DeviceDetailViewer(props) {
 
     return (
         <React.Fragment>
-            <Tooltip title={"see more info"} >
-
-                <IconButton onClick={handleClickOpen}>
+           <Tooltip title={"see more info"} >
+                <Button onClick={handleClickOpen}>
                     <InfoOutlined />
-                </IconButton>
+                </Button>
             </Tooltip>
             <Dialog
                 fullWidth={fullWidth}
                 maxWidth='xs'
                 open={open}
-                onClose={handleClose}>
-                {createTeamsArea()}
-                {createEmplouyeesArea()}
+                onClose={handleClose}
+            >
+                {createFunctionalitiesArea()}
+                {createPropertiesArea()}
                 <DialogActions>
                     <Button onClick={handleClose}>Close</Button>
                 </DialogActions>
@@ -53,35 +53,32 @@ export default function DeviceDetailViewer(props) {
         </React.Fragment>
     );
 
-
-
-    function createEmplouyeesArea() {
+    function createPropertiesArea() {
         return <Box>
-            <DialogTitle>Teams selling this device</DialogTitle>
+            <DialogTitle>Properties</DialogTitle>
             <DialogContent dividers>
-                {data.employees.map((employee, index) => {
+                {Object.entries(data.propertyValues).map(([key, value], index) => {
                     return (
-                        <Chip
-                            key={index}
-                            sx={{ margin: .5 }}
-                            label={employee}
-                            color="success" />
+                        <Typography key={index} variant="body1" gutterBottom>
+                            {key}: {value}
+                        </Typography>
+
                     );
                 })}
             </DialogContent>
         </Box>;
     }
 
-    function createTeamsArea() {
+    function createFunctionalitiesArea() {
         return <Box>
-            <DialogTitle>Employees seeling the device</DialogTitle>
+            <DialogTitle>Functionalities</DialogTitle>
             <DialogContent dividers>
-                {data.teams.map((team, index) => {
+                {data.functionalities.map((functionality, index) => {
                     return (
                         <Chip
                             key={index}
                             sx={{ margin: .5 }}
-                            label={team}
+                            label={functionality}
                             color="success" />
                     );
                 })}

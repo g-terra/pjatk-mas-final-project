@@ -52,4 +52,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
     private Set<Role> roles = new java.util.LinkedHashSet<>();
 
+
+    public String getFullName() {
+        return name + " " + surname;
+    }
+
 }

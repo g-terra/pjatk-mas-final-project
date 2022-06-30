@@ -40,6 +40,7 @@ public class FunctionalityService {
         Functionality functionality = Functionality.builder().name(functionalityCreateDetails.getName())
                 .properties(functionalityCreateDetails.getProperties())
                 .build();
+
         return functionalityRepository.save(functionality);
 
     }
