@@ -37,8 +37,7 @@ public class DeviceTypeVersionSummaryResponse {
                 .map(Functionality::getName)
                 .collect(Collectors.toList());
 
-        Map<String, String> propertyValues = deviceTypeVersion.getPropertyValues().stream().collect(
-                Collectors.toMap(PropertyValue::getName, PropertyValue::getValue));
+        Map<String, String> propertyValues = getPropertyValues(deviceTypeVersion);
 
         return DeviceTypeVersionSummaryResponse.builder()
                 .deviceTypeId(deviceTypeVersion.getDeviceType().getId())
@@ -49,6 +48,21 @@ public class DeviceTypeVersionSummaryResponse {
                 .status(deviceTypeVersion.getDeviceTypeVersionStatus().name())
                 .propertyValues(propertyValues)
                 .build();
+    }
+
+    private static Map<String, String> getPropertyValues(DeviceTypeVersion deviceTypeVersion) {
+        return deviceTypeVersion.getPropertyValues().stream().collect(
+                Collectors.toMap(propertyValue -> {
+
+                    String functionalityName = deviceTypeVersion.getFunctionalities()
+                            .stream()
+                            .filter(f -> f.getId().equals(propertyValue.getParentFunctionalityId()))
+                            .findFirst()
+                            .map(Functionality::getName).orElseThrow(() -> new IllegalStateException("Functionality not found"));
+
+                    return "(" + functionalityName + ") "+ propertyValue.getName();
+
+                }, PropertyValue::getValue));
     }
 
     /**
