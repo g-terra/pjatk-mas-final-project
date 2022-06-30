@@ -21,4 +21,11 @@ public class Role {
     @Column(nullable = false, unique = true)
     private String name;
 
+    public enum RoleName {
+        DEFAULT,
+        EMPLOYEE,
+        CLIENT,
+        OWNER
+    }
+
 }
