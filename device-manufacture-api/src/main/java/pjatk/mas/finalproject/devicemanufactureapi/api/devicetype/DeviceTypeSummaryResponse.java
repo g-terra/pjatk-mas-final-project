@@ -3,7 +3,7 @@ package pjatk.mas.finalproject.devicemanufactureapi.api.devicetype;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.data.domain.Page;
 import pjatk.mas.finalproject.devicemanufactureapi.api.devicetypeversion.DeviceTypeVersionSummaryResponse;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype.DeviceType;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.model.employee.Employee;
@@ -42,6 +42,14 @@ public class DeviceTypeSummaryResponse {
         return deviceTypes.stream()
                 .map(deviceType -> mapToDeviceTypeSummaryResponse(deviceType, dateTimeFormatter))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Converts Page of device types to page of device type summaries.
+     * @param deviceTypes Page of device types to be converted to page of device type summaries.
+     */
+    public static Page<DeviceTypeSummaryResponse> from(Page<DeviceType> deviceTypes, DateTimeFormatter dateTimeFormatter) {
+        return deviceTypes.map(deviceType -> mapToDeviceTypeSummaryResponse(deviceType, dateTimeFormatter));
     }
 
 

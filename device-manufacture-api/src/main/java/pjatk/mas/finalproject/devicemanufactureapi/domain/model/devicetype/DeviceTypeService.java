@@ -2,6 +2,10 @@ package pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.FunctionalityNameAlreadyTakenException;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.exceptions.NotFoundException;
@@ -25,6 +29,7 @@ public class DeviceTypeService {
 
     /**
      * Creates a new device type and persists it.
+     *
      * @param createDetails - details required for creating a new device type
      * @return DeviceType - created device type
      */
@@ -43,6 +48,7 @@ public class DeviceTypeService {
 
     /**
      * Gets all device types.
+     *
      * @return List<DeviceType> - all device types
      * @throws {@link NotFoundException} - if no device types are found
      */
@@ -50,8 +56,25 @@ public class DeviceTypeService {
         return deviceTypeRepository.findAll();
     }
 
+
+    /**
+     * Gets all device types divided into pages.
+     * @param pageNumber - the number of page to be returned
+     * @param pageSize - the number of items to be present in a page
+     * @param name - the name of the device type to be searched for
+     *             - if null or blank, all device types are returned(paged)
+     * @return Page<DeviceType> - all device types
+     */
+    public Page<DeviceType> getAllDevices(String name, int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("id"));
+        return deviceTypeRepository.findAllByNameContainingIgnoreCase(name, pageable);
+
+    }
+
+
     /**
      * Gets device type by its id.
+     *
      * @param deviceTypeId - id of the device type to be retrieved
      * @return DeviceType - device type with the given id
      */
@@ -61,6 +84,7 @@ public class DeviceTypeService {
 
     /**
      * Updates status of a device type to versioned based its id.
+     *
      * @param deviceTypeId - id of the device type to be updated
      */
     public void setDeviceAsVersioned(Long deviceTypeId) {

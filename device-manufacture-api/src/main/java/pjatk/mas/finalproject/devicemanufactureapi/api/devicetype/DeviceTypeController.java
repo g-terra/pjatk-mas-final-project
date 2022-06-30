@@ -3,6 +3,7 @@ package pjatk.mas.finalproject.devicemanufactureapi.api.devicetype;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype.DeviceTypeServiceRequests.DeviceTypeCreateDetails;
@@ -54,12 +54,15 @@ public class DeviceTypeController {
 
 
     /**
-     * Get endpoint for listing all device types.
+     * Get endpoint for listing all device types paged.
      * @return List<DeviceTypeSummaryResponse> - list of device type summaries for all device types
      */
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public List<DeviceTypeSummaryResponse> list() {
-        List<DeviceType> allDevices = deviceTypeService.getAllDevices();
+    public Page<DeviceTypeSummaryResponse> list(
+            @RequestParam @Min(0) @Max(100) int pageNumber,
+            @RequestParam @Min(0) @Max(100) int pageSize,
+            @RequestParam(required = false , defaultValue = "") String name) {
+        Page<DeviceType> allDevices = deviceTypeService.getAllDevices(name , pageNumber, pageSize);
         return DeviceTypeSummaryResponse.from(allDevices,dateTimeFormatter);
     }
 

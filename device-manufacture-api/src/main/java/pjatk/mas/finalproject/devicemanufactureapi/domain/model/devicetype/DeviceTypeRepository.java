@@ -1,5 +1,7 @@
 package pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,5 +18,9 @@ public interface DeviceTypeRepository extends JpaRepository<DeviceType, Long> {
      * @return boolean - true if device type with the given name exists, false otherwise
      */
     boolean existsByName(String name);
+
+    Page<DeviceType> findAll(Pageable pageable);
+
+    Page<DeviceType> findAllByNameContainingIgnoreCase(String text, Pageable pageable);
 
 }

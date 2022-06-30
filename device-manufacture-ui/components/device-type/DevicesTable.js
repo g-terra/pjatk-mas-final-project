@@ -3,20 +3,19 @@ import axios from "axios";
 import React from "react";
 import { DevicesTableRow } from "./DevicesTableRow";
 
-const rowsPerPageBase = 8
+
 
 export default function DevicesTable(props) {
 
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(rowsPerPageBase);
 
     const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+        const newPageParams = { ...props.pageParams, pageNumber: newPage };
+        props.onPageParamsChanged(newPageParams);
     };
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
+    const handlePageSizeChange = (event) => {
+        const newPageParams = { ...props.pageParams, pageSize: +event.target.value };
+        props.onPageParamsChanged(newPageParams);
     };
 
 
@@ -36,19 +35,19 @@ export default function DevicesTable(props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((entry) => (
+                    {props.data.map((entry) => (
                         <DevicesTableRow key={entry.deviceTypeId} data={entry} onRefeshRequired={props.onRefeshRequired} />
                     ))}
                 </TableBody>
             </Table>
             <TablePagination
-                rowsPerPageOptions={[rowsPerPageBase, rowsPerPageBase * 2, rowsPerPageBase * 4]}
+                rowsPerPageOptions={[8,16,32]}
                 component="div"
-                count={props.data.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
+                count={props.pageParams.totalElements}
+                rowsPerPage={props.pageParams.pageSize}
+                page={props.pageParams.pageNumber}
                 onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                onRowsPerPageChange={handlePageSizeChange}
             />
         </TableContainer>
     );

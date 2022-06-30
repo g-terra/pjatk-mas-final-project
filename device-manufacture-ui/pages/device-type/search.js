@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { Box, Collapse, LinearProgress, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
@@ -9,20 +10,35 @@ export default function Search() {
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searched, setSearched] = useState("");
-  const [displayData, setDisplayData] = useState(data);
-
   const [refresh, setRefresh] = useState(0);
+  const [pageParams, setParams] = useState({
+    pageNumber: 0,
+    pageSize: 8,
+    search: "",
+    totalPages: 0,
+    totalElements: 0,
+  });
+
+  function handlePageParamsChanged(params) {
+    setParams(params);
+    setRefresh(refresh + 1);
+  }
+
+  function handleSearchChanged(search) {
+    setParams({
+      ...pageParams,
+      search: search,
+      pageNumber: 0,
+    });
+    setRefresh(refresh + 1);
+  }
 
   useEffect(() => {
-    axios.get(process.env.deviceManufactureApi + "/device-type").then(response => {
-      setData(response.data);
-      setDisplayData(response.data);
-      setLoading(false);
-    }
-    ).catch(error => {
-      console.log(error);
-    });
+    const delayDebounceFn = setTimeout(() => {
+      setLoading(true);
+      requestData();
+    }, 350);
+    return () => clearTimeout(delayDebounceFn)
   }, [refresh]);
 
   return (
@@ -32,57 +48,54 @@ export default function Search() {
       </Head>
       <>
         <Box m="auto" >
-          <Collapse in={loading}>
-            <LinearProgress />
-          </Collapse>
-          <Collapse in={!loading}>
-            <Stack spacing={3} minWidth={1000} color="primary.main" >
-              <Typography variant="h5">Device types</Typography>
-              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
-                <Box sx={{ display: "flex" }}>
-                  <TextField
-                    sx={{ width: "100%" }}
-                    id="search"
-                    label="Search"
-                    value={searched}
-                    onChange={(e) => {
-                      setSearched(e.target.value);
-                      search(e.target.value);
-                    }}
-                    variant="outlined" />
-                </Box>
-                <Box />
-                <Box sx={{ display: "flex" }}>
-                  <DeviceCreationForm sx={{ width: "100%" }} />
-                </Box>
+          <Stack spacing={1.5} minWidth={1000} color="primary.main" >
+            <Typography variant="h5">Device types</Typography>
+            <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
+              <Box sx={{ display: "flex" }}>
+                <TextField
+                  sx={{ width: "100%" }}
+                  id="search"
+                  label="Search"
+                  value={pageParams.search}
+                  onChange={(e) => {
+                    handleSearchChanged(e.target.value);
+                  }}
+                  variant="outlined" />
               </Box>
+              <Box />
+              <Box sx={{ display: "flex" }}>
+                <DeviceCreationForm sx={{ width: "100%" }} />
+              </Box>
+            </Box>
+            <Collapse in={loading}>
+              <LinearProgress />
+            </Collapse>
+            <Collapse in={!loading}>
               <Box sx={{ display: 'flex' }}>
-                <DevicesTable data={displayData}   onRefeshRequired={setRefresh}/>
+                <DevicesTable data={data} onRefeshRequired={setRefresh} onPageParamsChanged={handlePageParamsChanged} pageParams={pageParams} />
               </Box>
-            </Stack>
-          </Collapse>
+            </Collapse>
+          </Stack>
         </Box>
       </>
     </>
   );
 
-  function search(searchTerm) {
-    if (searchTerm.length > 0) {
-      filterDisplayedData(searchTerm);
-    }
-    else {
-      resetDisplayedData();
-    }
-  }
+  function requestData() {
+    axios.get(process.env.deviceManufactureApi + `/device-type?pageNumber=${pageParams.pageNumber}&pageSize=${pageParams.pageSize}&name=${pageParams.search}`).then(response => {
+      setData(response.data.content);
+      const newPageParams = {...pageParams}
+      setLoading(false);
 
-  function resetDisplayedData() {
-    setSearched("");
-    setDisplayData(data);
-  }
+      newPageParams.totalPages = response.data.totalPages;
+      newPageParams.totalElements = response.data.totalElements;
 
-  function filterDisplayedData(searchTerm) {
-    setSearched(searchTerm);
-    setDisplayData(data.filter(row => row.deviceTypeName.toLowerCase().includes(searchTerm.toLowerCase())));
+      setParams(newPageParams);
+
+    }
+    ).catch(error => {
+      console.log(error);
+    });
   }
 
 }
