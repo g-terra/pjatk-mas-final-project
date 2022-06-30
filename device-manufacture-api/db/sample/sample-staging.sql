@@ -39,3 +39,34 @@ INSERT INTO device_manufacture_db_staging.device_type_version_property_values (d
 INSERT INTO device_manufacture_db_staging.device_type_version_property_values (device_type_version_device_type_version_id, name, parent_functionality_id, value) VALUES (2, 'Shape count', 4, '2');
 INSERT INTO device_manufacture_db_staging.device_type_version_property_values (device_type_version_device_type_version_id, name, parent_functionality_id, value) VALUES (2, 'Shape description', 4, 'rectangle and triangle');
 INSERT INTO device_manufacture_db_staging.device_type_version_property_values (device_type_version_device_type_version_id, name, parent_functionality_id, value) VALUES (3, 'can you tell me?', 6, 'no');
+
+
+INSERT INTO device_manufacture_db_staging.roles(role_id, name) value (1, 'DEFAULT');
+INSERT INTO device_manufacture_db_staging.roles(role_id, name) value (2, 'CLIENT');
+INSERT INTO device_manufacture_db_staging.roles(role_id, name) value (3, 'EMPLOYEE');
+INSERT INTO device_manufacture_db_staging.roles(role_id, name) value (4, 'OWNER');
+
+INSERT INTO device_manufacture_db_staging.users (name, surname, email) value ('SuperUser', 'SuperUser', 'SuperUser@superuser.com');
+INSERT INTO device_manufacture_db_staging.user_roles(user_id, role_id) value (1, 1);
+INSERT INTO device_manufacture_db_staging.user_roles(user_id, role_id) value (1, 2);
+INSERT INTO device_manufacture_db_staging.user_roles(user_id, role_id) value (1, 3);
+INSERT INTO device_manufacture_db_staging.user_roles(user_id, role_id) value (1, 4);
+
+INSERT INTO device_manufacture_db_staging.users (name, surname, email) value ('ClientUser', 'ClientUser', 'ClientUser@ClientUser.com');
+INSERT INTO device_manufacture_db_staging.user_roles(user_id, role_id) value (2, 1);
+INSERT INTO device_manufacture_db_staging.user_roles(user_id, role_id) value (2, 2);
+
+INSERT INTO device_manufacture_db_staging.users (name, surname, email) value ('EmployeeUser', 'EmployeeUser', 'EmployeeUser@EmployeeUser.com');
+INSERT INTO device_manufacture_db_staging.user_roles(user_id, role_id) value (3, 1);
+INSERT INTO device_manufacture_db_staging.user_roles(user_id, role_id) value (3, 3);
+
+INSERT INTO device_manufacture_db_staging.users (name, surname, email) value ('EmployeeClientUser', 'EmployeeClientUser',
+                                                'EmployeeClientUser@EmployeeClientUser.com');
+INSERT INTO device_manufacture_db_staging.user_roles(user_id, role_id) value (4, 1);
+INSERT INTO device_manufacture_db_staging.user_roles(user_id, role_id) value (4, 2);
+INSERT INTO device_manufacture_db_staging.user_roles(user_id, role_id) value (4, 3);
+
+
+insert into device_manufacture_db_staging.factories(city, building_number, flat_number, street, zip)
+    VALUE ('warsaw', 1, 1, 'ul 1.ego maja', '01-123');
+
