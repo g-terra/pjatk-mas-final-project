@@ -18,6 +18,7 @@ import java.util.List;
 @Setter
 @Entity(name = "Team")
 @Table(name = "teams")
+@EntityListeners(TeamListener.class)
 public class Team {
 
     @Id

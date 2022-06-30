@@ -34,7 +34,7 @@ public class DeviceTypeSummaryResponse {
     /**
      * Converts list of DeviceType(domain object) to DeviceTypeSummaryResponse
      *
-     * @param deviceTypes List of DeviceType objects to be converted to DeviceTypeSummaryResponse objects
+     * @param deviceTypes List of {@link DeviceType} objects to be converted to DeviceTypeSummaryResponse objects
      * @return List<DeviceTypeSummaryResponse> List of DeviceTypeSummaryResponse objects
      */
     public static List<DeviceTypeSummaryResponse> from(List<DeviceType> deviceTypes, DateTimeFormatter dateTimeFormatter) {
@@ -57,7 +57,6 @@ public class DeviceTypeSummaryResponse {
                 .build();
     }
 
-    @NotNull
     private static List<String> getTeamNames(DeviceType deviceType) {
         return deviceType.getSellingTeams().stream().map(Team::getName).collect(Collectors.toList());
     }

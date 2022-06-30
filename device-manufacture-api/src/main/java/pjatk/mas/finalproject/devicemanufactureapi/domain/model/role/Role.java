@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Setter
 @Entity(name = "Role")
 @Table(name = "roles")
+@EntityListeners(RoleListener.class)
 public class Role {
 
     @Id

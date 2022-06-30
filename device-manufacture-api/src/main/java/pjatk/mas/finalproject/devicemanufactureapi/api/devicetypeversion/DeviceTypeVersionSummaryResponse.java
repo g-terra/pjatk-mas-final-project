@@ -29,6 +29,7 @@ public class DeviceTypeVersionSummaryResponse {
 
     /**
      * @param deviceTypeVersion DeviceTypeVersion object to be converted
+     * @param dateTimeFormatter DateTimeFormatter object that converts LocalDateTime to readable String
      * @return DeviceTypeVersionSummaryResponse
      */
     public static DeviceTypeVersionSummaryResponse from(DeviceTypeVersion deviceTypeVersion, DateTimeFormatter dateTimeFormatter) {
@@ -60,7 +61,7 @@ public class DeviceTypeVersionSummaryResponse {
                             .findFirst()
                             .map(Functionality::getName).orElseThrow(() -> new IllegalStateException("Functionality not found"));
 
-                    return "(" + functionalityName + ") "+ propertyValue.getName();
+                    return "(" + functionalityName + ") " + propertyValue.getName();
 
                 }, PropertyValue::getValue));
     }

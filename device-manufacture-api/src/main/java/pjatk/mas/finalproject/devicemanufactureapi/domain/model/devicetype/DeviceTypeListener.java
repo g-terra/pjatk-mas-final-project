@@ -5,10 +5,12 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
+/**
+ * Listener for {@link DeviceType} entity.Used for logging changes regarding this entity.
+ */
 @Component
 @Slf4j
 public class DeviceTypeListener {
-
 
     @PostUpdate
     public void postUpdate(DeviceType deviceType) {

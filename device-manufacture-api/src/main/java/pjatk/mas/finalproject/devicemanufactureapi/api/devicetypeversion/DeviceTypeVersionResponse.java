@@ -32,10 +32,12 @@ public class DeviceTypeVersionResponse {
 
     /**
      * Converts DeviceTypeVersion(domain object) to DeviceTypeVersionResponse
+     *
      * @param deviceTypeVersion DeviceTypeVersion object to be converted
+     * @param dateTimeFormatter DateTimeFormatter object that converts LocalDateTime to readable String
      * @return DeviceTypeVersionResponse
      */
-    public static DeviceTypeVersionResponse from(DeviceTypeVersion deviceTypeVersion , DateTimeFormatter dateTimeFormatter) {
+    public static DeviceTypeVersionResponse from(DeviceTypeVersion deviceTypeVersion, DateTimeFormatter dateTimeFormatter) {
 
         Map<Long, String> functionalities = deviceTypeVersion.getFunctionalities().stream().collect(
                 Collectors.toMap(Functionality::getId, Functionality::getName));

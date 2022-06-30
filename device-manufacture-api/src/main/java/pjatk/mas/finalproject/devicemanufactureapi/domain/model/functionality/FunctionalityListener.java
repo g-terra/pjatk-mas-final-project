@@ -6,6 +6,10 @@ import org.springframework.stereotype.Component;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 
+
+/**
+ * Listener for {@link Functionality} entity.Used for logging changes regarding this entity.
+ */
 @Component
 @Slf4j
 public class FunctionalityListener {

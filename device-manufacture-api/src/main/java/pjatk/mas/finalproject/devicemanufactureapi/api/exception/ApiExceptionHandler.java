@@ -29,7 +29,6 @@ public class ApiExceptionHandler{
     
     private final ApiErrorProcessor apiErrorProcessor;
 
-
     @ResponseStatus(BAD_REQUEST)
     @ResponseBody
     @ExceptionHandler(HttpMessageNotReadableException.class)

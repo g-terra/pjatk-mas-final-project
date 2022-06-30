@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetype.DeviceTypeService;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetypeversion.DeviceTypeVersion;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetypeversion.DeviceTypeVersionService;
 import pjatk.mas.finalproject.devicemanufactureapi.domain.types.PropertyValue;
@@ -28,9 +27,7 @@ import static pjatk.mas.finalproject.devicemanufactureapi.domain.model.devicetyp
 public class DeviceTypeVersionController {
 
     private final DateTimeFormatter dateTimeFormatter;
-
     private final DeviceTypeVersionService deviceTypeVersionService;
-    private final DeviceTypeService deviceTypeService;
 
     /**
      * Post endpoint for creating a new device type version.
@@ -55,7 +52,6 @@ public class DeviceTypeVersionController {
     }
 
 
-
     /**
      * Get endpoint for listing all device type versions.
      *
@@ -67,6 +63,12 @@ public class DeviceTypeVersionController {
         return DeviceTypeVersionSummaryResponse.from(allDevices, dateTimeFormatter);
     }
 
+
+    /**
+     * Endpoint for getting device type version details by id.
+     * @param id - id of device type version to be retrieved
+     * @return
+     */
     @GetMapping("/{id}")
     public DeviceTypeVersionResponse getDeviceTypeVersion(@PathVariable Long id) {
         DeviceTypeVersion deviceTypeVersion = deviceTypeVersionService.getDeviceTypeVersion(id);
@@ -74,9 +76,13 @@ public class DeviceTypeVersionController {
     }
 
 
+    /**
+     * Endpoint deprecating a device type version.
+     * @param id - id of device type version to be updated
+     */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteDeviceTypeVersion(@PathVariable Long id) {
+    public void deprecateDeviceVersion(@PathVariable Long id) {
         deviceTypeVersionService.deprecateDeviceTypeVersionByVersionId(id);
     }
 
