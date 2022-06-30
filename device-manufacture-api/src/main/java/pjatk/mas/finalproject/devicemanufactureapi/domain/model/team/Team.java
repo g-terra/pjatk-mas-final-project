@@ -36,8 +36,8 @@ public class Team {
     @OneToMany(mappedBy = "team", orphanRemoval = true , cascade = CascadeType.MERGE)
     private List<Employee> employees ;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "target_device_type_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "target_device_type_id")
     private DeviceType targetDeviceType;
 
 
