@@ -1,5 +1,6 @@
 package pjatk.mas.finalproject.devicemanufactureapi.api.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.FieldError;
@@ -12,15 +13,17 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
  * Api Error Processor. Supports conversion of exceptions to ApiErrors.
  */
 @Component
+@Slf4j
 public class ApiErrorProcessor {
 
     /**
-     * Method overloading of  processException(String Type, HttpStatus status, String message) - used for direct handling exceptions.
+     * Method overloading of  processException(String type, HttpStatus status, String message) - used for direct handling exceptions.
      * @param ex the exception to process
      * @return an {@link ApiError} with the appropriate status and message
      */
-    public ApiError processException(String Type, HttpStatus status, Exception ex) {
-        return processException(Type, status, ex.getMessage());
+    public ApiError processException(String type, HttpStatus status, Exception ex) {
+        log.error("{} - Exception: {}", type, ex.getMessage());
+        return processException(type, status, ex.getMessage());
     }
 
     /**
