@@ -36,7 +36,7 @@ export default function Search() {
             <LinearProgress />
           </Collapse>
           <Collapse in={!loading}>
-            <Stack spacing={3} minWidth={400} color="primary.main" >
+            <Stack spacing={3} minWidth={1000} color="primary.main" >
               <Typography variant="h5">Device types</Typography>
               <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
                 <Box sx={{ display: "flex" }}>

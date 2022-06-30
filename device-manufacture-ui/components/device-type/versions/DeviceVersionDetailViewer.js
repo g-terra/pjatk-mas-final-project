@@ -10,7 +10,6 @@ import { InfoOutlined } from '@mui/icons-material';
 export default function DeviceVersionDetailViewer(props) {
     const [open, setOpen] = React.useState(false);
     const [fullWidth, setFullWidth] = React.useState(true);
-    const [maxWidth, setMaxWidth] = React.useState('sm');
     const [data, setData] = React.useState(props.data);
 
     const handleClickOpen = () => {
@@ -21,26 +20,17 @@ export default function DeviceVersionDetailViewer(props) {
         setOpen(false);
     };
 
-    const handleMaxWidthChange = (event) => {
-        setMaxWidth(
-            event.target.value,
-        );
-    };
-
-    const handleFullWidthChange = (event) => {
-        setFullWidth(event.target.checked);
-    };
 
     return (
         <React.Fragment>
-           <Tooltip title={"see more info"} >
+           <Tooltip title={"see more info about this version"} >
                 <Button onClick={handleClickOpen}>
                     <InfoOutlined />
                 </Button>
             </Tooltip>
             <Dialog
                 fullWidth={fullWidth}
-                maxWidth='xs'
+                maxWidth='sm'
                 open={open}
                 onClose={handleClose}
             >

@@ -18,9 +18,7 @@ export default function DeviceNewVersionCreationForm(props) {
     const router = useRouter()
     const [formState, setFormState] = React.useState([]);
 
-    const resetState = () => {
-        setFormState([]);
-    }
+   
 
     const cleanErrors = () => {
         setErrors([]);
@@ -34,6 +32,9 @@ export default function DeviceNewVersionCreationForm(props) {
         getRequiredFunctionalityInformation()
     };
 
+    const resetState = () => {
+        setFormState([]);
+    }
 
     const handleClose = () => {
         resetState()
