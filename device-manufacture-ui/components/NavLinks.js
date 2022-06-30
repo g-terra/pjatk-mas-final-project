@@ -8,7 +8,7 @@ export const navLinks = [
 
     },
     {
-        name: "Management",
+        name: "Employee Management",
         path: "/",
         icon: <ManageAccounts />
 
