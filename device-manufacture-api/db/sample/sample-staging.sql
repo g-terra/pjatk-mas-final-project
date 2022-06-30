@@ -18,9 +18,15 @@ INSERT INTO device_manufacture_db_staging.functionality_properties (functionalit
 INSERT INTO device_manufacture_db_staging.device_types (device_type_id, crated_at, device_type_status, name, power_consumption) VALUES (1, '2022-06-28 21:34:40.241494', 'VERSIONED', 'Grill', 1234);
 INSERT INTO device_manufacture_db_staging.device_types (device_type_id, crated_at, device_type_status, name, power_consumption) VALUES (2, '2022-06-28 21:44:59.015875', 'DRAFT', 'Wuffle maker', 4);
 INSERT INTO device_manufacture_db_staging.device_types (device_type_id, crated_at, device_type_status, name, power_consumption) VALUES (3, '2022-06-28 21:45:42.566239', 'VERSIONED', 'The MAS secrete machine', 2000);
+INSERT INTO device_manufacture_db_staging.device_types (device_type_id, crated_at, device_type_status, name, power_consumption) VALUES (4, '2022-06-30 17:20:25.507193', 'DEPRECATED', 'Multi version device deprecated', 1234);
+INSERT INTO device_manufacture_db_staging.device_types (device_type_id, crated_at, device_type_status, name, power_consumption) VALUES (5, '2022-06-30 17:25:59.996913', 'VERSIONED', 'Deprecate me and my children', 1250);
 
 INSERT INTO device_manufacture_db_staging.device_type_versions (device_type_version_id, create_date_time, device_type_version_status, version_number, device_type_id) VALUES (2, '2022-06-28 21:44:16.758664', 'AVAILABLE', 1, 1);
 INSERT INTO device_manufacture_db_staging.device_type_versions (device_type_version_id, create_date_time, device_type_version_status, version_number, device_type_id) VALUES (3, '2022-06-28 21:46:13.573583', 'DEPRECATED', 1, 3);
+INSERT INTO device_manufacture_db_staging.device_type_versions (device_type_version_id, create_date_time, device_type_version_status, version_number, device_type_id) VALUES (4, '2022-06-30 17:20:39.526892', 'DEPRECATED', 1, 4);
+INSERT INTO device_manufacture_db_staging.device_type_versions (device_type_version_id, create_date_time, device_type_version_status, version_number, device_type_id) VALUES (5, '2022-06-30 17:21:06.610462', 'DEPRECATED', 2, 4);
+INSERT INTO device_manufacture_db_staging.device_type_versions (device_type_version_id, create_date_time, device_type_version_status, version_number, device_type_id) VALUES (6, '2022-06-30 17:26:10.059888', 'AVAILABLE', 1, 5);
+INSERT INTO device_manufacture_db_staging.device_type_versions (device_type_version_id, create_date_time, device_type_version_status, version_number, device_type_id) VALUES (7, '2022-06-30 17:26:22.138101', 'AVAILABLE', 2, 5);
 
 INSERT INTO device_manufacture_db_staging.device_type_versions_functionalities (device_type_version_id, functionality_id) VALUES (2, 1);
 INSERT INTO device_manufacture_db_staging.device_type_versions_functionalities (device_type_version_id, functionality_id) VALUES (2, 3);
@@ -28,6 +34,11 @@ INSERT INTO device_manufacture_db_staging.device_type_versions_functionalities (
 INSERT INTO device_manufacture_db_staging.device_type_versions_functionalities (device_type_version_id, functionality_id) VALUES (2, 5);
 INSERT INTO device_manufacture_db_staging.device_type_versions_functionalities (device_type_version_id, functionality_id) VALUES (2, 4);
 INSERT INTO device_manufacture_db_staging.device_type_versions_functionalities (device_type_version_id, functionality_id) VALUES (3, 6);
+INSERT INTO device_manufacture_db_staging.device_type_versions_functionalities (device_type_version_id, functionality_id) VALUES (4, 1);
+INSERT INTO device_manufacture_db_staging.device_type_versions_functionalities (device_type_version_id, functionality_id) VALUES (5, 2);
+INSERT INTO device_manufacture_db_staging.device_type_versions_functionalities (device_type_version_id, functionality_id) VALUES (5, 3);
+INSERT INTO device_manufacture_db_staging.device_type_versions_functionalities (device_type_version_id, functionality_id) VALUES (6, 1);
+INSERT INTO device_manufacture_db_staging.device_type_versions_functionalities (device_type_version_id, functionality_id) VALUES (7, 4);
 
 
 INSERT INTO device_manufacture_db_staging.device_type_version_property_values (device_type_version_device_type_version_id, name, parent_functionality_id, value) VALUES (2, 'Max Height', 1, '10');
@@ -39,6 +50,15 @@ INSERT INTO device_manufacture_db_staging.device_type_version_property_values (d
 INSERT INTO device_manufacture_db_staging.device_type_version_property_values (device_type_version_device_type_version_id, name, parent_functionality_id, value) VALUES (2, 'Shape count', 4, '2');
 INSERT INTO device_manufacture_db_staging.device_type_version_property_values (device_type_version_device_type_version_id, name, parent_functionality_id, value) VALUES (2, 'Shape description', 4, 'rectangle and triangle');
 INSERT INTO device_manufacture_db_staging.device_type_version_property_values (device_type_version_device_type_version_id, name, parent_functionality_id, value) VALUES (3, 'can you tell me?', 6, 'no');
+INSERT INTO device_manufacture_db_staging.device_type_version_property_values (device_type_version_device_type_version_id, name, parent_functionality_id, value) VALUES (4, 'Max Height', 1, '6');
+INSERT INTO device_manufacture_db_staging.device_type_version_property_values (device_type_version_device_type_version_id, name, parent_functionality_id, value) VALUES (4, 'Min Height', 1, '1');
+INSERT INTO device_manufacture_db_staging.device_type_version_property_values (device_type_version_device_type_version_id, name, parent_functionality_id, value) VALUES (5, 'Pixel count', 2, '200');
+INSERT INTO device_manufacture_db_staging.device_type_version_property_values (device_type_version_device_type_version_id, name, parent_functionality_id, value) VALUES (5, 'remote controlled', 2, 'yes');
+INSERT INTO device_manufacture_db_staging.device_type_version_property_values (device_type_version_device_type_version_id, name, parent_functionality_id, value) VALUES (5, 'includes adapter', 3, 'no');
+INSERT INTO device_manufacture_db_staging.device_type_version_property_values (device_type_version_device_type_version_id, name, parent_functionality_id, value) VALUES (6, 'Max Height', 1, '2');
+INSERT INTO device_manufacture_db_staging.device_type_version_property_values (device_type_version_device_type_version_id, name, parent_functionality_id, value) VALUES (6, 'Min Height', 1, '0');
+INSERT INTO device_manufacture_db_staging.device_type_version_property_values (device_type_version_device_type_version_id, name, parent_functionality_id, value) VALUES (7, 'Shape count', 4, '3');
+INSERT INTO device_manufacture_db_staging.device_type_version_property_values (device_type_version_device_type_version_id, name, parent_functionality_id, value) VALUES (7, 'Shape description', 4, 'q,b,c');
 
 
 INSERT INTO device_manufacture_db_staging.roles(role_id, name) value (1, 'DEFAULT');
