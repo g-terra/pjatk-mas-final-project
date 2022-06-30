@@ -35,17 +35,21 @@ export function DevicesTableRow(props) {
                     <DeviceDetailViewer data={props.data} ></DeviceDetailViewer>
                 </TableCell>
                 <TableCell padding="checkbox" align="center">
-                    <Link href={`/device-type/versions/new?id=${props.data.deviceTypeId}`}>
-                        <Tooltip title="Create new version">
-                            <Button>
-                                <Add></Add>
-                            </Button>
-                        </Tooltip>
-                    </Link>
+                    {
+                        props.data.deviceTypeStatus !== "DEPRECATED" ?
+                            <Link href={`/device-type/versions/new?id=${props.data.deviceTypeId}`}>
+                                <Tooltip title="Create new version">
+                                    <Button>
+                                        <Add></Add>
+                                    </Button>
+                                </Tooltip>
+                            </Link>
+                            : null
+                    }
                 </TableCell>
                 <TableCell padding="checkbox">
                     {
-                        props.data.status !== "DEPRECATED" ?
+                        props.data.deviceTypeStatus !== "DEPRECATED" ?
                             <DeleteDeviceTypeDialog
                                 deviceId={props.data.deviceTypeId}
                                 onRefeshRequired={props.onRefeshRequired} />
