@@ -24,14 +24,14 @@ export default function DevicesTable(props) {
             <Table aria-label="collapsible table">
                 <TableHead>
                     <TableRow>
-                        <TableCell align="center"></TableCell>
-                        <TableCell align="center">Id</TableCell>
-                        <TableCell align="center">Name</TableCell>
-                        <TableCell align="center">Power Comsumption</TableCell>
-                        <TableCell width={150} align="center">Status</TableCell>
-                        <TableCell align="center" ></TableCell>
-                        <TableCell align="center" ></TableCell>
-                        <TableCell align="center" ></TableCell>
+                        <TableCell sx={{ minWidth: 10, width: 50 }} align="center"></TableCell>
+                        <TableCell sx={{ minWidth: 35, width: 150 }} align="center">Id</TableCell>
+                        <TableCell sx={{ minWidth: 100, width: 250 }} align="center">Name</TableCell>
+                        <TableCell sx={{ minWidth: 85, width: 200 }} align="center">Power Comsumption (W)</TableCell>
+                        <TableCell sx={{ minWidth: 100, width: 200 }} align="center">Status</TableCell>
+                        <TableCell sx={{ minWidth: 45 }} align="center" ></TableCell>
+                        <TableCell sx={{ minWidth: 45 }} align="center" ></TableCell>
+                        <TableCell sx={{ minWidth: 45 }} align="center" ></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -41,7 +41,7 @@ export default function DevicesTable(props) {
                 </TableBody>
             </Table>
             <TablePagination
-                rowsPerPageOptions={[8,16,32]}
+                rowsPerPageOptions={[8, 16, 32]}
                 component="div"
                 count={props.pageParams.totalElements}
                 rowsPerPage={props.pageParams.pageSize}

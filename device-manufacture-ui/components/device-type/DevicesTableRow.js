@@ -26,39 +26,38 @@ export function DevicesTableRow(props) {
                 <IconButton
                     aria-label="expand row"
                     size="small"
-                    onClick={() => setOpen(!open)}
-                >
+                    onClick={() => setOpen(!open)}>
                     {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                 </IconButton>
             </TableCell>
-            <TableCell align="center">{props.data.deviceTypeId}</TableCell>
+            <TableCell sx align="center">{props.data.deviceTypeId}</TableCell>
             <TableCell align="center">{props.data.deviceTypeName}</TableCell>
             <TableCell align="center">{props.data.powerConsumption}</TableCell>
-            <TableCell padding="checkbox" align="center">
-                {getStatusChip(props.data.deviceTypeStatus)}
-            </TableCell>
-            <TableCell padding="checkbox" align="center">
-                <DeviceDetailViewer data={props.data}></DeviceDetailViewer>
-            </TableCell>
-            <TableCell padding="checkbox" align="center">
-                {props.data.deviceTypeStatus !== "DEPRECATED" ?
-                    <Link href={`/device-type/versions/new?id=${props.data.deviceTypeId}`}>
-                        <Tooltip title="Create new version">
-                            <Button>
-                                <Add></Add>
-                            </Button>
-                        </Tooltip>
-                    </Link>
-                    : null}
-            </TableCell>
-            <TableCell padding="checkbox">
-                {props.data.deviceTypeStatus !== "DEPRECATED" ?
-                    <DeleteDeviceTypeDialog
-                        deviceId={props.data.deviceTypeId}
-                        onRefeshRequired={props.onRefeshRequired} />
-                    : null}
-            </TableCell>
+            <TableCell align="center" padding="checkbox">{getStatusChip(props.data.deviceTypeStatus)}</TableCell>
+            <TableCell align="center" padding="checkbox"><DeviceDetailViewer data={props.data}></DeviceDetailViewer></TableCell>
+            <TableCell align="center" padding="checkbox">{getCreateVersionButton()}</TableCell>
+            <TableCell padding="checkbox">{getDeprecateDeviceButton()}</TableCell>
         </TableRow>;
+    }
+
+    function getDeprecateDeviceButton() {
+        return props.data.deviceTypeStatus !== "DEPRECATED" ?
+            <DeleteDeviceTypeDialog
+                deviceId={props.data.deviceTypeId}
+                onRefeshRequired={props.onRefeshRequired} />
+            : null;
+    }
+
+    function getCreateVersionButton() {
+        return props.data.deviceTypeStatus !== "DEPRECATED" ?
+            <Link href={`/device-type/versions/new?id=${props.data.deviceTypeId}`}>
+                <Tooltip title="Create new version">
+                    <Button>
+                        <Add></Add>
+                    </Button>
+                </Tooltip>
+            </Link>
+            : null;
     }
 
     function getSubRows() {

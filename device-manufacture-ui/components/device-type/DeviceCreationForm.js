@@ -25,12 +25,10 @@ export default function DeviceCreationForm(props) {
         setData(initialState);
     }
 
-
     const cleanErrors = () => {
         setErrors([]);
         setShowError(false);
     }
-
 
     const handleClickOpen = () => {
         setOpen(true);

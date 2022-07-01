@@ -52,7 +52,7 @@ export default function Search() {
       </Head>
       <>
         <Box m="auto" >
-          <Stack spacing={1.5} minWidth={1000} color="primary.main" >
+          <Stack spacing={1.5} minWidth={500} color="primary.main" >
             <Typography variant="h5">Device types</Typography>
             <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
               <Box sx={{ display: "flex" }}>
