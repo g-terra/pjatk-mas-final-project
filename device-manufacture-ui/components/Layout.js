@@ -21,9 +21,8 @@ import logo from '../public/crazy.png';
 import Image from 'next/image';
 import { Avatar, Button, Menu, Stack, Tooltip, useMediaQuery } from '@mui/material';
 import Head from 'next/head';
-import { Title } from '@mui/icons-material';
 
-const drawerWidth = 240;
+const drawerWidth = 260;
 
 const openedMixin = (theme) => ({
     width: drawerWidth,
@@ -108,12 +107,11 @@ export default function Layout2({ children }
     };
 
 
-    const [title, setTitle] = React.useState('The Weird Products Factory');
 
     return (
         <>
             <Head>
-                <title>{title}</title>
+                <title>The Weird Products Factory</title>
             </Head>
             <div>
                 <Box sx={{
