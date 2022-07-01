@@ -22,7 +22,7 @@ export default function DeviceDetailViewer(props) {
 
     return (
         <React.Fragment>
-            <Tooltip title={"See more details about the device"} >
+            <Tooltip title={"Click to see more details about this device"} >
                 <IconButton onClick={handleClickOpen}>
                     <InfoOutlined />
                 </IconButton>

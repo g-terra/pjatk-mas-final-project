@@ -23,12 +23,14 @@ export function DevicesTableRow(props) {
     function getMainRow() {
         return <TableRow key={props.data.deviceTypeId} sx={{ '& > *': { borderBottom: 'unset' } }}>
             <TableCell>
-                <IconButton
+               <Tooltip title="Click to see all versions of this device">
+               <IconButton
                     aria-label="expand row"
                     size="small"
                     onClick={() => setOpen(!open)}>
                     {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                 </IconButton>
+                </Tooltip>
             </TableCell>
             <TableCell sx align="center">{props.data.deviceTypeId}</TableCell>
             <TableCell align="center">{props.data.deviceTypeName}</TableCell>
@@ -51,10 +53,10 @@ export function DevicesTableRow(props) {
     function getCreateVersionButton() {
         return props.data.deviceTypeStatus !== "DEPRECATED" ?
             <Link href={`/device-type/versions/new?id=${props.data.deviceTypeId}`}>
-                <Tooltip title="Create new version">
-                    <Button>
+                <Tooltip title="Click to create new version for this device">
+                    <IconButton size="small">
                         <Add></Add>
-                    </Button>
+                    </IconButton>
                 </Tooltip>
             </Link>
             : null;

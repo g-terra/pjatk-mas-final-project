@@ -25,10 +25,10 @@ export default function DevicesTable(props) {
                 <TableHead>
                     <TableRow>
                         <TableCell sx={{ minWidth: 10, width: 50 }} align="center"></TableCell>
-                        <TableCell sx={{ minWidth: 35, width: 150 }} align="center">Id</TableCell>
-                        <TableCell sx={{ minWidth: 100, width: 250 }} align="center">Name</TableCell>
+                        <TableCell sx={{ minWidth: 35, width: 120 }} align="center">Id</TableCell>
+                        <TableCell sx={{ minWidth: 150, width: 250 }} align="center">Name</TableCell>
                         <TableCell sx={{ minWidth: 85, width: 200 }} align="center">Power Comsumption (W)</TableCell>
-                        <TableCell sx={{ minWidth: 100, width: 200 }} align="center">Status</TableCell>
+                        <TableCell sx={{ minWidth: 100, width: 170 }} align="center">Status</TableCell>
                         <TableCell sx={{ minWidth: 45 }} align="center" ></TableCell>
                         <TableCell sx={{ minWidth: 45 }} align="center" ></TableCell>
                         <TableCell sx={{ minWidth: 45 }} align="center" ></TableCell>

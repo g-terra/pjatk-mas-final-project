@@ -46,9 +46,9 @@ export default function DeleteDeviceTypeDialog(props) {
 
     return (
         <>
-            <Tooltip title="Deprecate device">
+            <Tooltip title="Click to deprecate this device">
                 <IconButton sx={props.sx} color="warning"
-                    aria-label="expand row"
+                    aria-label="open dialog"
                     size="small"
                     onClick={() => setOpen(!open)}>
                     <Cancel />
@@ -68,10 +68,14 @@ export default function DeleteDeviceTypeDialog(props) {
                 <DialogContent>
                     <Stack sx={{ marginTop: 2, width: '100%' }} spacing={2}>
                         <Typography variant="body1">
-                            Are you sure you want to set this device type to deprecated?
+                            Are you sure you want to deprecate this device type?
                         </Typography>
                         <Typography variant="body2">
-                            This device type will no longer be available for usage however it will still be available in the device type history.                        </Typography>
+                            By dreprecationg it, this device type will no longer be available for usage however it will still be available in the device type history.
+                        </Typography>
+                        <Typography variant="body2">
+                            Please also be aware that this action will also deprecate all versions of the device. Such an action is irreversible.
+                        </Typography>
                     </Stack>
                 </DialogContent>
                 <DialogActions>

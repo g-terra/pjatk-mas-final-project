@@ -72,7 +72,11 @@ export default function DeleteVersionDialog(props) {
                             Are you sure you want to set this version to deprecated?
                         </Typography>
                         <Typography variant="body2">
-                            This version will no longer be available for usage however it will still be available in the device type history.                        </Typography>
+                            This version will no longer be available for usage however it will still be available in the device type history.
+                        </Typography>
+                        <Typography variant="body2">
+                            Please also be aware that this action is irreversible.
+                        </Typography>
                     </Stack>
                 </DialogContent>
                 <DialogActions>

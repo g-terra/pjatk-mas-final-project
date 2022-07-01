@@ -25,7 +25,11 @@ export default function Search() {
     setRefresh(refresh + 1);
   }
 
+  const [searchParam, setSearchParam] = useState("");
+
+
   function handleSearchChanged(search) {
+    setSearchParam(search);
     setParams({
       ...pageParams,
       search: search,
@@ -37,7 +41,7 @@ export default function Search() {
     const delayDebounceFn = setTimeout(() => {
       setLoading(true);
       requestData();
-    }, 400);
+    }, 200);
     return () => clearTimeout(delayDebounceFn)
   }, [pageParams.search]);
 
@@ -60,7 +64,7 @@ export default function Search() {
                   sx={{ width: "100%" }}
                   id="search"
                   label="Search"
-                  value={pageParams.search}
+                  value={searchParam}
                   onChange={(e) => {
                     handleSearchChanged(e.target.value);
                   }}
