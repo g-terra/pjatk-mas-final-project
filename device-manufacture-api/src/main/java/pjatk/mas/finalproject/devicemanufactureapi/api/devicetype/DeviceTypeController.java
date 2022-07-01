@@ -58,7 +58,7 @@ public class DeviceTypeController {
      * @return List<DeviceTypeSummaryResponse> - list of device type summaries for all device types
      */
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public Page<DeviceTypeSummaryResponse> list(
+    public Page<DeviceTypeSummaryResponse> getDeviceTypes(
             @RequestParam @Min(0) @Max(100) int pageNumber,
             @RequestParam @Min(0) @Max(100) int pageSize,
             @RequestParam(required = false , defaultValue = "") String name) {

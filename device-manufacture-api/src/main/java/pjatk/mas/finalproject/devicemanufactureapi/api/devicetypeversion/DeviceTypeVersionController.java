@@ -58,7 +58,7 @@ public class DeviceTypeVersionController {
      * @return List<DeviceTypeVersionSummaryResponse> - list of device type version summaries for all device type versions
      */
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public List<DeviceTypeVersionSummaryResponse> list() {
+    public List<DeviceTypeVersionSummaryResponse> getDeviceTypesVersions() {
         List<DeviceTypeVersion> allDevices = deviceTypeVersionService.getAllDeviceTypeVersions();
         return DeviceTypeVersionSummaryResponse.from(allDevices, dateTimeFormatter);
     }
@@ -85,7 +85,6 @@ public class DeviceTypeVersionController {
     public void deprecateDeviceVersion(@PathVariable Long id) {
         deviceTypeVersionService.deprecateDeviceTypeVersionByVersionId(id);
     }
-
 
 
     @Getter
